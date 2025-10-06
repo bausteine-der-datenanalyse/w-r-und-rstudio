@@ -1,0 +1,2 @@
+"0","ggplot(data = d_wb_2012) +"
+"0","  geom_point(mapping = aes(x=gdp, y=gge, color=region, size=pop))"

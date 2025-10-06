@@ -1,0 +1,232 @@
+---
+title: "Lineare Trends für viele Datensätze"
+---
+
+```{r}
+#| echo: false
+#| warning: false
+library(trend)
+library(readxl)
+library(modelr)
+library(tidyverse)
+library(kableExtra)
+load("daten/rd.rdata")
+```
+
+# Einführung
+
+## Problemstellung
+
+
+```{r}
+#| warning: false
+ggplot(data = rd) +
+  geom_line(mapping = aes(x = MESS_DATUM, y = RS, color = STATION))
+```
+
+##
+
+:::columns
+:::{.column width = "50%"}
+
+### Gegeben
+
+* Regendaten von mehreren Sationen
+* Siehe `scripts/prepare-data.R`
+
+:::
+
+:::{.column width = "50%"}
+
+### Gesucht
+
+* Lineare Trends für alle Stationen
+* Qualität des linearen Modells
+
+:::
+::::
+
+[]{.down40}
+
+### Anmerkungen
+
+* Ausführliche Erklärung in R for Data Science (<https://r4ds.had.co.nz>), Kapitel 25
+* Linearer Trend: Einfachster Fall eines Modells von Daten
+
+## Für eine Station 1/2
+
+```{r}
+rd_freiburg <- rd |> filter(STATION == 'Freiburg')
+mod_freiburg <- lm(data = rd_freiburg, RS ~ MESS_DATUM)
+rd_freiburg <- rd_freiburg |> add_predictions(mod_freiburg) |> as_tibble()
+rd_freiburg |> kable() |> scroll_box(height = "300px")
+```
+
+[]{.down40}
+
+### Erläuterung
+
+* Modell erzeugen mit `lm(data = d, Y ~ X)`
+* Mit `add_predictions()` werden die Werte des Modells hinzugefügt
+* Werte des Modells in Spalte `pred` (prediction = Vorhersage)
+* Funktion `add_predictions()` aus Paket `modelr`
+
+## Für eine Station  2/2
+
+```{r, out.width="50%"}
+#| warning: false
+ggplot(data = rd_freiburg) +
+  geom_line(mapping = aes(x = MESS_DATUM, y = pred), color = 'red') 
+```
+
+[]{.down40}
+
+* Plotten wie gehabt mit `geom_line`
+* Niederschläge in Freiburg leicht zurückgegangen
+* Statistische Relevanz dieses Trends später
+* Alternativ mit `geom_smooth`
+
+# Erstellung der Modelle
+
+## Daten zusammenfassen 1/2
+
+```{r}
+rd_stationen <- rd |>
+  group_by(STATION) |>
+  nest()
+rd_stationen
+```
+
+[]{.down40}
+
+* Gruppieren nach Stationen
+* In der Spalte `data` sind jetzt alle Beobachtungen für eine Station zusammengefasst
+
+## Daten zusammenfassen 2/2
+
+```{r}
+rd_stationen$data[[1]]
+```
+
+[]{.down40}
+
+* Die Beobachtungen sind in einem Dataframe zusammengefasst
+* Wir haben also einen Dataframe, der Dataframes enthält
+
+## Modelle erstellen mit `map`
+
+```{r}
+stations_modell <- function(df) { lm(data = df, RS ~ MESS_DATUM) }
+map(rd_stationen$data, stations_modell)
+```
+
+[]{.down40}
+
+* Funktion `stations_modell` erstellt ein lineares Modell für einen Dataframe
+* Mit `map` aus dem Paket `purrr` erstellen wir ein Modell für jede Station
+
+## Modelle zu Datensatz hinzufügen
+
+```{r}
+rd_stationen <- rd_stationen |>
+  mutate(
+    MODELL = map(data, stations_modell)
+  )
+rd_stationen
+```
+
+[]{.down40}
+
+* Die Spalte `MODELL` enthält nun die linearen Modelle
+
+## Lineare Trends hinzufügen
+
+```{r}
+rd_stationen <- rd_stationen |>
+  mutate(data2 = map2(data, MODELL, add_predictions))
+rd_stationen
+```
+
+[]{.down40}
+
+### Erläuterung
+
+* Spalte `data2` enthält jetzt die Daten zu den linearen Trends
+* Funktion `map2` übergibt die beiden Parameter `data` und `MODELL` an die Funktion `add_predictions`
+
+## Daten wieder auspacken
+
+```{r}
+rd_lineare_trends <- rd_stationen |>
+  unnest(data2) |>
+  select(-data, -MODELL)
+rd_lineare_trends
+```
+
+[]{.down40}
+
+* Mit `unnest` werden die Dataframes wieder in Zeilen umgewandelt
+* Jetzt sind für alle Stationen die Werte der linearen Trends dabei
+
+## Plot
+
+```{r}
+ggplot(data = rd_lineare_trends) +
+  geom_line(mapping = aes(x = MESS_DATUM, y = pred, color = STATION))
+```
+
+[]{.down40}
+
+* In Bochum und auf Wangerooge haben die Niederschläge zugenommen
+
+## Alternativer Weg: Dataframe mit Koeffizienten der Regressionsgeraden
+
+```{r}
+linearer_trend_dataframe <- function(s, df) {
+  m <- lm(data = df, RS ~ MESS_DATUM)
+  tibble(STATION = s, ALPHA = m$coefficients[1], BETA = m$coefficients[2])
+}
+rd_lineare_trends_2 <- map2_dfr(rd_stationen$STATION, rd_stationen$data, linearer_trend_dataframe)
+rd_lineare_trends_2
+```
+
+[]{.down40}
+
+* Funktion `linearer_trend_dataframe` erstellt Dataframe mit einer Zeile
+* Aufrufen für alle Stationen mit `map2_dfr`
+
+## Plot
+
+```{r, warning = FALSE, message = FALSE}
+ggplot() +
+  geom_smooth(data = rd, mapping = aes(x = MESS_DATUM, y = RS, color = STATION), size = 0.2) +
+  geom_abline(
+    data = rd_lineare_trends_2, mapping = aes(intercept = ALPHA, slope = BETA, color = STATION)
+  )
+```
+
+# Bewertung des linearen Trends: Mann-Kendall-Test
+
+## Mann-Kendall-Test für alle Stationen
+
+```{r}
+mk_dataframe <- function(s, df) {
+  t <- mk.test(na.omit(df$RS))
+  tibble(STATION = s, p = t$p.value)
+}
+rd_mk <- map2_dfr(rd_stationen$STATION, rd_stationen$data, mk_dataframe)
+rd_mk
+```
+
+[]{.down40}
+
+* Funktion `mk_test()` verarbeitet keine `NA`s
+* Linearer Trend für Freiburg signifikant
+* Für die beiden anderen Stationen äußerst signifikant
+
+## Plot der p-Werte
+
+```{r}
+ggplot(data = rd_mk) +
+  geom_col(mapping = aes(x = STATION, y = p, fill = STATION), show.legend = FALSE)
+```

@@ -1,0 +1,46 @@
+---
+title: "Aufgaben zum Aufbereiten von Plots"
+author: "TODO"
+---
+
+```{r}
+#| echo: false
+#| warning: false
+library(tidyverse)
+load("daten/data-exercise-03.Rdata")
+load("daten/data-exercise-05.Rdata")
+load("daten/data-exercise-06.Rdata")
+d_bo_entfernung <- tibble(
+  Stadt =      c("Essen", "Wattenscheid", "Dortmund", "Herne", "Wuppertal", "Gelsenkirchen", "Mühlheim"),
+  Entfernung = c(  17.8 ,          10.2 ,      15.4 ,   10.7 ,       21.4 ,           14.1 ,      27.2 )
+)
+```
+
+## Entfernungen in andere Städte
+
+```{r}
+ggplot(data=d_bo_entfernung) + geom_col(mapping=aes(x=Stadt, y=Entfernung))
+```
+
+## Studierende an der BO: Geschlecht
+
+```{r, echo=FALSE}
+ggplot(data = d_bo_vm) +
+  geom_bar(mapping = aes(x = Geschlecht, fill = Geschlecht))
+```
+
+## Studierende an der BO: Fachbereiche
+
+```{r, echo=FALSE}
+ggplot(data = d_bo_vm) +
+  geom_bar(mapping = aes(x = 0, fill = Fachbereich)) +
+  coord_polar(theta = "y")
+```
+
+## Histogramm mit Uhrzeit (Rechtecke)
+
+```{r, echo=FALSE}
+ggplot(data = d_unistrasse) + 
+  geom_bin2d(aes(x = Uhrzeit, y = Geschwindigkeit), binwidth = c(0.5, 3))
+```
+

@@ -1,0 +1,5 @@
+## Plots aufbereiten
+
+Laden Sie das RStudio-Projekt [06-weitere-geoms-und-plots-aufbereiten-aufgaben.zip](06-weitere-geoms-und-plots-aufbereiten-aufgaben.zip) herunter und entpacken Sie die Datei. 
+
+Bereiten Sie die Plots in `weitere-geoms-und-plots-aufbereiten-aufgaben.qmd` so auf, dass sie ihnen gut gefallen.

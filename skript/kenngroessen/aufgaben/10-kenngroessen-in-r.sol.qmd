@@ -1,0 +1,80 @@
+#### Lage- und Streumaße für Fahrzeiten
+
+```{.r}
+mean(d_bo_vm$Zeit)
+median(d_bo_vm$Zeit)
+max(d_bo_vm$Zeit)-min(d_bo_vm$Zeit)
+var(d_bo_vm$Zeit)
+sd(d_bo_vm$Zeit)
+```
+
+#### Verteilung mit $\tilde x$ und $\tilde s$
+
+```{.r}
+m <- mean(d_bo_vm$Zeit)
+s <- sd(d_bo_vm$Zeit)
+ggplot(data = d_bo_vm) +
+  geom_histogram(mapping = aes(x = Zeit), boundary=0, binwidth=15) +
+  geom_vline(xintercept = c(m-s, m, m + s), color = c('red','blue','red'))
+```
+
+#### Emp. Verteilungsfunktion mit Werten
+
+```{.r}
+p <- c(0.25, 0.5, 0.75)
+q <- quantile(d_bo_vm$Zeit, probs=p, type=2)
+ggplot(data = d_bo_vm) + 
+  geom_hline(yintercept = p, color = 'orange') +
+  geom_vline(xintercept = q, color = 'red') +
+  geom_step(mapping = aes(x = Zeit), stat = "ecdf")
+```
+
+#### Boxplot aller Fahrzeiten
+
+```{.r}
+ggplot(data = d_bo_vm) +
+  geom_boxplot(mapping = aes(y = Zeit))
+```
+
+#### Fahrzeiten und Fachbereiche
+
+```{.r}
+ggplot(data = d_bo_vm) +
+  geom_boxplot(mapping = aes(x = Fachbereich, y = Zeit))
+```
+
+#### Fahrzeiten und Verkehrsmittel
+
+```{.r}
+ggplot(data = d_bo_vm) +
+  geom_boxplot(mapping = aes(x=Verkehrsmittel, y=Zeit), varwidth = TRUE)
+```
+
+#### Fahrzeiten, Fachbereiche und Geschlecht
+
+```{.r}
+ggplot(data = d_bo_vm) +
+  geom_boxplot(mapping=aes(x=Fachbereich,y=Zeit,fill=Geschlecht), varwidth=TRUE)
+```
+
+#### Lorenzkurve der Fahrzeiten
+
+```{.r}
+lcz <- Lc(d_bo_vm$Zeit)
+ggplot(data = lc_to_tibble(lcz)) +
+  geom_ribbon(mapping=aes(x=u,ymin=v,ymax=u),color='black',fill='light blue')
+```
+
+#### Gini-Koeffizient
+
+```{.r}
+n <- nrow(d_bo_vm)
+Gini(d_bo_vm$Zeit)
+```
+
+Für $n =$ `` `{{r}} n` `` Beobachtungen ist dabei der Vorfaktor für den Lorenz-Münzer-Koeffizienten mit $n / (n-1) =$ `` `{{r}} signif(n/(n-1), 4)` `` nahe bei 1. Der Unterschied ist vernachlässigbar.
+
+##### Anmerkungen
+
+- Sie sehen hier, dass R-Code auch direkt in den Text eingebaut werden kann. Dabei wird der Programmcode in `'r Programmcode'` ausgewertet und das Ergebnis in den Text eingesetzt. Statt ' muss man dabei den Schrägstrich nach hinten (Backtick) verwenden.
+- Mathematische Formeln werden zwischen Dollarzeichen gesetzt und verwenden die Schreibweise von LaTeX.

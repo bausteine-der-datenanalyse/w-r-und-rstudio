@@ -1,0 +1,51 @@
+## Abfluss der Donau bei Hofkirchen
+
+### Einlesen und Aufbereiten der Daten
+
+Lesen Sie die Datei aus `"daten/6342800.day` ein und bereiten Sie die Daten so auf, dass Sie einen Dataframe mit den folgenden Variablen erhalten:
+
+- `Datum`: Datum als Date-Objekt
+- `Jahr`: Jahr der Messung
+- `Monat`: Name des Monats der Messung
+- `Abfluss`: Wert aus ursprünglicher Variable `Original`
+
+### Plots der Abflüsse
+
+Erstellen Sie folgende Plots:
+
+1. Streuplot der Abflüsse über die Zeit
+1. Einen Boxplot der Abflüsse für jedes Jahr
+
+### Linearer Trend
+
+Berechnen Sie die Ausgleichsgerade und geben Sie den Anstieg des Abflusses in den letzten 100 Jahren an.
+
+### Statistische Kennwerte
+
+Bestimmen Sie die üblichen statistischen Kennwerte für den Abfluss.
+
+### Standardabweichung für jedes Jahr
+
+Stellen sie die Standardabweichung des Abflusses für jedes Jahr in einer Tabelle dar.
+
+### Standardabweichung über die Jahre
+
+Stellen sie die Standardabweichung des Abflusses grafisch in einem Plot dar. Bewerten Sie ,ob ein linearer Trend zu erkennen ist.
+
+### Jahre mit kleinster/größter Standardabweichung
+
+Bestimmen Sie die drei Jahre mit der jeweils kleinsten und jeweils größten Standardabweichung. Stellen Sie für diese Jahre den Abfluss über das komplette Jahr grafisch dar.
+
+### Weitere Jahre mit besonderem Ereignis
+
+Bestimmen Sie das Jahr mit dem jeweils kleinsten und jeweils größten Gesamtabfluss. Stellen Sie für diese Jahre den Abfluss über das komplette Jahr grafisch dar.
+
+### Monats-Mittelwerte
+
+Stellen Sie die Mittelwerte sowie das obere und untere Quartil jedes Monats dar. Bewerten Sie kurz das Ergebnis.
+
+### Verteilung
+
+- Stellen Sie die Verteilung des Abflusses sowohl als Histogramm als auch als empirische Verteilungsfunktion dar
+- Plotten Sie zusätzlich noch die zu den Daten passende Normalverteilung
+- Erstellen Sie einen QQ-Plot für den Abfluss und bewerten Sie das Ergebnis

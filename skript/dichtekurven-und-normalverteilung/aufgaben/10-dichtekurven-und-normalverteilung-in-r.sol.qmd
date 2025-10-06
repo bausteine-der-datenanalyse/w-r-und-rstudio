@@ -1,0 +1,119 @@
+#### Normalverteilung
+
+Nur die Kurven
+
+```{.r}
+f1 <- function(x) dnorm(x, mean = 0, sd = 4)
+f2 <- function(x) dnorm(x, mean = 0, sd = 2)
+f3 <- function(x) dnorm(x, mean = 0, sd = 1)
+f4 <- function(x) dnorm(x, mean = 0, sd = 0.5)
+
+ggplot() +
+  geom_function(fun = f1) +
+  geom_function(fun = f2) +
+  geom_function(fun = f3) +
+  geom_function(fun = f4) +
+  lims(x = c(-5, 5))
+```
+
+Mit `geom_ribbon`
+
+```{.r}
+ggplot() +
+  geom_ribbon(mapping=aes(x=stat(x), ymin=0, ymax=stat(y)), stat="function", fun=f1, color='black', fill='orange',  alpha=0.5) +
+  geom_ribbon(mapping=aes(x=stat(x), ymin=0, ymax=stat(y)), stat="function", fun=f2, color='black', fill='red',     alpha=0.5) +
+  geom_ribbon(mapping=aes(x=stat(x), ymin=0, ymax=stat(y)), stat="function", fun=f3, color='black', fill='hotpink', alpha=0.5) +
+  geom_ribbon(mapping=aes(x=stat(x), ymin=0, ymax=stat(y)), stat="function", fun=f4, color='black', fill='magenta', alpha=0.5) +
+  lims(x = c(-5, 5))
+```
+
+Elegantere Lösung mit Funktion (können Sie noch nicht)
+
+```{.r}
+make_ribbon <- function(f, c) geom_ribbon(
+  mapping=aes(x=stat(x), ymin=0, ymax=stat(y)), 
+  stat="function", fun=f, color='black', fill=c,  alpha=0.5
+)
+
+ggplot() +
+  make_ribbon(f1, 'orange') + make_ribbon(f2, 'red') + make_ribbon(f3, 'hotpink') + make_ribbon(f4, 'magenta') +
+  lims(x = c(-5, 5))
+```
+
+#### Histogramm und Normalverteilung
+
+```{.r}
+mu <- mean(d_unistrasse$Geschwindigkeit)
+sigma <- sd(d_unistrasse$Geschwindigkeit)
+f <- function(x) dnorm(x, mean = mu, sd = sigma)
+
+ggplot(data = d_unistrasse) +
+  geom_histogram(mapping = aes(x = Geschwindigkeit, y = stat(density)), binwidth = 2.5, boundary = 0) +
+  geom_vline(xintercept = c(mu-sigma, mu, mu+sigma), color = c("magenta", "blue", "magenta")) +
+  geom_line(stat = "function", fun = f, linewidth = 1, color = "red")
+```
+
+NQ-Plot
+
+```{.r}
+ggplot(data = d_unistrasse, mapping = aes(sample = Geschwindigkeit)) +
+  geom_qq_line() + geom_qq(color='red')
+```
+
+→ Punkte weit von Gerade entfernt, Merkmal nicht normalverteilt
+
+#### Approximierte Dichtefunktion
+
+```{.r}
+ggplot(data = d_unistrasse, mapping = aes(x = Geschwindigkeit)) +
+  geom_histogram(mapping = aes(y = stat(density)), binwidth = 2.5, boundary = 0.0) +
+  geom_density(color = 'red', fill = 'orange', alpha = 0.25)
+```
+
+#### Darstellungsformen
+
+###### Wochentag
+
+Dichtekurven übereinander
+
+```{.r}
+ggplot(data = d_unistrasse) +
+  geom_density_ridges(mapping = aes(x = Geschwindigkeit, y = Tag), bandwidth = 1)
+```
+
+Violinenplot
+
+```{.r}
+ggplot(data = d_unistrasse) +
+  geom_violin(mapping = aes(x = Tag, y = Geschwindigkeit))
+```
+
+Boxplot
+
+```{.r}
+ggplot(data = d_unistrasse) +
+  geom_boxplot(mapping = aes(x = Tag, y = Geschwindigkeit))
+```
+
+###### Verkehrszeiten
+
+Übereinander
+
+```{.r}
+ggplot(data = d_unistrasse) +
+  geom_density_ridges(mapping = aes(x = Geschwindigkeit, y = VZ), bandwidth = 1)
+```
+
+Violinenplot
+
+```{.r}
+ggplot(data = d_unistrasse) +
+  geom_violin(mapping = aes(x = VZ, y = Geschwindigkeit))
+```
+
+Boxplot
+
+```{.r}
+ggplot(data = d_unistrasse) +
+  geom_boxplot(mapping = aes(x = VZ, y = Geschwindigkeit))
+```

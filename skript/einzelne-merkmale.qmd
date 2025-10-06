@@ -1,0 +1,518 @@
+---
+title: "Untersuchung einzelner Merkmale in R"
+---
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+library(tidyverse)
+library(kableExtra)
+
+# TODO: source("_common.R")
+outline_color <- "black"
+update_geom_defaults("bar", list(color = outline_color))
+update_geom_defaults("point", list(color = outline_color))
+update_geom_defaults("boxplot", list(color = outline_color))
+update_geom_defaults("dotplot", list(color = outline_color))
+theme_set(theme_gray(base_size = 14))
+
+load("daten/einzelne-merkmale.Rdata")
+```
+
+## Übersicht Dataframes für diese Folien
+
+[]{.down100}
+
+| Name                | Inhalt                                           |
+|---------------------|--------------------------------------------------|
+| d_wb_all            | Weltbank - Alle Länder, alle Jahre               |
+| d_wb_2012           | Wie `d_wb_all`, aber nur für das Jahr 2012       |
+| d_wb_countries      | Wie `d_wb_all`, aber nur ausgewählte Länder      |
+| d_wb_countries_2012 | Wie `d_wb_countries`, aber nur für das Jahr 2012 |
+| d_ns_bochum_tag     | Tageswerte für Niederschläge in Bochum           |
+| d_ns_bochum_monat   | Monatswerte für Niederschläge in Bochum          |
+
+Quellen: <https://data.worldbank.org> und <https://www.dwd.de>
+
+
+# Werte plotten mit `geom_col()`
+
+col wie column = Säule → Säulendiagramm
+
+## Beispieldatensatz
+
+::::: columns
+::: {.column width="65%"}
+```{r}
+d <- tibble(
+  A=c("X", "Y", "X", "Z", "Z", "X"), 
+  B=c(1.5, 5.0, 4.5, 2.0, 1.0, 2.0),
+  C=c("U", "V", "V", "W", "V", "W")
+)
+```
+:::
+
+::: {.column width="35%"}
+```{r}
+kable(d)
+```
+:::
+:::::
+
+- Mit `tibble` auf die Schnelle einen Dataframe erzeugen
+- Werte für ein Merkmal mit `c(...)` kombinieren
+- Zeichenketten in Hochkommata eingeben (ob `"so"` oder `'so'` ist egal)
+- Mit `<-` wird der Dataframe der Variablen `d` zugewiesen
+
+## Minimalbeispiel
+
+```{r}
+ggplot(data=d) + 
+  geom_col(mapping=aes(x=A, y=B))
+```
+
+- Höhe der Säule aus **Summe** der Werte von Merkmal B
+
+## Füllfarbe nach drittem Merkmal
+
+```{r}
+ggplot(data=d) + 
+  geom_col(mapping=aes(x=A, y=B, fill=C))
+```
+
+- Mit `fill=<M>` Merkmal für Füllfarbe angeben
+
+## Nebeneinander
+
+```{r}
+ggplot(data=d) + 
+  geom_col(mapping=aes(x=A, y=B, fill=C), position="dodge")
+```
+
+- Nebeneinander anordnen mit `position="dodge"`
+
+## Als Balkendiagramm
+
+```{r}
+ggplot(data=d) + 
+  geom_col(mapping=aes(x=A, y=B, fill=C)) + coord_flip()
+```
+
+- Mit `coord_flip()` Koordinatenachsen vertauschen
+
+## Mit *echten* Daten...
+
+## Treibhausgasemissionen (2012)
+
+```{r}
+ggplot(data=d_wb_countries_2012) + 
+  geom_col(mapping=aes(x=country, y=gge))
+```
+
+- Zur Erinnerung: `gge` steht für Greenhouse Gas Emissions
+
+## Treibhausgasemissionen bunt (2012)
+
+```{r}
+ggplot(data=d_wb_countries_2012) + 
+  geom_col(mapping=aes(x=country, y=gge, fill=region))
+```
+
+- Nach Weltregion eingefärbt
+
+## Treibhausgasemissionen pro Kopf (2012)
+
+```{r}
+ggplot(data=d_wb_countries_2012) + 
+  geom_col(mapping=aes(x=country, y=gge / pop, fill=region))
+```
+
+- Rechnen mit Merkmalen: `y=gge / pop`
+
+## Treibhausgasemissionen über die Zeit
+
+```{r}
+ggplot(data=d_wb_countries) +
+  geom_col(mapping=aes(x=year, y=gge, fill=country))
+```
+
+- Jahreszahl für x-Achse
+
+## Treibhausgasemissionen über die Zeit pro Kopf
+
+```{r}
+ggplot(data=d_wb_countries) +
+  geom_col(mapping=aes(x=year, y=gge / pop, fill=country))
+```
+
+- Rechnen mit Merkmalen: `y=gge / pop`
+
+## Treibhausgasemissionen anteilig
+
+```{r}
+ggplot(data=d_wb_countries) +
+  geom_col(mapping=aes(x=year, y=gge, fill=country), position="fill")
+```
+
+- Selbe Höhe für alle Balken mit `position="fill"` $\rightarrow$ Anteile ablesbar
+
+## Ring- und Kreisdiagramme...
+
+## 1. Schritt: Eine Säule mit Füllfarbe
+
+```{r}
+ggplot(data=d_wb_countries_2012) + 
+  geom_col(mapping=aes(x=0, y=pop, fill=country))
+```
+
+- x-Wert fest, Höhe nach Merkmal B, Füllfarbe nach Merkmal A
+
+## 2. Schritt: Bereich auf der x-Achse
+
+```{r}
+ggplot(data=d_wb_countries_2012) + geom_col(mapping=aes(x=0, y=pop, fill=country)) +
+  scale_x_continuous(limits=c(-1.5, 0.5))
+```
+
+- Skalen besprechen wir noch ausführlicher
+
+## 3. Schritt: Koordinatentransformation
+
+```{r}
+ggplot(data=d_wb_countries_2012) + geom_col(mapping=aes(x=0, y=pop, fill=country)) +
+  scale_x_continuous(limits=c(-1.5, 0.5)) + coord_polar(theta="y")
+```
+
+- y-Koordinate wird für den Winkel verwendet
+
+## Kreisdiagramm
+
+```{r}
+ggplot(data=d_wb_countries_2012) + geom_col(mapping=aes(x=0, y=pop, fill=country)) +
+  coord_polar(theta="y")
+```
+
+- Wie Ringdiagramm, aber kein Bereich für x-Werte vorgeben
+
+## Ohne Schnickschnack
+
+```{r}
+ggplot(data=d_wb_countries_2012) + geom_col(mapping=aes(x=0, y=pop, fill=country)) +
+  coord_polar(theta="y") + theme_void()
+```
+
+- Themes behandeln wir noch ausführlich
+
+# 2. Häufigkeitsverteilungen mit `geom_bar()`
+
+Wie `geom_col()` aber mit Zählung
+
+- bar wie Balken → Balkendiagramm
+
+## Beispieldatensatz
+
+```{r}
+d <- tibble(farbe=c("rot", "gruen", "blau", "gruen", "rot", "gruen"))
+
+kable(d)
+```
+
+## Minimalbeispiel
+
+```{r}
+ggplot(data=d) + geom_bar(mapping=aes(x=farbe))
+```
+
+- Wie funktioniert das? Mit einer statistischen Transformation!
+
+## Statistische Transformation
+
+![](bilder/geom_bar_transformation.svg)
+
+### Funktionsweise
+
+- Daten werden vor dem Plotten transformiert
+- Dabei wird eine neue Tabelle erzeugt
+- Voreingestellte statistische Transformation für `geom_bar`: Zählen
+- Transformierte Daten werden geplottet
+
+## Mit *echten* Daten...
+
+## Anzahl der Länder pro Region
+
+```{r}
+ggplot(data=d_wb_2012) + geom_bar(mapping=aes(x=region))
+```
+
+- Funktioniert, weil jedes Land genau einmal in Dataframe
+
+## Anzahl der Länder pro Region
+
+```{r}
+ggplot(data=d_wb_2012) + geom_bar(mapping=aes(x=region, fill=region))
+```
+
+- Balken nach Region eingefärbt (redundant mit Achsenbeschriftung)
+
+# 3. Histogramme mit `geom_histogram()`
+
+## Beispieldatensatz
+
+```{r}
+d <- tibble(X=c(0, 0.5, 0.6, 0.8, 1.3, 1.4, 1.5, 1.6, 1.9, 2.5, 2.6, 2.7))
+
+ggplot(data=d) + geom_point(mapping=aes(x=X), y=0, color='red')
+```
+
+## Histogramm
+
+```{r}
+ggplot(data=d) + 
+  geom_histogram(mapping=aes(x=X)) +
+  geom_point(mapping=aes(x=X), y=0, color='red')
+```
+- Hinweis vom Programm: Voreinstellung nicht gut
+
+## Hilfetext zu geom_histogram
+
+![Aus der Dokumentation zu geom_histogram](bilder/geom_histogram_doc.png)
+
+## Klassenbreite mit `binwidth=0.5`
+
+```{r}
+ggplot(data=d) + 
+  geom_histogram(mapping=aes(x=X), binwidth=0.5) +
+  geom_point(mapping=aes(x=X), y=0, color='red')
+```
+
+## Position mit `boundary=0`
+
+```{r}
+ggplot(data=d) + 
+  geom_histogram(mapping=aes(x=X), binwidth=0.5, boundary=0) +
+  geom_point(mapping=aes(x=X), y=0, color='red')
+```
+- Voreinstellung: Intervalle sind linksoffen (erstes Intervall geschlossen)
+
+## Rechtsoffene Intervalle mit `closed="left"`
+
+```{r}
+ggplot(data=d) + 
+  geom_histogram(mapping=aes(x=X), binwidth=0.5, boundary=0, closed="left") +
+  geom_point(mapping=aes(x=X), y=0, color='red')
+```
+
+## Relative Häufigkeiten mit `y=after_stat(density)`
+
+```{r}
+ggplot(data=d) + 
+  geom_histogram(mapping=aes(x=X, y=after_stat(density)), binwidth=0.5, boundary=0, closed="left") +
+  geom_point(mapping=aes(x=X), y=0, color='red')
+```
+
+## Unterschiedliche Klassengrößen mit `breaks=c(...)`
+
+```{r}
+ggplot(data=d) + 
+  geom_histogram(mapping=aes(x=X,y=stat(density)), breaks=c(0, 1, 1.5, 1.75, 4)) +
+  geom_point(mapping=aes(x=X), y=0, color='red')
+```
+- Prinzip der Flächentreue
+
+## Mit *echten* Daten...
+
+## Niederschläge (Tag) in Bochum
+
+```{r}
+ggplot(data=d_ns_bochum_tag) + 
+  geom_histogram(mapping=aes(x=Niederschlag), binwidth=0.5, boundary=0)
+```
+
+## Niederschläge (Monat) in Bochum
+
+```{r}
+ggplot(data=d_ns_bochum_monat) + 
+  geom_histogram(mapping=aes(x=Niederschlag), binwidth=15, boundary=0)
+```
+
+- Klassenbreite mit `binwidth=w`, Klassengrenze mit `boundary=b`
+- hier zu sehen: eine unimodale, linkssteile Verteilung
+
+## Niederschläge (Monat) in Bochum
+
+```{r}
+ggplot(data=d_ns_bochum_monat) + 
+  geom_histogram(mapping=aes(x=Niederschlag, y=stat(density)), binwidth=15, boundary=0)
+```
+
+- Relative Häufigkeiten mit `y=stat(density)`
+
+## Niederschläge (Monat) in Bochum
+
+```{r}
+ggplot(data=d_ns_bochum_monat) + 
+  geom_histogram(mapping=aes(x=Niederschlag, fill=Monat), binwidth=15, boundary=0)
+```
+
+- Nach Monaten eingefärbt
+
+# 4. Verteilungsfunktionen mit `geom_step()` und Transformation
+
+- step wie Stufe → Stufendiagramm
+
+## Minimalbeispiel `geom_step()`
+
+```{r}
+ggplot(data=tibble(X=c(0, 1, 3), Y=c(2, 1, 3))) +
+  geom_step(mapping=aes(x=X, y=Y)) +
+  geom_point(mapping=aes(x=X, y=Y), color='red')
+```
+
+## Beispieldaten
+
+```{r}
+d <- tibble(X=c(0.1, 0.3, 0.2, 0.6, 0.3, 0.9, 1.2, 0.3, 0.6, 0.3),
+            Y=c("a", "b", "a", "a", "b", "b", "a", "b", "a", "b"))
+ggplot(data=d) + geom_bar(mapping=aes(x=X))
+```
+
+## Empirische Verteilungsfunktion
+
+```{r}
+ggplot(data=d) + 
+  geom_step(mapping=aes(x=X), stat="ecdf")
+```
+
+- `stat="ecdf"` meint *Empirical Cumulative Densitiy Function*
+
+## Empirische Verteilungsfunktion getrennt
+
+```{r}
+ggplot(data=d) + 
+  geom_step(mapping=aes(x=X, color=Y), stat="ecdf")
+```
+
+- Kurven entsprechend Merkmal `Y`
+
+## Absolute kumulierte Häufigkeitsverteilung
+
+```{r}
+ggplot(data=d) + 
+  geom_step(mapping=aes(x=X, y=nrow(d) * stat(y)), stat="ecdf")
+```
+
+- In ggplot nicht vorgesehen und daher kompliziert (später)
+
+## Mit *echten* Daten...
+
+## Monatliche Niederschläge
+
+```{r}
+ggplot(data=d_ns_bochum_monat) +
+  geom_step(mapping=aes(x=Niederschlag), stat="ecdf")
+```
+
+- So gut wie kein Monat ohne Regen
+
+## Tägliche Niederschläge
+
+```{r}
+ggplot(data=d_ns_bochum_tag) +
+  geom_step(mapping=aes(x=Niederschlag), stat="ecdf")
+```
+
+- Warum ganz anders als für die monatlichen Niederschläge?
+
+# 5. Zusammenfassung
+
+## Werte darstellen mit `geom_col()`
+
+```{r}
+#| eval: false
+ggplot(data=d) +
+  geom_col(mapping=aes(x=<M>, y=<M>, fill=<M>, color=<M>), Parameter)
+```
+
+| Aesthetics   | Beschreibung                       | Optional           |
+|--------------|------------------------------------|--------------------|
+| `x`          | Merkmal für x-Position             | Nein               |
+| `y`          | Merkmal für Höhe der Balken        | Nein               |
+| `fill`       | Merkmal für Füllfarbe              | Ja                 |
+| `color`      | Merkmal für Linienfarbe            | Ja                 |
+
+: {tbl-colwidths="[20,50,30]"}
+
+| Parameter    | Beschreibung                                            |
+|--------------|---------------------------------------------------------|
+| `position`   | Gesamte y-Achse mit `position="fill"`                   |
+|              | Balken nebeneinander mit `position="dodge"`             |
+
+: {tbl-colwidths="[20,80]"}
+
+## Zählen und darstellen mit `geom_bar()`
+
+```{r}
+#| eval: false
+ggplot(data=d) +
+  geom_bar(mapping=aes(x=<M>, fill=<M>, color=<M>), Parameter)
+```
+
+| Aesthetics   | Beschreibung                       | Optional           |
+|--------------|------------------------------------|--------------------|
+| `x`          | Merkmal für x-Achse (wird gezählt) | Nein               |
+| `fill`       | Füllfarbe                          | Ja                 |
+| `color`      | Linienfarbe                        | Ja                 |
+
+: {tbl-colwidths="[20,50,30]"}
+
+| Parameter    | Beschreibung                                            |
+|--------------|---------------------------------------------------------|
+| `position`   | Gesamte y-Achse mit `position="fill"`                   |
+|              | Balken nebeneinander mit `position="dodge"`             |
+
+: {tbl-colwidths="[20,80]"}
+
+$\rightarrow$ Wie `geom_col` aber ohne y
+
+## Histogramme mit `geom_histogram()`
+
+```{r}
+#| eval: false
+ggplot(data=d) +
+  geom_histogram(mapping=aes(x=<M>,y=stat(density),fill=<M>), Parameter)
+```
+
+| Aesthetics   | Beschreibung                                 | Optional |
+|--------------|----------------------------------------------|----------|
+| `x`          | Merkmal, das gezählt werden soll             | Nein     |
+| `y`          | Relative Häufigkeiten mit `y=stat(density))` | Ja       |
+| `fill`       | Merkmal für Füllfarbe                        | Ja       |
+
+: {tbl-colwidths="[20,50,30]"}
+
+| Parameter    | Beschreibung                                            |
+|--------------|---------------------------------------------------------|
+| `bins`       | Anzahl der Klassen                                      |
+| `binwidth`   | Klassenbreite                                           |
+| `center`     | Mitte einer Klasse                                      |
+| `boundary`   | Grenze zwischen zwei Klassen                            |
+| `breaks`     | Klassengrenzen                                          |
+| `closed`     | Intervalle geschlossen ("left" oder "right")            |
+
+: {tbl-colwidths="[20,80]"}
+
+## Empirische Verteilungsfunktion mit `geom_step()`
+
+```{r}
+#| eval: false
+ggplot(data=d) +
+  geom_step(mapping=aes(x=<M>, color=<M>), stat="ecdf")
+```
+
+| Aesthetics   | Beschreibung                                 | Optional |
+|--------------|----------------------------------------------|----------|
+| `x`          | Merkmal für empirische Verteilungsfunktion   | Nein     |
+| `color`      | Merkmal für Farbe                            | Ja       |
+
+: {tbl-colwidths="[20,50,30]"}

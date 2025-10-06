@@ -1,0 +1,11 @@
+## 
+
+1. Datei erste-schritte.zip von Moodle herunterladen und entpacken
+1. Projektdatei erste-schritte.Rproj doppelklicken, jetzt sollte RStudio starten
+1. Datei erste-schritte.qmd öffnen
+1. Dokument durchschauen
+1. 'Run → Run All' ausführen
+1. Dokument nochmal durchschauen, was hat sich geändert?
+1. Quarto ausführen und html-Dokument anschauen
+
+Was können Sie jetzt schon verstehen?

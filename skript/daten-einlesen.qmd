@@ -1,0 +1,264 @@
+---
+title: "Daten einlesen"
+---
+
+```{r}
+#| echo: false
+#| message: false
+library(tidyverse)
+library(kableExtra)
+```
+
+# Tidyverse
+
+## Tidyverse
+
+[]{.down40}
+
+![](bilder/tidyverse.svg)
+
+[]{.down40}
+
+- Sammlung von Bibliotheken für Data-Science in R
+- Durchgängige Designphilosophie und Datenstrukturen
+- Viele Dinge leichter und eleganter zu erledigen als in 'reinem' R
+- Ursprünglich von Hadley Wickham, heute viele Entwickler
+- Einführung vom Autor auf [Youtube](https://youtu.be/MjHQo-t2v_c) (englisch)
+
+# Excel-Dateien lesen
+
+## Funktion `read_excel(...)`
+
+Paket laden
+
+```{r}
+library(readxl)
+```
+
+Tabelle einlesen
+
+```{.r}
+d <- read_excel(Dateiname, Parameter...)
+```
+
+Die wichtigsten Parameter
+
+Parameter       | Bedeutung                                   | Optional
+----------------|---------------------------------------------|---------
+skip = 5        | Anzahl zeilen, die überlesen werden sollten | Ja
+range = "B2:G5" | Einzulesender Bereich (ersetzt `skip`)      | Ja
+sheet = "Name"  | Tabellenblatt, das gelesen werden soll      | Ja
+
+: {tbl-colwidths="[20,50,30]"}
+
+## Beispiel 1: Einfache Tabelle {.smaller}
+
+::: {layout-ncol=2}
+
+![](bilder/tabelle.svg)
+
+```{r}
+d <- read_excel("daten/tabelle.xlsx")
+kable(d)
+```
+:::
+
+- `read_excel(...)` liest Excel-Datei und gibt Dataframe zurück
+- Im einfachsten Fall nur Datei angeben, Inhalt von erstem Sheet
+- Datum wird manchmal korrekt als date-time eingelesen
+
+## Leider nicht immer so einfach
+
+![](bilder/excel-screenshot.svg)
+
+Wo liegt das Problem?
+
+- Es soll bestimmtes Tabellenblatt gelesen werden
+- Bereiche links und oben sollen ignoriert werden
+
+→ Importassistent!
+
+## Importassistent 1/3
+
+![](bilder/importassistent-1.svg)
+
+## Importassistent 2/3
+
+![](bilder/importassistent-2.svg)
+
+## Importassistent 3/3
+
+```{r}
+d<-read_excel("daten/unistrasse-2017.xlsx",sheet="raw(T)",range="B2:H20712")
+d
+```
+
+- Einstellung in Excel unvollständig, daher Datum nicht richtig gelesen
+- Anmerkung: Große Dataframes nicht mit `kable` ausgeben
+
+# CSV-Dateien einlesen
+
+## Aufbau und Inhalt von CSV-Dateien
+
+![](bilder/csv.svg)
+
+- csv = Comma Separated Values, weit verbreitet, nicht standardisiert
+- Häufig Kopfzeile(n) mit Beschreibung des Inhalts
+- Inhalt in der Regel mit
+  - Datenfeldern getrennt z.B. durch Komma, Semikolon, Leerzeichen...
+  - Datum in verschiedensten Formaten
+  - Zahlen mit oder ohne Dezimaltrenner (Punkt oder Komma)
+  - Spezielle Kennzeichnung von fehlenden Werten
+
+## Amerikanische Konvention {.smaller}
+
+Datei `beispiel-1.csv`
+
+```{}
+{{< include daten/beispiel-1.csv >}}
+```
+
+- Einträge durch "`,`" getrennt, Dezimaltrenner ist "`.`"
+- Datum mit Jahr/Monat/Tag
+
+Einlesen mit `read_csv(...)`
+
+```{r}
+#| message: false
+read_csv("daten/beispiel-1.csv")
+```
+
+- Datum wird erkannt
+
+## Deutsche Konvention {.smaller}
+
+Datei `beispiel-2.csv`
+
+```{}
+{{< include daten/beispiel-2.csv >}}
+```
+
+- Einträge durch "`;`" getrennt, Dezimaltrenner ist "`,`", Tausender mit "`.`" 
+- Datum mit Tag/Monat/Jahr
+
+Einlesen mit `read_csv2(...)`
+
+```{r}
+#| message: false
+read_csv2("daten/beispiel-2.csv")
+```
+
+- Datum wird nicht erkannt
+
+## Gemischte Konvention {.smaller}
+
+Datei `beispiel-3.csv`
+
+```{}
+{{< include daten/beispiel-3.csv >}}
+```
+
+- Einträge durch "`;`" getrennt, Dezimaltrenner ist "`.`", Tausender mit "`,`" 
+- Datum mit Tag/Monat/Jahr
+
+Einlesen mit `read_delim(...)`, 
+
+```{r}
+#| message: false
+read_delim("daten/beispiel-3.csv", delim=";", trim_ws=TRUE, locale=locale(decimal_mark=".", grouping_mark=","))
+```
+
+- `delim` wie delimiter = Trennzeichen
+- `locale` enthält länderspezifische Einstellungen
+- `trim_ws` wie trim whitespace = entfernt Leerzeichen (wichtig!)
+- Datum wird nicht erkannt
+
+
+## Kodierung {.smaller}
+
+Datei `beispiel-4.csv`
+
+```{}
+{{< include daten/beispiel-4.csv >}}
+```
+
+- Datei ist ISO-8859-1 kodiert, Grundeinstellung in R ist UTF-8
+
+Einlesen mit `read_csv2(...)`
+
+```{r}
+#| message: false
+read_csv2("daten/beispiel-4.csv", locale=locale(encoding="iso-8859-1"))
+```
+
+- Kodierung beim Einlesen explizit angeben
+
+## Beispiel: Niederschlagsdaten Bochum
+
+```{r}
+#| message: false
+read_delim(
+  "daten/produkt_nieder_monat_18910101_20171231_00555.txt",
+  delim = ";", trim_ws=TRUE,
+  locale = locale(decimal_mark = ".", grouping_mark = ",")
+)
+```
+
+
+## CSV-Dateien Zusammenfassung
+
+[]{.down60}
+
+```{.r}
+read_csv(Dateiname, Parameter...)   # Amerikanische Konvention
+read_csv2(Dateiname, Parameter...)  # Deutsche Konvention
+read_delim(Dateiname, locale=locale(decimal_mark=".", grouping_mark=","), Parameter...)
+```
+
+[]{.down60}
+
+Die wichtigsten Parameter
+
+Parameter              | Bedeutung                                   | Optional
+-----------------------|---------------------------------------------|---------
+skip = 5               | Anzahl zeilen, die überlesen werden sollten | Ja
+trim_ws = TRUE         | Leerzeichen entfernen (für `read_delim`)    | Ja
+show_col_types = FALSE | Ausgabe unterdrücken                        | Ja
+
+: {tbl-colwidths="[30,50,20]"}
+
+# Rohdaten
+
+## Hände weg von den Rohdaten! {.smaller}
+
+![](bilder/haende-weg.svg)
+
+:::: {.columns}
+::: {.column width=45%}
+**Rohdaten dürfen nicht verändert werden**
+
+[]{.down40}
+
+- 'Von Hand' durchgeführte Änderungen sind später nicht mehr nachvollziehbar
+- Änderungen nur schwer einzeln rückgängig zu machen
+:::
+
+::: {.column width=10%}
+
+:::
+
+::: {.column width=45%}
+**Stattdessen: Rohdaten einlesen und in R aufbereiten**
+
+- R-Code dokumentiert was verändert wurde
+- Wird bei der Benotung berücksichtigt
+:::
+::::
+
+## Beim Einlesen von Daten gilt immer
+
+[]{.down120}
+
+- Vorsicht: Eingelesene Daten sehr sorgfältig anschauen!
+- Überblick verschaffen mit `summary(d)` und/oder `str(d)`
+

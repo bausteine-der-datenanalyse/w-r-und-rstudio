@@ -1,0 +1,30 @@
+---
+title: "Aufgaben zur Untersuchung von zwei Merkmalen"
+author: "TODO: Namen eintragen"
+---
+
+```{r}
+#| echo: false
+#| message: false
+library(tidyverse)
+load("daten/zwei-merkmale-aufgaben-1.Rdata")
+load("daten/zwei-merkmale-aufgaben-2.Rdata")
+```
+
+## Dataframe Geschwindigkeitsmessung
+
+```{r}
+show(d_unistrasse)
+```
+
+Anmerkungen:
+
+-   Uhrzeit = Stunde + Minute / 60 + Sekunde / 3600
+-   Quelle: Prof. Iris Mühlenbruch
+
+## Dataframe Windenergieanlage
+
+```{r}
+show(d_wea_min)
+```
+

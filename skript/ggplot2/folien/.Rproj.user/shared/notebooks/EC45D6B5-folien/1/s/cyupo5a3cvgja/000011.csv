@@ -1,0 +1,2 @@
+"0","ggplot(data=d) + "
+"0","  geom_col(mapping=aes(x=A, y=B))"

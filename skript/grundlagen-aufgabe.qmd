@@ -1,0 +1,59 @@
+---
+title: "Übung zur Programmiersprache R"
+author: "TODO"
+---
+
+```{r}
+#| echo: false
+#| warning: false
+library(lubridate)
+library(tidyverse)
+```
+
+# Aufgabe 1
+
+1.  Berechnet R den Wert $10^{16}(1 - \frac{1}{49} \cdot (5 \cdot 18 - 83)^2)$ korrekt? Warum ist das so?
+2.  Ist $(3 + 4^5) - 23$ ohne Rest durch 7 teilbar?
+
+```{r}
+# TODO
+```
+
+TODO: Hier die Erklärung
+
+# Aufgabe 2
+
+-   Definieren Sie für sich (oder jemand anderen) die Variablen `name`, `age`, `weight` und `height`
+-   Berechnen Sie den BMI (Gewicht durch Körpergröße in Metern zum Quadrat)
+-   Geben Sie in einer Zeile Namen, Alter und BMI (drei signifikante Stellen) aus
+
+```{r}
+# TODO
+```
+
+# Aufgabe 3
+
+-   Berechnen Sie für die Werte $0, 1, 2, \dots, 10$ Mittelwert und Standardabweichung ohne die Funktionen `mean`, `sd` und `var` zu verwenden
+
+```{r}
+# TODO
+```
+
+# Aufgabe 4
+
+-   Lesen Sie die folgenden Datumswerte ein
+
+`"1. Januar 2010"`, `"2015-Mar-06"`, `"6 Jun 2011"`, `"August 19 (1966)"`, `"12/30/14"`
+
+```{r}
+# TODO
+```
+
+# Aufgabe 5
+
+1.  An welchem Wochentag sind Sie geboren?
+2.  Welcher Tag im Jahr war das?
+
+```{r}
+# TODO
+```

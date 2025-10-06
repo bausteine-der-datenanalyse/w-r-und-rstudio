@@ -1,0 +1,183 @@
+
+```{.r}
+#| echo: false
+#| message: false
+library(sf)
+library(giscoR)
+library(lubridate)
+library(tidyverse)
+load("daten/mastr-data.RData")
+```
+
+#### Daten (ohne räumlichen Bezug) aufbereiten
+```{.r}
+data_wind = d_wind |>
+  mutate(Inbetriebnahmedatum = ymd(Inbetriebnahmedatum)) |>
+  mutate(Betriebsjahr = year(Inbetriebnahmedatum)) |>
+  filter(!is.na(Betriebsjahr))
+```
+
+#### Anzahl der installierten Anlagen
+
+```{.r}
+data_wind2 = data_wind |>
+  group_by(Betriebsjahr) |>
+  summarise(Anzahl = n(), Leistung =sum(Nettonennleistung )) |>
+  mutate(Leistung_pro_Anlage = Leistung/Anzahl , Kum_Anzahl = cumsum(Anzahl), Kum_Leistung = cumsum(Leistung), Kum_Leistung_pro_Anlage = Kum_Leistung/Kum_Anzahl)
+```
+
+Anzahl neu installierter Anlagen pro Jahr:
+
+```{.r}
+ggplot(data_wind ,aes(x = Betriebsjahr)) +
+  geom_bar() +
+  labs(y = "Anzahl neu installierter Anlagen")
+```
+
+Kumulierter Zuwachs über die Jahre:
+
+```{.r}
+ggplot(data_wind2 ,aes(x = Betriebsjahr, y = Kum_Anzahl)) +
+  geom_line() + 
+  labs(y = "Anzahl von Anlagen")
+```
+
+#### Zuwachs an installierter Leistung
+
+Zuwachs an installierter Leistung pro Jahr:
+
+```{.r}
+ggplot(data_wind2 ,aes(x = Betriebsjahr , y = Leistung)) +
+  geom_line() +
+  labs (y = "Zuwachs an Leistung pro Jahr")
+```
+
+Kumulierte Leistung über die Jahre:
+
+```{.r}
+ggplot(data_wind2 ,aes(x = Betriebsjahr, y = Kum_Leistung)) +
+  geom_line() +
+  labs (y = "Gesamtleistung von Windkraftanlagen")
+```
+
+#### Leistung pro Anlage
+
+```{.r}
+ggplot(data_wind2 ,aes(x = Betriebsjahr , y = Leistung_pro_Anlage)) +
+  geom_line()
+```
+
+```{.r}
+ggplot(data_wind2 ,aes(x = Betriebsjahr, y = Kum_Leistung_pro_Anlage)) +
+  geom_line() +
+  labs(y = "Kumulierter Anstieg der Leistung pro Anlage")
+```
+
+#### Welche Größen könnten noch von Interesse sein?
+
+Hier eigenständig nachdenken!
+
+#### Daten (für räumlichen Bezug) aufbereiten
+
+Deutschlandkarte:
+
+```{.r}
+d_deu_0 <- gisco_get_nuts(country = "Germany", nuts_level = 0, resolution = 03)
+d_deu_1 <- gisco_get_nuts(country = "Germany", nuts_level = 1, resolution = 03) |>
+  rename(Bundesland = "NAME_LATN")
+```
+
+Daten aufbereiten:
+
+Anmerkungen: 
+
+- Einige Koordinatenangaben scheinen nicht zu stimmen, daher die Filter-Einstellungen mit `st_contains` um zu prüfen, ob der Datenpunkt in den deutschen Grenzen liegt. Dafür müssen vorher die Geo-Koordinaten mit `st_as_sf` als `simple feature` deklariert werden.
+
+- Datensatz führt Windkraft auf See als "Ausschließliche Wirtschaftszone". Könnte man dem nächsten Bundesland zuordnen (umständlich) oder man verwirft diese Daten.
+
+```{.r}
+d_wind_sf = d_wind |>
+  filter(!is.na(Breitengrad & Bundesland != "Ausschließliche Wirtschaftszone")) |>
+  st_as_sf(coords = c("Laengengrad", "Breitengrad"), crs = "+proj=longlat") |>
+  mutate(Inbetriebnahmedatum = ymd(Inbetriebnahmedatum)) |>
+  mutate(Betriebjahr = year(Inbetriebnahmedatum))
+
+d_wind2 = d_wind_sf |>
+    filter(st_contains(d_deu_0, d_wind_sf, sparse = FALSE)[1,], !is.na(Betriebjahr))
+```
+
+Filter für Bundesländer:
+
+```{.r}
+bl = d_wind |>
+  group_by(Bundesland) |>
+  summarise(Leistung = sum(Nettonennleistung) , Anzahl = n()) 
+```
+
+Dataframe für Fläche der Bundesländer (in km²) von statista:
+
+```{.r}
+laender = tibble(
+  Bundesland = c("Bayern", "Niedersachsen", "Baden-Württemberg", "Nordrhein-Westfalen", "Brandenburg", "Mecklenburg-Vorpommern", "Hessen", "Sachsen-Anhalt", "Rheinland-Pfalz", "Sachsen", "Thüringen","Schleswig-Holstein", "Saarland", "Berlin", "Hamburg", "Bremen"),
+  Flaeche = c(70452,47710,35748,34113,29654,23295,21116,20467,19858,18450,16202,15804,2572,891,755,420)
+)
+```
+
+ACHTUNG: Joinen ist case-sensitive!
+
+```{.r}
+data_bl = left_join(bl, laender) |>
+  mutate(Bundesland = toupper(Bundesland)) # mit toupper Case-Sensitivität umgehen
+
+data_bl_sf = left_join(d_deu_1, data_bl)
+
+```
+
+#### Leistung pro Anlage
+
+Leistung farblich dargestellt:
+
+```{.r}
+ggplot() +
+  geom_sf(data = d_deu_0, fill = NA, size = 0.5) +
+  geom_sf(data = d_deu_1, size = 0.5,  fill = NA, color = 'black') +
+  geom_sf(data = d_wind2 , mapping = aes(color = Nettonennleistung)) +
+  scale_color_distiller(palette = 8 , direction = 1)
+```
+
+#### Inbetriebnahme Anlage
+
+```{.r}
+ggplot() +
+  geom_sf(data = d_deu_0, fill = NA, size = 0.5) +
+  geom_sf(data = d_deu_1, size = 0.5,  fill = NA, color = 'black') +
+  geom_sf(data = d_wind2 , mapping = aes(color = Betriebjahr)) +
+  scale_color_distiller(palette = 8)
+```
+
+#### Anzahl pro BL
+
+```{.r}
+ggplot() +
+  geom_sf(data = d_deu_0, fill = NA, size = 0.5) +
+  geom_sf(data = data_bl_sf, size = 0.5,  mapping = aes(fill = Anzahl), color = 'black') +
+  scale_fill_distiller(palette = 8 , direction = 1)
+```
+
+#### Leistung pro BL
+
+```{.r}
+ggplot() +
+  geom_sf(data = d_deu_0, fill = NA, size = 0.5) +
+  geom_sf(data = data_bl_sf, size = 0.5,  mapping = aes(fill = Leistung), color = 'black') +
+  scale_fill_distiller(palette = 8 , direction = 1)
+```
+
+#### Leistung pro Fläche pro BL
+
+```{.r}
+ggplot() +
+  geom_sf(data = d_deu_0, fill = NA, size = 0.5) +
+  geom_sf(data = data_bl_sf, size = 0.5,  mapping = aes(fill = Leistung/Flaeche), color = 'black') +
+  scale_fill_distiller(palette = 8 , direction = 1)
+```

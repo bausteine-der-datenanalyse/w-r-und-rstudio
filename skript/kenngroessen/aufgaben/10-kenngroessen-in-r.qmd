@@ -1,0 +1,31 @@
+## Kenngrößen und Beschreibung von Verteilungen in R
+
+In dieser Übungsaufgabe verwenden Sie nochmals die Ergebnisse eine Mobilitätsbefragung, die Prof. Iris Mühlenbruch mit Studierenden an der Hochschule Bochum durchgeführt hat. Verwenden Sie hierzu die Datei [03-kenngroessen-aufgaben.zip](03-kenngroessen-aufgaben.zip).
+
+### Lagemaße
+
+Bestimmen Sie die gängigen Lage- und Streumaße für die Fahrzeiten.
+
+### Histogramm
+
+Plotten Sie ein Histogramm der Fahrzeiten und stellen Sie die Werte $\overline{x} - \tilde{s}$, $\overline{x}$ sowie $\overline{x} + \tilde{s}$ mit farbigen vertikalen Linien dar.
+
+### Verteilungsfunktion
+
+Stellen Sie die empirische Verteilungsfunktion der Fahrzeiten zusammen mit horizontalen sowie vertikalen Linien für die Quartile und den Median dar.
+
+### Boxplot
+
+Erstellen Sie jeweils einen Boxplot für
+
+1. alle Fahrzeiten,
+1. Fahrzeiten getrennt nach Fachbereichen sowie
+1. Fahrzeiten getrennt nach Verkehrsmitteln.
+
+Verwenden Sie im dritten Plot das Argument `varwidth = TRUE`.
+
+### Lorenzkurve
+
+Stellen Sie die Lorenzkurve zu den Fahrzeiten dar und bestimmen Sie den zugehörigen Gini-Koeffizienten. Spielt es hier eine große Rolle ob man $G$ oder $G^*$ betrachtet?
+
+Tipp: Die Funktion `lc_to_tibble()`, die der das Ergebnis von `Lc` in einen Dataframe konvertiert werden kann wird zu Beginn von `kenngroessen-aufgaben.qmd` definiert und kann somit verwendet werden (so wie in den Folien zur Vorlesung).

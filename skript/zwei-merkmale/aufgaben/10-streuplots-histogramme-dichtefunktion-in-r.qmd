@@ -1,0 +1,17 @@
+## Streuplots sowie zweidimensionale Histogramme und Dichtefunktionen in R
+
+Laden Sie das RStudio-Projekt [05-zwei-merkmale-aufgaben.zip](05-zwei-merkmale-aufgaben.zip) herunter und entpacken Sie die Datei. 
+
+Sie verwenden wieder den Datensatz zu einer Geschwindigkeitsmessung an der Universitätsstraße Bochum im Jahr 2017 von Prof. Iris Mühlenbruch. Die Spalte VZ kennzeichnet dabei die Verkehrszeit (siehe <https://de.wikipedia.org/wiki/Verkehrszeiten>).
+
+### Streuplot
+
+Stellen Sie die Beobachtungen der Geschwindigkeitsmessung in einem Streuplot dar. Verwenden Sie dabei Transparenz um übereinander liegende Punkte zu veranschaulichen. Wie können Sie sowohl den Fahrzeugtyp als auch die Verkehrszeit in dem Plot berücksichtigen? Macht diese Darstellung Sinn?
+
+### Zweidimensionales Histogramm
+
+Erstellen Sie ein zweidimensionales Histogramm der Geschwindigkeiten über die Urzeit jeweils mit rechteckigen und mit sechseckigen Klassen (installieren Sie hierzu das Paket `hexbin`). Experimentieren Sie dabei mit verschiedenen Klassenbreiten. Welche Darstellung gefällt ihnen besser?
+
+### Dichtefunktionsplot
+
+Erstellen Sie einen Plot der approximierten Dichtefunktion (Kontourlinien) zusammen mit den Messpunkten. Plotten Sie die Dichtefunktion darüber hinaus als ausgefüllte Fläche.

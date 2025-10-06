@@ -1,0 +1,78 @@
+---
+title: "Tipps und Tricks"
+---
+
+```{r}
+#| echo: false
+library(tidyverse)
+```
+
+
+# Dataframes speichern und laden
+
+
+## Dataframe speichern und laden 1/3
+
+Manchmal dauert es lange einen bestimmten Dataframe zu erzeugen. Dies kann zum Beispiel
+der Fall sein, wenn die Daten zuerst aus dem Internet heruntergeladen werden müssen. Dann
+macht es oft Sinn, das Projekt in zwei Dateien aufzuteilen:
+
+1. In der einen qmd-Datei werden die Daten geladen und aufbereitet. Die fertigen Daten können
+dann auf der Festplatte abgelegt werden.
+
+1. In einer anderen qmd-Datei werden die aufbereiteten Daten von der Festplatte eingelesen und
+dann statistisch ausgewertet.
+
+Diese Vorgehensweise lässt sich mit wenig Aufwand durch die Funktionen `save` und `load` realisieren.
+
+
+## Dataframe speichern und laden 2/3
+
+```{r, message=FALSE}
+d <- tibble(A = c(1, 2, 3), B = c('u', 'v', 'w'))
+save(d, file = "daten/test.RData")
+rm(list = "d")
+```
+
+Dataframe `d`
+
+1.  anlegen
+
+1.  in der Datei `daten/test.RData` speichern
+
+1.  löschen (nur für Demonstrationszwecke) (mit rm für remove = entfernen)
+
+
+## Dataframe speichern und laden 3/3
+
+```{r}
+load('daten/test.RData')
+```
+
+- Dataframe `d` wurde aus der Datei geladen und ist jetzt wieder vorhanden
+- Einlesen geht auch für umfangreiche Datensätze sehr schnell
+
+
+# Zeichenketten suchen und ersetzen 
+
+## Beispieldatensatz
+
+```{r}
+d <- tibble(
+  Name = c("Unistraße Nord", "Unistraße Süd", "Markstraße Ost", "Markstraße West"), 
+  Wert = c(10, 20, 4, 8)
+)
+d
+```
+
+
+## Richtung löschen
+
+```{r}
+d |>
+    mutate(Name2 = str_replace(Name, " Nord| Süd| Ost| West", ""))
+```
+
+- Mit `str_replace` werden die Richtungen durch eine leere Zeichenkette ersetzt
+- Verschiedene zu ersetztende Zeichenketten mit `|` trennen
+

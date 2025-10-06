@@ -1,0 +1,212 @@
+---
+title: "Arbeiten mit Zeitreihen"
+---
+
+```{r}
+#| echo: false
+#| warning: false
+library(rdwd)
+library(tsibble)
+library(RcppRoll)
+library(tidyverse)
+```
+
+# Zeitreihen
+
+## Begriff der Zeitreihe
+
+Eine '''Zeitreihe''' ist eine zeitlich geordnete Folge von Beobachtungen, bei der sich die Anordnung der Merkmalsausprägungen zwingend aus dem Zeitablauf ergibt (etwa Aktienkurse, Bevölkerungsentwicklung, Wetterdaten).
+
+Die einzelnen Zeitpunkte werden zu einer Menge von Beobachtungszeitpunkten $T$ zusammengefasst, bei der für jeden Zeitpunkt $t \in T$ genau eine Beobachtung vorliegt. Zeitreihen treten in allen Bereichen der Wissenschaft auf.
+
+Quelle: <https://de.wikipedia.org/wiki/Zeitreihenanalyse>
+
+## Zeitreihen in R
+
+Das R-Paket `tsibble` stellt eine Datenstruktur (das `tsibble` - wie `tibble` aus dem tidyverserse wobei `ts` für Time Series steht) sowie verschiedene Funktionen bereit, die das Arbeiten mit Zeitreihen vereinfachen.
+
+## Datenstruktur `tsibble`
+
+- Gehört zu den Paketen aus dem `tidyverts`
+
+- Spalte mit Zeit wird als Index bezeichnet
+
+- [Link zur Einführung](https://cran.rstudio.com/web/packages/tsibble/vignettes/intro-tsibble.html)
+
+- Normalen Dataframe mit `as_tsibble` in `tsibble` konvertieren
+  * Zeitpunkte dürfen nicht doppelt vorkommen
+  * Angeben, welche Spalte Index sein soll
+  
+# Winddaten vom Deutschen Wetterdienst
+
+## Übersicht Stationen
+
+```{r}
+data("metaIndex")
+d_stationen <- metaIndex |> 
+  filter(var == "wind", res == "10_minutes") |>
+  mutate(Dauer = round(as.numeric(bis_datum -von_datum) / 365)) |>
+  arrange(desc(Dauer)) |>
+  select(von_datum, bis_datum, Dauer, Stationsname, Bundesland) |>
+  as_tibble()
+d_stationen
+```
+
+## Daten herunterladen und Zwischenspeichern {.smaller}
+
+```{r message=FALSE}
+fname <- "daten/d_wind_raw.RData"
+if (!file.exists(fname)) {
+  d_wind_raw <- selectDWD(
+    name = "Helgoland", res = "10_minutes", var = "wind", per = "historical", current = TRUE
+  ) |>
+  dataDWD() |>
+  bind_rows()
+  save(d_wind_raw, file = fname)
+} else {
+  load(file = fname)
+}
+rm(fname)
+d_wind_raw |> as_tibble()
+```
+
+## Winddaten aufbereiten und in `tsibble` konvertieren
+
+```{r}
+d_wind_raw_ts <- d_wind_raw |>
+  select(Station = STATIONS_ID, Datum = MESS_DATUM, Geschwindigkeit = FF_10) |>
+  distinct(Datum, .keep_all = TRUE) |>
+  as_tsibble(key = Station, index = Datum)
+d_wind_raw_ts
+```
+
+[]{.down40}
+
+$\rightarrow$ Zusatzinformation zu Index und Schlüssel
+
+## Plot der Rohdaten
+
+```{r}
+ggplot(data = d_wind_raw_ts) + 
+  geom_line(mapping = aes(x = Datum, y = Geschwindigkeit))
+```
+
+[]{.down40}
+
+$\rightarrow$ Es gibt Lücken im Datensatz, erste Lücke mit Linie verbunden!
+
+## Lücken listen mit `count_gaps`
+
+```{r}
+d_wind_raw_ts |> count_gaps() 
+```
+
+## Lücken auffüllen mit `fill_gaps`
+
+```{r}
+d_wind <- d_wind_raw_ts |> fill_gaps()
+d_wind 
+```
+
+[]{.down40}
+
+$\rightarrow$ Es gibt alle 10 Minuten eine Beobachtung, `r nrow(d_wind) - nrow(d_wind_raw_ts)` neue Zeilen, Werte mit `NA` gekennzeichnet. Damit: Einfacheres Arbeiten!
+
+## Plot
+
+```{r}
+ggplot(d_wind) + 
+  geom_line(mapping = aes(x = Datum, y = Geschwindigkeit))
+```
+
+[]{.down40}
+
+$\rightarrow$ Lücken werden als Lücken dargestellt
+
+## Starkwindereignisse {.smaller}
+
+**Ereignis**: Windgeschwindigkeit innerhalb von 2 Stunden nicht unter 10 m/s und mindestens einmal über 20 m/s (zu Demonstrationszwecken gewählt, kein Kriterium des DWD)
+
+```{r}
+d_wind_stark <- d_wind |>
+  mutate(
+    v_min_120 = roll_minr(Geschwindigkeit, n = 12, na.rm = TRUE),
+    v_max_120 = roll_maxr(Geschwindigkeit, n = 12, na.rm = TRUE)
+  ) |>
+  filter(v_min_120 >= 10, v_max_120 >= 20)
+d_wind_stark 
+```
+
+[]{.down40}
+
+$\rightarrow$ Funktionen `roll_minr` und `roll_maxr` suchen aus `n = 12` Werten (aktuell und 11 vorangegangene) kleinsten und größten Wert heraus. Analog für Summe, Mittelwert und so weiter. 
+
+## Plot
+
+```{r}
+ggplot(data = d_wind_stark) +
+  geom_line(mapping = aes(x = Datum, y = v_min_120))
+```
+
+[]{.down40}
+
+$\rightarrow$ Einzelne Ereignisse sind nicht zu unterscheiden!
+
+## Ereignisse gruppieren {.smaller}
+
+```{r}
+d_wind_stark_g <- d_wind_stark |>
+  mutate(
+    neue_gruppe = Datum - lag(Datum, default = ymd_hms("19700101000000")) > 10,
+    gruppe = cumsum(neue_gruppe)
+  )
+d_wind_stark_g 
+```
+
+[]{.down40}
+
+$\rightarrow$ Neue Gruppe falls Abstand zwischen Beobachtungen größer 10 Minuten. Beim Zusammenzählen mit `cumsum` wird `FALSE=0` und `TRUE=1` verwendet.
+
+## Plotten mit Gruppe
+
+```{r}
+ggplot(data = d_wind_stark_g) +
+  geom_line(mapping = aes(x = Datum, y = Geschwindigkeit, group = gruppe))
+```
+
+## Ereignisse zusammenfassen {.smaller}
+
+```{r}
+d_starkwindereignisse <- d_wind_stark_g |> 
+  as_tibble() |>
+  group_by(gruppe) |>
+  summarise(
+    start = min(Datum),
+    dauer = max(Datum) - min(Datum),
+    v_max = max(v_max_120)
+  )
+d_starkwindereignisse 
+```
+
+[]{.down40}
+
+$\rightarrow$ Mit `as_tibble` wieder in 'normalen' Dataframe umwandeln damit `group_by` funktioniert wie gewohnt
+
+## Histogramm Windgeschwindigkeiten
+
+```{r}
+ggplot(data = d_starkwindereignisse) +
+  geom_histogram(mapping = aes(x = v_max), binwidth = 0.5)
+```
+
+[]{.down40}
+
+$\rightarrow$ [Orkan Oratia](https://www.wetteronline.de/extremwetter/orkan-oratia-ueber-nordeuropa-sachschaeden-in-millionenhoehe-2000-10-30-or)
+
+## Histogramm Dauer
+
+```{r}
+ggplot(data = d_starkwindereignisse) +
+  geom_histogram(mapping = aes(x = dauer), binwidth = 3600) +
+  scale_x_time()
+```

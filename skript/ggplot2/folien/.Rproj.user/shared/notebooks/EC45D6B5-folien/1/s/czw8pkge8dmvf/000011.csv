@@ -1,0 +1,2 @@
+"0","ggplot(data=d_wb_countries_2012) + geom_col(mapping=aes(x=0, y=pop, fill=country)) +"
+"0","  coord_polar(theta=""y"")"

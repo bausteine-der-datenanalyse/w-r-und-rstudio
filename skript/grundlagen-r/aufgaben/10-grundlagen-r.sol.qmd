@@ -1,0 +1,73 @@
+
+```{.r}
+library(lubridate)
+library(tidyverse)
+```
+
+### Aufgabe 1
+
+1.  Berechnet R den Wert $10^{16}(1 - \frac{1}{49} \cdot (5 \cdot 18 - 83)^2)$ korrekt? Warum ist das so?
+2.  Ist $(3 + 4^5) - 23$ ohne Rest durch 7 teilbar?
+
+```{.r}
+1e16 * (1 - 1 / 49 * (5 * 18 - 83)^2)
+((3 + 4^5) - 23) %% 7
+```
+
+-   Nein, Rundungsfehler
+-   Nein, der Rest der Division durch 7 müsste Null sein
+
+### Aufgabe 2
+
+-   Definieren Sie für sich (oder jemand anderen) die Variablen `name`, `age`, `weight` und `height`
+-   Berechnen Sie den BMI (Gewicht durch Körpergröße in Metern zum Quadrat)
+-   Geben Sie in einer Zeile Namen, Alter und BMI (drei signifikante Stellen) aus
+
+```{.r}
+name <- "Horst Mustermann"
+age <- 32
+weight <- 89
+height <- 1.83
+bmi <- weight/height^2 
+paste0(name, ", ", age, " Jahre, BMI = ", signif(bmi, 3))
+```
+
+### Aufgabe 3
+
+-   Berechnen Sie für die Werte $0, 1, 2, \dots, 10$ Mittelwert und Standardabweichung ohne die Funktionen `mean`, `sd` und `var` zu verwenden
+
+```{.r}
+x <- 0:10
+n <- length(x)
+xmid <- 1 / n * sum(x)
+xmid
+s <- sqrt(1 / n * sum((x - xmid)^2))
+s
+
+sd(x)
+```
+
+### Aufgabe 4
+
+-   Lesen Sie die folgenden Datumswerte ein
+
+`"1. Januar 2010"`, `"2015-Mar-06"`, `"6 Jun 2011"`, `"August 19 (1966)"`, `"12/30/14"`
+
+```{.r}
+dmy("1. January 2010")
+ymd("2015-Mar-06")
+dmy("6 Jun 2011")
+mdy("August 19 (1966)")
+mdy("12/30/14") 
+```
+
+### Aufgabe 5
+
+1.  An welchem Wochentag sind Sie geboren?
+2.  Welcher Tag im Jahr war das?
+
+```{.r}
+bd <- dmy("29.8.1958")
+wday(bd, label = TRUE)
+yday(bd)
+```

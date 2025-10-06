@@ -1,0 +1,4 @@
+"0","ggplot(data = d_wb_2012) +"
+"0","  geom_point(mapping = aes(x=gdp, y=gge, fill=region, size=pop), shape=21) +"
+"0","  scale_x_log10() + scale_y_log10() +"
+"0","  labs(x=""Bruttoinlandsprodukt"", y=""Treibhausgasemissionen"", title=""Jahr 2012"")"

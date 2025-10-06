@@ -1,0 +1,59 @@
+---
+title: "Aufgaben zum Aufbereiten von Plots"
+author: "Matthias Baitsch"
+output: html_document
+---
+
+```{r setup, include=FALSE, message=FALSE}
+source("style/setup.R")
+load("data/data-exercise-03.Rdata")
+load("data/data-exercise-05.Rdata")
+load("data/data-exercise-06.Rdata")
+d_bo_entfernung <- tibble(
+  Stadt =      c("Essen", "Wattenscheid", "Dortmund", "Herne", "Wuppertal", "Gelsenkirchen", "Mühlheim"),
+  Entfernung = c(  17.8 ,          10.2 ,      15.4 ,   10.7 ,       21.4 ,           14.1 ,      27.2 )
+)
+```
+
+# Entfernungen in andere Städte
+
+```{r, echo=FALSE}
+ggplot(data=d_bo_entfernung) + geom_col(mapping=aes(x=Stadt, y=Entfernung)) + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
+  labs(x = NULL)
+```
+
+
+---
+
+# Studierende an der BO: Geschlecht
+
+```{r, echo=FALSE}
+ggplot(data = d_bo_vm) +
+  geom_bar(mapping = aes(x = Geschlecht, fill = Geschlecht)) +
+  scale_fill_manual(values = c("m" = "orange", "w" = "blue")) +
+  labs(y = 'Anzahl')
+```
+
+---
+
+# Studierende an der BO: Fachbereiche
+
+```{r, echo=FALSE}
+ggplot(data = d_bo_vm) +
+  geom_bar(mapping = aes(x = 0, fill = Fachbereich)) +
+  coord_polar(theta = "y") +
+  scale_fill_brewer(palette = "Set3") +
+  theme_void()
+```
+
+---
+
+# Histogramm mit Uhrzeit (Rechtecke)
+
+```{r, echo=FALSE}
+ggplot(data = d_unistrasse) + 
+  geom_bin2d(aes(x = Uhrzeit, y = Geschwindigkeit), binwidth = c(0.5, 3)) +
+  scale_fill_distiller(palette = "Purples", direction = 1, trans = "log10", guide = "legend")
+```
+

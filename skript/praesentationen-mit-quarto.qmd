@@ -1,0 +1,48 @@
+---
+title: "Präsentationen erstellen mit Quarto"
+author: "Matthias Baitsch und Florian Bagemihl"
+
+date: today
+date-format: long
+
+lang: de
+
+execute: 
+  echo: false
+
+format:
+  revealjs: 
+    overview: true
+    slide-number: "c/t"
+    code-line-numbers: false
+    theme: 
+    - style.scss
+---
+
+```{r}
+#| include: false
+library(tidyverse)
+library(kableExtra)
+```
+
+# Ein Abschnitt
+
+## Folie mit Plot
+
+```{r}
+ggplot(data = mtcars) + geom_point(mapping = aes(x = cyl, y = mpg))
+```
+
+# Der nächste Abschnitt
+
+## Folie mit Tabelle
+
+```{r}
+d <- read_csv2("daten/beispiel-2.csv")
+kable(d)
+```
+
+## Folie mit Graphik
+
+![](bilder/sydney-harbour-ridge.jpg)
+

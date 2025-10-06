@@ -1,0 +1,880 @@
+---
+title: "Basics der Programmiersprache R"
+subtitle: "Kurz und (fast) schmerzlos"
+---
+
+```{r}
+#| echo: false
+#| warning: false
+library(tidyverse)
+library(kableExtra)
+```
+
+# Operatoren und grundlegende Funktionen
+
+## Arithmetische Operatoren
+
+[]{.down80}
+
+| Operator | Beschreibung   | Beispiel          |
+|:--------:|:---------------|:------------------|
+|   `+`    | Addieren       | 4 + 5 = 9         |
+|   `-`    | Subtrahieren   | 5 - 4 = 1         |
+|   `*`    | Multiplizieren | 4 \* 4 = 16       |
+|   `/`    | Dividieren     | 1 / 2 = 0.5       |
+|   `^`    | Potenzieren    | 2\^0.5 = 1.414214 |
+|   `%%`   | Modulo bilden  | 7 %% 5 = 2        |
+
+- Modulo bilden = Bestimmung des Rests einer ganzzahligen Devision
+
+## Beispiel
+
+::: {.columns}
+::: {.column width=50%}
+```{r}
+1e5 / 33
+pi %% 3
+1 / 3 + 1 / 2
+6^8
+```
+:::
+::: {.column width=50%}
+- Werte werden ohne spezielle print-Anweisung ausgegeben
+- Standardmäßig werden Fließkommaoperationen durchgeführt
+- Lassen Sie Platz um die Operatoren (außer um \^)
+:::
+:::
+
+## Variablen 1/2
+
+::: {.columns}
+::: {.column width=50%}
+```{r}
+x <- 32
+y <- 7 / 8
+x * y
+```
+:::
+::: {.column width=50%}
+- Daten und Berechnungsergebnisse werden in Variablen gespeichert
+- Der Zuweisungsoperator in R ist `<-` (Tastenkombination alt + -)
+- Variablen im *Environment* gelistet (RStudio oben rechts)
+- Namen von Variablen müssen mit einem Buchstaben beginnen
+:::
+:::
+
+
+
+
+## Variablen 2/2
+
+
+::: {.columns}
+::: {.column width=50%}
+```{r}
+X <- pi
+x <- 2
+a.b <- 100
+x * X * a.b
+```
+:::
+::: {.column width=50%}
+- `pi` ist eine vorbelegte Variable mit Näherung für $\pi$
+- Groß- und Kleinschreibung wird berücksichtigt
+- Der Punkt ist ein ganz normaler Buchstabe und kein Operator
+:::
+:::
+
+
+
+## Weitere Zuweisungsoperatoren
+
+Zuweisung nach rechts
+
+```{r}
+33 -> x
+x
+```
+
+- Die Schreibweise `<-` funktioniert auch so `->` rum
+
+[]{.down40}
+
+Es geht aber auch traditionell
+
+```{r}
+x = 200
+x
+```
+
+- Wenn Ihnen das lieber ist, verwenden Sie `=`
+- Bei einer Schreibweise bleiben
+
+## Primitive Datentypen
+
+[]{.down40}
+
+| Datentyp  | Literale             |
+|-----------|----------------------|
+| logical   | `TRUE`, `FALSE`      |
+| integer   | `5L`, `125L`         |
+| double    | `1`, `1.75`, `1e10`  |
+| character | `"Hello World!"`     |
+
+: {tbl-colwidths="[40,60]"}
+
+[]{.down40}
+
+- Datentypen werden nicht explizit angegeben (anders als in Java)
+- Voreinstellung für Zahlen ist `double`
+- Anderen Programmiersprachen: String statt Character
+- logical = Wahrheitswerte
+- integer = ganzzahlig
+- character = Zeichenkette
+
+## Spezielle Konstanten
+
+[]{.down80}
+
+| Konstante        | Bedeutung                                           |
+|------------------|-----------------------------------------------------|
+| `Inf` und `-Inf` | Unendlich und minus Unendlich                       |
+| `NaN`            | Rechenoperation ergibt keine Zahl, z.B. $\sqrt{-1}$ |
+| `NULL`           | Ein leeres Objekt                                   |
+| `NA`             | Unbekannter Datenwert (Not Available)               |
+
+: {tbl-colwidths="[40,60]"}
+
+## Mathematische Funktion
+
+[]{.down20}
+
+| Funktionen                        | Beschreibung                                    |
+|-----------------------------------|-------------------------------------------------|
+| `sin(x)`, `cos(x)`, `tan(x)`, ... | Trigonometrische Funktionen                     |
+| `abs(x)`, `sqrt(x)`               | Absolutwert, Wurzel                             |
+| `log(x)`, `exp(x)`                | Natürlicher Logarithmus und Exponentialfunktion |
+| `log2(x)`, `log10(x)`             | Logarithmus mit anderen Basen                   |
+
+: {tbl-colwidths="[40,60]"}
+
+Beispiele
+
+```{r}
+exp(1)
+log2(4096)
+```
+
+## Funktionen zur Typumwandlung
+
+[]{.down100}
+
+| Funktion          | Bedeutung                        |
+|-------------------|----------------------------------|
+| `as.numeric(x)`   | Konvertiert in eine Zahl         |
+| `as.character(x)` | Konvertiert in eine Zeichenkette |
+| `as.logical(x)`   | In Wahrheitswert konvertieren    |
+
+: {tbl-colwidths="[40,60]"}
+
+- as.logical: alle Zahlenwerte = 0 sind FALSE, alle Zahlenwerte ungleich 0 sind TRUE
+
+## Beispiele
+
+```{r}
+3 * as.numeric("1.81")
+as.character(pi)
+as.logical(0)
+as.logical(0.1)
+```
+
+## Vergleichsoperatoren und Verknüpfungen
+[]{.down40}
+
+|    Operator        |           Bedeutung           |
+|--------------------|-------------------------------|
+| `a < b`, `a <= b`  |  Kleiner und kleiner gleich   |
+| `a > b`, `a >= b`  |   Größer und größer gleich    |
+| `a == b`, `a != b` | Exakt gleich und nicht gleich |
+|   `near(a, b)`     |          Fast gleich          |
+|    `is.na(x)`      |    Test of `x` gleich `NA`    |
+
+: {tbl-colwidths="[40,60]"}
+
+[]{.down40}
+
+| Verknüpfung   |   Bedeutung    |
+|-----------|----------------|
+|  `a & b`  | Logisches und  |
+|  `a | b`  | Logisches oder |
+|    `!a`   |    Negation    |
+
+: {tbl-colwidths="[40,60]"}
+
+## Beispiele {.smaller}
+
+::: {.columns}
+::: {.column width=50%}
+```{r}
+NA == 10
+is.na(NA)
+is.na(10)
+pi >= 3.14
+pi != 1
+as.character(3 * 9 + 1) == 28
+```
+:::
+::: {.column width=50%}
+```{r}
+TRUE | FALSE
+TRUE & FALSE
+!FALSE
+```
+:::
+:::
+
+## Rechengenauigkeit
+
+Achtung
+
+```{r}
+sqrt(2) ^ 2 == 2
+1 / 49 * 49 == 1
+```
+
+$\rightarrow$ Rundungsfehler, Computer rechnet mit (grob gesagt) 15 Nachkommastellen 
+
+Überprüfung in R
+
+```{r}
+near(sqrt(2)^2, 2)
+near(1/49*49, 1)
+```
+
+## Weitere nützliche Funktionen 1/2
+
+[]{.down80}
+
+| Funktion                | Beschreibung                                |
+|-------------------------|---------------------------------------------|
+| `paste0(...)`           | Verbindet mehrere Werte zu Character        |
+| `paste(..., sep = " ")` | Wie paste0 aber mit Trennzeichen            |
+| `signif(x, digits = 6)` | Rundet auf Anzahl von signifikanten Stellen |
+| `round(x, digits = 0)`  | Runden auf Anzahl von Stellen               |
+
+: {tbl-colwidths="[40,60]"}
+
+
+## Weitere nützliche Funktionen 2/2
+
+```{r}
+paste(1, 2, 3, 4, 5, 6)
+paste(1, 2, 3, 4, 5, 6, sep = ", ")
+paste0(1, 2, 3, 4, 5, 6)
+signif(9283649, 4)
+paste0("pi=", round(pi, digits = 4))
+```
+
+## Optionale Parameter von Funktionen
+
+```{.r}
+round(x, digits = 0)
+```
+
+Funktion `round` besitzt Parameter `x` (die Zahl die gerundet werden soll) und einen optionalen
+Parameter `digits` (Anzahl der Stellen). Wird `digits` nicht angegeben, dann verwendet R den Wert 0.
+Beim Funktionsaufruf kann man den Namen des Parameters weglassen (kürzer) oder angeben (meist besser
+zu verstehen).
+
+```{r}
+round(pi)
+round(pi, 1)
+round(pi, digits = 2)
+```
+
+## Funktionen mit vielen Parametern
+
+```{.r}
+`paste(..., sep = " ")
+```
+
+Der Funktion `paste` können beliebig viele Parameter übergeben werden. Der Name des optionalen
+Parameters muss angegeben werden.
+
+```{r}
+paste(1, 2, 3)
+paste(1, 2, 3, 4, 5, 6, "$")
+paste(1, 2, 3, 4, 5, 6, sep = "$")
+```
+
+## Hilfe zu R-Funktionen
+
+![](bilder/r-hilfe.svg)
+
+- In RStudio in den Funktionsnamen klicken und Taste F1 drücken
+  - Hilfetexte in der Regel nicht ganz einfach zu lesen
+  - Oft werden verwandte Funktionen gemeinsam erklärt
+  - Das fällt Ihnen mit der Zeit leichter
+
+## Richtig googeln und richtige Verwendung von KI
+
+![](bilder/google.svg)
+
+- Auf Google mit Suchanfragen der Form "r Suchphrase"
+- Problem: Häufig zu viele Antworten oder die falsche Information
+- Erst denken, dann googeln, dann nochmal denken
+- Nichts aus dem Internet abtippen, das Sie nicht verstehen
+- Meistens ist .org besser als .com
+- Hinweis wie mit KI/LLMs umgegangen wird
+
+# Datenstrukturen
+
+## Datenstrukturen in R
+
+[]{.up60}
+
+![](bilder/datenstrukturen.svg)
+
+| Datenstruktur | Beschreibung                                         |
+|---------------|------------------------------------------------------|
+| **Vektor**    | Reihe von Elementen mit gleichem Datentyp            |
+| Matrix        | Wie Vektor aber mit Zeilen und Spalten               |
+| Array         | Wie Matrix aber beliebig viele Indizes               |
+| List          | Wie Vektor aber verschiedene Datentypen              |
+| **Dataframe** | Liste, jedes Element ein Vektor, Spalten haben Namen |
+
+: {tbl-colwidths="[40,60]"}
+
+→ Dataframe = Datensatz einer Erhebung
+
+## Vektoren
+
+Für uns wichtig
+
+- Vektoren als Eingabewerte (zum Beispiel beim Plotten)
+- Rechenoperationen für Vektoren (Mittelwert etc.)
+
+→ Hier nur die Dinge, die wir auch benötigen
+
+## Erzeugen von Vektoren 1/2
+
+[]{.down40}
+
+| Funktion                    | Beschreibung                                             |
+|-----------------------------|----------------------------------------------------------|
+| `a:b`                       | Erzeugt einen Vektor von `a` bis `b` mit Inkrement 1        |
+| `c(x1, x2, x3)`             | Erzeugt einen Vektor mit den Werten `x1`, `x2`, `x3`        |
+| `seq(a, b, by = inc)`       | Erzeugt einen Vektor von `a` bis `b` mit Inkrement `inc`    |
+| `seq(a, b, length.out = n)` | Erzeugt einen Vektor von `a` bis `b` mit `n` Elementen      |
+| `rep(x, times = n)`         | Hängt das Array oder die Zahl `x` `n`-mal hintereinander |
+| `rep(x, each = n)`          | Wiederholt jedes Element in `x` `n`-mal                  |
+
+: {tbl-colwidths="[40,60]"}
+
+
+
+[]{.down20}
+
+- `a:b` wie in Matlab (aber kein 1:0.1:2)
+- c steht für *combine*
+- Inkrement = Zunahme
+- seq wie Sequenz
+- rep wie repetition = Wiederholung
+
+
+## Erzeugen von Vektoren 2/2 {.smaller}
+
+```{r}
+1:-6                            # Geht auch rückwärts
+c("A", "B", "C", 1:3)           # Typkonvertierung automatisch
+seq(1, 5, by = 0.7)             # Zweiter Wert nicht unbedingt dabei
+seq(1, 5, length.out = 6)       # Inkrement automatisch
+rep(c(4, 7, 1, 1), times = 3)   # Drei mal hintereinander
+rep(c(4, 7, 1, 1), each = 3)    # Jedes Element drei mal
+```
+
+## Operatoren & Funktionen für Vektoren
+
+```{r}
+x <- 1:5
+y <- 5:1
+x + y
+1 + x
+x * y
+sqrt(x)
+```
+
+→ Ausführung Elementweise
+
+## Kuriositätenkabinett {.smaller}
+
+```{r}
+a <- 0:8
+b <- c(1, 11)
+c <- 99
+```
+
+Damit
+
+```{r}
+a + b
+a %% 2 == 0
+a[a %% 3 == 0]
+c[1]
+```
+
+## Funktionen für Vektoren 1/2
+
+[]{.down80}
+
+| Funktion            | Bedeutung                                |
+|---------------------|------------------------------------------|
+| `c(a, b, ...)`      | Vektor erzeugen (geht auch mit Vektoren) |
+| `length(a)`         | Länge eines Vektors                      |
+| `sum(a)`, `prod(a)` | Summe oder Produkt der Elemente          |
+| `rev(a)`            | Reihenfolge umdrehen                     |
+| `unique(a)`         | Unterschiedliche Elemente                |
+| `a %in% b`          | Ist Wert `a` in Vektor `b` enthalten?    |
+
+: {tbl-colwidths="[40,60]"}
+
+## Funktionen für Vektoren 2/2
+
+```{r}
+a <- rep(1:3, 2)
+```
+
+::: {.columns}
+::: {.column}
+```{r}
+a
+c(a, c(5, 19))
+length(a)
+sum(a)
+```
+:::
+::: {.column}
+```{r}
+rev(a)
+unique(a)
+1 %in% a
+9 %in% a
+```
+:::
+:::
+
+## Statistische Funktionen für Vektoren
+
+| Funktion                             | Beschreibung                         |
+|--------------------------------------|--------------------------------------|
+| `min(x)`, `max(x)`                   | Kleinster und größter Wert           |
+| `mean(x)`                            | Mittelwert                           |
+| `var(x)`                             | Varianz                              |
+| `sd(x)`                              | Standardabweichung                   |
+| `cor(x, y)`                          | Korrelationskoeffizient              |
+| `quantile(x, probs = c(q1, q2, ...)` | Quantilwerte                         |
+| `summary(x)`                         | Gibt Fünf-Punkte-Zusammenfassung aus |
+
+: {tbl-colwidths="[50,50]"}
+
+Zum Beispiel
+
+```{r}
+summary((0:100)^2)
+```
+
+## Korrelationskoeffizient
+
+Zu Fuß
+
+```{r}
+x <- 1:10
+y <- x + 0.5 * x^2
+n <- length(x)
+xmid <- 1 / n * sum(x)
+ymid <- 1 / n * sum(y)
+sum((x - xmid) * (y - ymid)) / sqrt(sum((x - xmid)^2) * sum((y - ymid)^2))
+```
+
+Mit R-Funktion
+
+```{r}
+cor(x, y)
+```
+
+## Benannte Vektoren
+
+Die Einträge von Vektoren können benannt werden
+
+```{r}
+stundenlohn <- c("Kellner:in" = 8.5, "Ingenieur:in" = 50)
+stundenlohn
+stundenlohn[1]
+stundenlohn["Kellner:in"]
+mean(stundenlohn)
+```
+
+→ Anwendung: Zum Beispiel bei Farbskala
+
+## Dataframes
+
+## Dataframe erzeugen mit `tibble()`
+
+```{r}
+d <- tibble(
+  X=0:4, 
+  Y=c(1.2, 3.2, 0.5, 0.9, 1.1), 
+  Z=c("A", "B", "C", "D", "E")
+)
+```
+
+- Merkmale und Werte in der Form `Name = Vektor`
+- Wir lesen Dataframes in der Regel aus Dateien (Excel, CSV, etc.)
+- `tibble()` aus tidyverse von Hadley Wickham
+
+## Dataframe ausgeben
+
+::: {.columns}
+::: {.column width=50%}
+```{r}
+d
+```
+:::
+::: {.column width=50%}
+```{r}
+str(d)
+```
+:::
+:::
+
+```{r}
+kable(d)
+```
+
+## Auf Spalten zugreifen
+
+```{r}
+d$X
+d$Z
+d$Z[4]
+```
+
+[]{.down20}
+
+- `d$X` liefert die Werte zum Merkmal `X` als Vektor
+- Auf einzelne Werte kann dann mit `[idx]` zugegriffen werden
+- idx wie Index
+- Indizierung beginnt bei 1
+
+## Beispiel: Regressionsgerade/Bestimmtheitsmaß
+
+[]{.down40}
+
+```{r}
+xmid <- mean(d$X)
+ymid <- mean(d$Y)
+beta <- sum((d$X - xmid) * (d$Y - ymid)) / sum((d$X - xmid)^2)
+alpha <- ymid - beta * xmid
+R2 <- sum((alpha + beta * d$X - ymid)^2) / sum((d$Y - ymid)^2)
+paste0("alpha = ", alpha, ", beta = ", beta, ", R2 = ", signif(R2, 5))
+```
+
+## Hinweis: Geht auch kürzer
+
+[]{.down40}
+
+```{r}
+m <- lm(Y ~ X, data = d)
+summary(m)
+```
+
+# Datum und Uhrzeit
+
+Komplizierter als man auf den ersten Blick vielleicht denkt
+
+- Wie addieren Sie einen Tag zu einer Woche?
+- Hat jedes Jahr 365 Tage?
+- Hat jeder Tag 24 Stunden?
+- An welchem Wochentag sind Sie geboren?
+
+Einfach(er) mit dem lubridate-Paket (zu Beginn laden)
+
+```{r}
+  library(lubridate)
+```
+
+## Date, Time und Date-Time
+
+![Datum und Uhrzeit](bilder/datum-und-uhrzeit.svg)
+
+```{r}
+now()                # date-time
+today()              # date
+hms::as_hms(now())   # time
+```
+
+## *Date* mit `ymd` und Varianten
+
+::: {.columns}
+::: {.column width=40%}
+```{r}
+ymd("2016-11-30")
+dmy("30 8 2012")
+mdy("8/1/1998")
+dmy(30052015)
+```
+:::
+
+::: {.column width=60%}
+- Liest Datum aus Zeichenkette (Trennzeichen fast beliebig) oder
+Zahl 
+- Wenn Zahl: Mit 0X angeben, falls X \< 10 - `ymd`, `dmy` oder `mdy` je nach Reihenfolge
+- In Deutschland meistens Tag/Monat/Jahr 
+- Tipp beim Ausprobieren: Tag \> 12 verwenden um Fehler zu
+finden 
+- Ausgabe in Schreibweise JJJJ-MM-TT
+:::
+:::
+
+## *Date-time* mit `ymd_hms` und Varianten
+
+::: {.columns}
+::: {.column width=60%}
+```{r}
+ymd_hms("2016-11-30 10:30:10", tz = "Europe/Berlin")
+dmy_hm("30 8 2012 12:59", tz = "Europe/Berlin")
+mdy_h(0226201304, tz = "Europe/Berlin")
+```
+:::
+
+::: {.column width=40%}
+- Liest Datum und Uhrzeit aus Zeichenkette (Trennzeichen fast beliebig) oder Zahl
+- Wenn Zahl: Mit 0X angeben, falls X \< 10
+- Wieder je nach Reihenfolge
+- Zeitzone mit angeben (Voreinstellung ist UTC)
+:::
+:::
+
+
+
+## *Time* mit `hms::as.hms` und Varianten
+::: {.columns}
+::: {.column width=60%}
+```{r}
+hms::as.hms(85)
+hms::as.hms(dmy_hms("1:6:1987 13:17:01", tz = "Europe/Berlin"))
+hms::hms(hours = 1, minutes = 23, seconds = 15)
+```
+:::
+
+::: {.column width=40%}
+- Zeit, die seit 0 Uhr verstrichen ist
+- Funktion `hms()` aus lubridate-Paket funktioniert nicht beim Plotten
+- Daher `hms::hms()` aus dem Paket hms (ggf. installieren)
+:::
+:::
+
+
+## `make_date()` und `make_datetime()`
+
+[]{.down60}
+
+```{r}
+make_date(year = 2000, month = 10, day = 10)
+make_datetime(year = 2000, month = 10, day = 10, hour = 10, tz = "Europe/Berlin")
+make_datetime(year = 2000, month = 10, day = 10, hour = 10, tz = "Europe/Berlin")
+```
+
+## Datumskomponenten: Jahr und Monat
+::: {.columns}
+::: {.column width=60%}
+```{r}
+(d <- dmy_hms("15.04.2025 12:22:01")) # Zuweisung in Klammern: Wert wird ausgegeben
+year(d)
+month(d)
+month(d, label = TRUE)
+```
+:::
+
+::: {.column width=40%}
+- Namen des Monats mit `label = TRUE`
+- Levels: Richtige Sortierung (nicht alphabetisch)
+:::
+:::
+
+
+
+
+
+## Datumskomponenten: Tag
+::: {.columns}
+::: {.column width=50%}
+```{r}
+day(d)
+yday(d)
+wday(d)
+wday(d, label = TRUE)
+```
+:::
+
+::: {.column width=50%}
+- day = Wievielter Tag im Monat
+- yday = Wievielter Tag im Jahr
+- wday = Wievielter Tag in der Woche (Sonntag = 1)
+- Namen des Tages mit `label = TRUE`
+- Hängt von Ländereinstellung des Computers ab
+:::
+:::
+
+
+
+
+
+## Zeitdifferenzen 1/2
+
+Alter von Friedrich Merz in Tagen am Tag `r today()`
+
+```{r}
+today() - dmy("11.11.1955")
+```
+
+[]{.down60}
+
+Zeit zwischen zwei Anweisungen: Wie lange braucht die Berechnung einer Wurzel?
+
+```{r}
+d1 <- hms::as.hms(now())
+x <- sqrt(93482756)
+d2 <- hms::as.hms(now())
+d2 - d1
+```
+
+## Zeitdifferenzen 2/2
+
+[]{.up10}
+
+Ende März um halb drei
+
+```{r}
+(d <- dmy_hm("30.3.2019 14:30", tz = "Europe/Berlin"))
+```
+
+[]{.down60}
+
+::: {.columns}
+::: {.column width=50%}
+23 Stunden später
+
+```{r}
+d + dhours(23)
+```
+
+- `dhours()`: Zeitdauer in physikalischen Stunden
+
+:::
+::: {.column width=50%}
+Auch 23 Stunden später
+
+```{r}
+d + hours(23)
+```
+
+- `hours()`: Zeitdauer in Stunden auf der Uhr
+
+:::
+:::
+
+$\rightarrow$ Vergleichen Sie die Zeiten!
+
+# 'Normal' rechnen mit Datum/Zeit
+
+## In Zahl konvertieren mit `as.numeric()`
+
+::: {.columns}
+::: {.column width=50%}
+```{r}
+as.numeric(ymd_hms("1970-1-1 0:0:11", tz = "UTC"))
+as.numeric(ymd("1970-1-12"))
+as.numeric(hms::as.hms(ymd_hms("1988-11-11 0:0:11", tz="Europe/Berlin")))
+```
+:::
+
+::: {.column width=50%}
+Welche Zahlen kommen dabei heraus?
+
+- Date-time: Sekunden seit Beginn des Jahres 1970 (in UTC)
+- Date: Tage seit Beginn des Jahres 1970
+- Time: Sekunden seit Beginn des Tages
+- 01.01.1970 00:00 Uhr entspricht dem "absoluten Nullpunkt" für die Zeitberechnung
+:::
+:::
+
+
+
+
+
+## 'Normal' rechnen mit Zeitdifferenzen
+
+```{r}
+d1 <- hms::as.hms(now())
+d2 <- hms::as.hms(now())
+d2 - d1
+```
+
+[]{.down60}
+
+- Das Ergebnis ist vom Typ 'Time Difference' und keine Zahl
+
+```{r}
+1000 * as.numeric(d2 - d1)
+```
+
+- Mit `as.numeric()` in Zahl konvertieren
+- Ausgabe jetzt in Millisekunden
+
+## Datum runden {.smaller}
+
+![](bilder/datum-runden.svg)
+
+```{r}
+floor_date(d, unit = "hour")
+ceiling_date(d, unit = "5 minutes")
+```
+
+- `floor_date()` : Abrunden
+- `round_date()` : Runden
+- `ceil_date()` : Aufrunden
+- Einheit, zu der gerundet werden soll, mit `unit = XXX` angeben
+- Man kann auch zu einem Vielfachen einer Einheit runden
+
+## Formatierte Ausgabe mit `sprintf()`
+
+Mit `sprintf` können Ausgaben ein bisschen schicker gestaltet werden. Dabei steht `%i` für eine
+ganze Zahl und `%5.3f` eine Fließkommazahl insgesamt fünf Zeichen breit mit 3 Nachkommastellen.
+
+```{r}
+x <- 1 / 3
+
+sprintf("%i Hallo! x = %5.3f", 45, x)
+```
+
+Den Wert von Variablen kann man auch in den Text einbauen. Hier ein Beispiel
+
+$$1 / 3 \approx `r x`$$
+
+mit einer Variablen in einer Formel.
+
+## Das waren die Basics von R
+
+Auswahl der Themen
+
+- Sehr stark eingeschränkt
+- Nur das absolut Notwendige (subjektive Auswahl)
+
+Nicht behandelt
+
+- Kontrollstrukturen: Schleifen und Verzweigungen
+    - Für unsere Zwecke nicht notwendig
+    - Es gibt elegantere Alternativen
+- Eigene Funktionen erstellen
+    - Wir schaffen das (erstmal ohne)

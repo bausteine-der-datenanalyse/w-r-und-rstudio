@@ -1,0 +1,36 @@
+## Mobilitätsbefragung an der BO
+
+### Einlesen und Aufbereiten der Daten
+
+Lesen Sie die Datei `daten/BefragungMVP2017_0.xlsx`ein und bereiten Sie die Daten auf. Hinweise zur Kodierung finden Sie in `daten/BefragungMVP2017_0_kodierung.xlsx`. Der resultierende Datensatz sollte folgende Merkmale beinhalten:
+
+- `zeit`: Wegezeit bis zur Hochschule
+
+- `im_ruhrgebiet`: Logischer Wert ob der Wohnort im Ruhrgebiet liegt oder nicht
+
+- `geschlecht`: Buchstabe `m` oder `w`
+
+- `fachbereich`: Buchstabe für den Fachbereich
+
+- `vm_heute`: Verkehrsmittel, das am Tag der Befragung verwendet wurde
+
+- `ort`: Wohnort, beachten Sie, dass es Orte gibt, die falsch eingetragen wurden, z.B. "Remschei"
+
+### Häufigkeiten
+
+- Stellen Sie in einem nach den Häufigkeiten sortierten Balkendiagramm die verschiedenen Fachbereiche dar.
+- Zeigen Sie für jeden Fachbereich in einem Balkendiagramm die gewählten Verkehrsmittel.
+- Stellen Sie die fünf häufigsten Orte und ihre Anzahl in einem Balkendiagramm dar. Erstellen Sie für alle anderen Orte ebenfalls den Balken "Andere"
+
+Erstellen Sie zusätzlich Boxplots zu folgenden Zusammenhängen:
+
+- Fahrzeiten und Ort
+- Fahrzeiten und Verkehrsmittel
+
+### Wegstrecke und Fahrzeit
+
+Stellen Sie mit Verwendung der Orte Essen, Dortmund, Herne , Wuppertal, Gelsenkirchen und Mülheim dar, ob ein Zusammenhang zwischen Strecke und Fahrzeit erkennbar ist.
+
+### Reisezeit und Verkehrsmittel
+
+Erstellen Sie für jedes Verkehrsmittel einen Boxplot für die Reisezeit und deuten Sie kurz das Ergebnis.

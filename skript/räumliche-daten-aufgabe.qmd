@@ -1,0 +1,14 @@
+---
+title: "Aufgaben zu räumlichen Daten"
+author: "TODO: Namen eintragen"
+---
+
+```{r}
+#| echo: false
+#| message: false
+library(sf)
+library(giscoR)
+library(lubridate)
+library(tidyverse)
+load("daten/mastr-data.RData")
+```

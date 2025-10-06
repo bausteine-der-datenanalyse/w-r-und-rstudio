@@ -1,0 +1,27 @@
+---
+title: "Aufgaben zur Untersuchung einzelner Merkmale"
+author: "TODO: Namen eintragen"
+---
+
+```{r}
+#| echo: false
+#| message: false
+library(tidyverse)
+load("daten/einzelne-merkmale-aufgaben.Rdata")
+```
+
+## Titel Folie 1
+
+```{r}
+3 * 3
+```
+
+- Wie erwartet ergibt drei mal drei neun
+
+## Titel Folie 2
+
+```{r}
+sqrt(4)
+```
+
+- Und die Wurzel aus vier ist zwei

@@ -1,0 +1,17 @@
+---
+title: "Aufgaben zu Dichtekurven und Normalverteilung"
+author: "TODO: Namen eintragen"
+---
+
+```{r}
+#| echo: false
+#| message: false
+library(tidyverse)
+load("daten/dichtekurven-und-normalverteilung-aufgaben.Rdata")
+```
+
+## Dataframe
+
+```{r}
+show(d_unistrasse)
+```

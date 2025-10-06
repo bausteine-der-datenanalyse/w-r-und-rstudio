@@ -1,0 +1,3 @@
+## RStudio-Projekt
+
+Laden Sie das RStudio-Projekt [08-daten-aufbereiten-aufgaben.zip](08-daten-aufbereiten-aufgaben.zip) herunter und entpacken Sie die Datei.

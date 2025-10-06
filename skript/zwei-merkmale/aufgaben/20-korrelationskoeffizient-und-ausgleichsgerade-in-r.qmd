@@ -1,0 +1,34 @@
+## Korrelationskoeffizient und Ausgleichsgerade in R
+
+Sie untersuchen Messdaten von einer Windkraftanlage in Dortmund (Forschungsprojekt an der Ruhr-Universität Bochum). Die Daten wurden freundlicherweise von Prof. Rüdiger Höffer zur Verfügung gestellt.
+
+![](bilder/wea-1.svg){width=60% fig-align="center"}
+
+![](bilder/wea-2.svg){width=60% fig-align="center"}
+
+Anmerkungen:
+
+- Daten werden mit einer Frequenz von 100 Hz aufgezeichnet
+- Datenvolumen rund 140 GB pro Jahr
+
+### Linienplot
+
+Plotten Sie die Windgeschwindigkeit über die Zeit in einem Linienplot (`geom_line()`). Welche der Merkmale `datum` oder `zeit` ist ihrer Meinung nach besser geeignet?
+
+Zusatzfrage: Die Windgeschwindigkeit ist in Meter pro Sekunde angegeben. War es in dem Messzeitraum sehr windig?
+
+### Streuplots
+
+Stellen Sie folgende Zusammenhänge in Streuplots dar:
+
+-   Windgeschwindigkeit (`v_wind`) und Drehzahl (`drehzahl`).
+-   Windgeschwindigkeit (`v_wind`) und Leistung (`leistung`).
+-   Drehzahl (`drehzahl`) und Leistung (`leistung`).
+-   Windgeschwindigkeit (`v_wind`) und Beschleunigung (`B6_y`).
+-   Windgeschwindigkeit (`v_wind`) und Verformung (`w5`).
+
+Berechnen Sie dabei jeweils den Korrelationskoeffizienten $r$ und plotten Sie die Regressionsgerade.
+
+### Andere Darstellungsformen
+
+Experimentieren Sie mit anderen Darstellungsformen (2D-Histogramm, Dichten) für den Zusammenhang zwischen Windgeschwindigkeit und Verformung.

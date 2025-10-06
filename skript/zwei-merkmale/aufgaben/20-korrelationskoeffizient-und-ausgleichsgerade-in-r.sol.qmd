@@ -1,0 +1,72 @@
+#### Windgeschwindigkeit über die Zeit
+
+```{.r}
+ggplot(data = d_wea_min) + 
+  geom_line(mapping = aes(x = datum, y = v_wind))
+```
+
+#### Streuplots
+
+Windgeschwindigkeit und Drehzahl
+
+```{.r}
+ggplot(data = d_wea_min, mapping = aes(x = v_wind, y = drehzahl)) + 
+  geom_point() + 
+  geom_smooth(formula = y ~ x, method = 'lm')
+```
+
+```{.r}
+cor(d_wea_min$v_wind, d_wea_min$drehzahl)
+```
+
+Windgeschwindigkeit und Leistung
+
+```{.r}
+ggplot(data = d_wea_min, mapping = aes(x = v_wind, y = leistung)) + 
+  geom_point() + 
+  geom_smooth(formula = y ~ x, method = 'lm')
+```
+
+```{.r}
+cor(d_wea_min$v_wind, d_wea_min$leistung)
+```
+
+Drehzahl und Leistung
+
+```{.r}
+ggplot(data = d_wea_min, mapping = aes(x = drehzahl, y = leistung)) + 
+  geom_point() + 
+  geom_smooth(formula = y ~ x, method = 'lm')
+```
+
+```{.r}
+cor(d_wea_min$drehzahl, d_wea_min$leistung)
+```
+
+Windgeschwindigkeit und Beschleunigung
+
+```{.r}
+ggplot(data = d_wea_min, mapping = aes(x = v_wind, y = B6_y)) + 
+  geom_point() + 
+  geom_smooth(formula = y ~ x, method = 'lm')
+```
+
+```{.r}
+cor(d_wea_min$v_wind, d_wea_min$B6_y)
+```
+
+Windgeschwindigkeit und Verformung
+
+```{.r}
+ggplot(data = d_wea_min, mapping = aes(x = v_wind, y = w5)) + 
+  geom_point() + 
+  geom_smooth(formula = y ~ x, method = 'lm')
+```
+
+```{.r}
+cor(d_wea_min$v_wind, d_wea_min$w5)
+```
+
+#### Andere Darstellungsformen
+
+Selber ausprobieren

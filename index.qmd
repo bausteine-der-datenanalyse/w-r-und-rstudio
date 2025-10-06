@@ -1,51 +1,32 @@
-# Preamble {.unnumbered}
+# Werkzeugbaustein R und RStudio {.unnumbered}
 
-:::: {.border #Lizenz}
+::: {.border #Lizenz}
 
-::: {layout="[20, 80]" layout-valign="center"}
-![](https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by.png){fig-alt="Symbol des Lizenzhinweises Creative Commons BY"} 
+:::: {layout="[20, 80]"}
+![](skript/00-bilder/CC-BY.svg){fig-alt="Symbol des Lizenzhinweises Creative Commons BY"}
 
-Bausteine Computergestützter Datenanalyse. "Titel" von Lukas Arnold, 
-Simone Arnold, Florian Bagemihl, Matthias Baitsch, Marc Fehr, Maik Poetzsch und 
-Sebastian Seipel ist lizensiert unter [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.de). 
-Das Werk ist abrufbar unter <https://github.com/bausteine-der-datenanalyse/titel>. 
-Ausgenommen von der Lizenz sind alle Logos und anders gekennzeichneten Inhalte. 2024
+Bausteine Computergestützter Datenanalyse von Lukas Arnold, Simone Arnold, Florian Bagemihl, Matthias Baitsch, Marc Fehr, Franca Hollmann, Maik Poetzsch und Sebastian Seipel. Werkzeugbaustein Python von Marc Fehr und Maik Poetzsch ist lizensiert unter [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.de). Das Werk ist abrufbar auf [GitHub](https://github.com/bausteine-der-datenanalyse/w-python). Ausgenommen von der Lizenz sind alle Logos Dritter und anders gekennzeichneten Inhalte. 2025
 
-:::
+::::
 
 Zitiervorschlag
 
-Arnold, Lukas, Simone Arnold, Matthias Baitsch, Marc Fehr, Maik Poetzsch, und 
-Sebastian Seipel. 2024. „Bausteine Computergestützter Datenanalyse. 
-Titel“. <https://github.com/bausteine-der-datenanalyse/titel>.
+Arnold, Lukas, Simone Arnold, Matthias Baitsch, Marc Fehr, Franca Hollmann, Maik Poetzsch, und Sebastian Seipel. 2025. „Bausteine Computergestützter Datenanalyse. Werkzeugbaustein Python“. <https://github.com/bausteine-der-datenanalyse/w-python>.
 
 BibTeX-Vorlage
 
 ```
-@misc{BCD-Styleguide-2024,
- title={Bausteine Computergestützter Datenanalyse. Titel},
- author={Arnold, Lukas and Arnold, Simone and Baitsch, Matthias and Fehr, Marc and Poetzsch, Maik and Seipel, Sebastian},
- year={2024},
- url={https://github.com/bausteine-der-datenanalyse/titel}} 
+@misc{BCD-w-python-2025,
+ title={Bausteine Computergestützter Datenanalyse. Werkzeugbaustein Python},
+ author={Arnold, Lukas and Arnold, Simone and Baitsch, Matthias and Fehr, Marc and Hollmann, Franca and Poetzsch, Maik and Seipel, Sebastian},
+ year={2025},
+ url={https://github.com/bausteine-der-datenanalyse/w-python}} 
 ```
 
-::::
-
-
-# Intro
+:::
 
 ## Voraussetzungen
 {{< include voraussetzungen.md >}}
 
-## Verwendete Pakete und Datensätze
-
-### Pakete
-
-### Datensätze
-
-## Bearbeitungszeit
-Geschätzte Bearbeitungszeit: 2h
-
 ## Lernziele
-
 {{< include lernziele.md >}}

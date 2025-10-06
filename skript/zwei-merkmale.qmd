@@ -1,0 +1,440 @@
+---
+title: "Untersuchung von zwei Merkmalen in R"
+---
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+library(plotly)
+library(kableExtra)
+library(tidyverse)
+library(hexbin)
+load("daten/zwei-merkmale-1.Rdata")
+```
+
+
+## Übersicht Dataframes für diese Folien
+
+<br/><br/>
+
+| Name          | Inhalt                                                                                   |
+|---------------|------------------------------------------------------------------------------------------|
+| `d_svrw`      | Jahreswerte für Wirtschaftswachstum und -prognosen vom Sachverständigenrat für Wirtschaft|
+| `d_le_latest` | Lebenserwartung und Entwicklungsindikatoren in verschiedenen Ländern von der Weltbank    |
+| `d_pisa`      | Pisa-Studie vom OECD                                                                     |
+
+<br/><br/>
+
+Quellen: Fahrmeir et al. (2023): Statistik - Der Weg zur Datenanalyse, Weltbank, OECD
+
+##
+
+### Sachverständigenrat für Wirtschaft
+
+| Variable      | Inhalt                                                        |
+|---------------|---------------------------------------------------------------|
+| `Jahr`        | Betrachtetes Jahr                                             |
+| `Prognose`    | Vom Sachverständigenrat prognostiziertes Wirtschaftswachstum  |
+| `Wachstum`    | Tatsächlich eingetretenes Wirtschaftswachstum                 |
+
+
+```{r}
+#| echo: false
+kable(d_svrw) |> scroll_box(height="300px")
+```
+
+[]{.down10}
+
+##
+
+### Weltbank
+
+| Variable      | Inhalt                                                                        |
+|---------------|-------------------------------------------------------------------------------|
+| `year`        | Jahr                                                                          |
+| `country`     | Land                                                                          |
+| `le`          | Life expectancy at birth, total (years) [SP.DYN.LE00.IN](https://data.worldbank.org/indicator/SP.DYN.LE00.IN)                           |
+| `gdppc`       | GDP per capita (current US\$) - [NY.GDP.PCAP.CD](https://data.worldbank.org/indicator/NY.GDP.PCAP.CD)                           |
+| `edu`         | Gov. expenditure on education (% of GDP) - [SE.XPD.TOTL.GD.ZS](https://data.worldbank.org/indicator/SE.XPD.TOTL.GD.ZS)                     |
+| `he`          | Current health expenditure (% of GDP) - [SH.XPD.CHEX.GD.ZS](https://data.worldbank.org/indicator/SH.XPD.CHEX.GD.ZS)                     |
+| `gini`        | GINI index - [SI.POV.GINI](https://data.worldbank.org/indicator/SI.POV.GINI)  |
+
+
+[]{.down10}
+
+```{r}
+#| echo: false
+kable(d_le_latest) |> scroll_box(height="200px")
+```
+
+[]{.down10}
+
+##
+
+### Pisa-Studie
+
+| Variable      | Inhalt                                    |
+|---------------|-------------------------------------------|
+| `country`     | Land                                      |
+| `math`        | PISA-Score im Fach Mathematik             |
+| `read`        | PISA-Score im Bereich Lesekompetenz       |
+
+[]{.down10}
+
+```{r}
+#| echo: false
+kable(d_pisa) |> scroll_box(height="175px")
+```
+
+[]{.down10}
+
+- PISA-Ergebnisse sind Punktwerte auf einer künstlichen Skala, die für sich genommen keine direkte Bedeutung haben
+- Aussagekraft entsteht erst durch den Vergleich zwischen Länder
+- OECD-Berichte stellen daher häufig Länderranglisten in den Mittelpunkt
+
+# Streudiagramme und Blasendiagramme
+
+## Prognosen Sachverständigenrat
+
+```{r}
+ggplot(data = d_svrw) + 
+  geom_point(mapping = aes(x = Prognose, y = Wachstum))
+```
+
+## Prognosen Sachverständigenrat erweitert
+
+```{r}
+ggplot(data = d_svrw, mapping = aes(x = Prognose, y = Wachstum)) +   
+  geom_point(size = 2) + geom_abline(intercept = 0, slope = 1, color = 'red') + geom_rug(color = 'blue')
+```
+## Prognosen Sachverständigenrat erweitert erklärt
+
+- Gerade mit `geom_abline()` und `intercept` sowie `slope`
+- abline für eine Linie mit $y = a + bx$ mit dem y-Achsenabschnitt $a$ = `intercept` und der Steigung $b$ = `slope`
+- Beobachtungen entlang der Achsen mit `geom_rug()` (Blaue Striche)
+- rug wie Teppich, da die Linien entlang der Achsen aussehen wie die Fransen eines Teppichs
+- Mapping für `geom_point()` **und** `geom_rug()` (obere Zeile)
+
+## Ausgaben Gesundheitswesen und Lebenserwartung
+
+```{r}
+ggplot(data = d_le_latest) +
+  geom_point(mapping = aes(x = he, y = le))
+```
+
+## Ausgaben Gesundheitswesen und Lebenserwartung
+
+```{r}
+ggplot(data = d_le_latest) +
+  geom_point(mapping = aes(x = he, y = le), shape = 21, fill = 'orange')
+```
+- Farbe und Form der Punkte verändert
+
+## `geom_point()`: Shapes
+
+[]{.down10}
+
+```{r}
+#| echo: false
+# From https://ggplot2.tidyverse.org/reference/scale_shape.html
+d <- tibble(S = 0:24)
+ggplot(d, aes(0, 0, shape = S)) +
+  geom_point(aes(shape = S), size = 5, fill = 'red') +
+  scale_shape_identity() +
+  facet_wrap(~S) +
+  theme_void()
+```
+
+## Interaktive Diagramme mit `plotly`
+
+```{r}
+p <- ggplot(data=d_le_latest) + geom_point(mapping = aes(x = he, y = le, label = country), shape = 21, fill = 'orange')
+ggplotly(p, width = 800, height = 400)
+```
+
+- Weitere Informationen anzeigen mit `label=<M>`
+- Funktioniert nur in HTML (und nicht auf Papier)
+
+## Ausgaben Gesundheitswesen und Lebenserwartung mit Beschriftung, Schritt 1
+
+[]{.down20}
+
+```{r}
+countries <- c("United States", "Sierra Leone", "Sri Lanka")
+d_le_latest <- d_le_latest |> mutate(highlight = country %in% countries)
+d_le_labels <- d_le_latest |> filter(country %in% countries)
+```
+
+[]{.down20}
+
+- Array (verweis zu Basics) mit interessanten/markanten/... Ländern
+- `mutate()`: Länder hervorheben mit Merkmal `highlight`
+- `filter()`: Zeilen mit anderen Ländern herausfiltern
+- Dazu später mehr (Verweis auf Stelle)
+
+## Ausgaben Gesundheitswesen und Lebenserwartung mit Beschriftung, Schritt 2
+
+```{r}
+p <- ggplot(mapping = aes(x = he, y = le, label = country)) +
+  geom_point(data = d_le_latest, mapping = aes(color = highlight)) +
+  geom_label(data = d_le_labels, hjust = 0.7, nudge_y = 2, size = 2.5, alpha = 0.5)
+```
+
+- Plot in Variable `p` speichern und auf nächster Folie ausgegeben
+- Farblich hervorheben mit Merkmal `highlight` (siehe oben)
+- Beschriftung hinzufügen mit `geom_label()` (Dokumentation!)
+- Details später (Verweis)
+
+## Ausgaben Gesundheitswesen und Lebenserwartung mit Beschriftung, Darstellung
+
+```{r}
+p
+```
+
+## Blasendiagramm
+
+```{r}
+ggplot(data = d_le_latest) + 
+  geom_point(mapping=aes(x = he, y = le, size = gdppc))
+```
+
+- Skalierung nach BIP pro Kopf
+
+## Darstellung von fünf Merkmalen
+
+```{r}
+d <- tibble(A = c(1, 6, 2, 8), B = c(10, 0, 5, 3.75), C = c(16, 2, 8, 4), D = c('a', 'b', 'b', 'a'), E = c('u', 'u', 'v', 'v'))
+ggplot(data = d) + geom_point(mapping = aes(x = A, y = B, size = C, color = D, shape = E))
+```
+
+- Hier schwer zu lesen, von Fall zu Fall entscheiden
+
+# Histogramme und Dichtefunktionen
+
+## Histogramm 2D (Basisversion)
+
+```{r}
+ggplot(data = d_le_latest) + 
+  geom_bin2d(mapping = aes(x = he, y = le))
+```
+
+- Histogramm für zwei Merkmale mit `geom_bin2d()`
+- bin wie Feld, Zelle, Klasse + 2D (zweidimensional)
+
+## Histogramm 2D (mit Klassenbreiten)
+
+```{r}
+ggplot(data = d_le_latest) +
+  geom_bin2d(mapping = aes(x = he, y = le), binwidth = c(1, 4))
+```
+
+- Klassenbreiten mit `binwidth()` und Werten für jede Richtung
+
+## Alternativ mit Sechsecken
+
+```{r}
+ggplot(data = d_le_latest) +
+  geom_hex(mapping = aes(x=he, y=le), binwidth = c(1, 4))
+```
+
+- Unterschied zu vorher: `geom_hex` statt `geom_bin2d`
+- hex wie hexagonal
+
+## Dichtefunktion
+
+```{r}
+ggplot(data = d_le_latest) +
+  geom_density_2d(mapping = aes(x = he, y = le))
+```
+
+- `geom_density_2d()` erzeugt Höhenlinien der geschätzten Dichtefunktion
+
+## Dichtefunktion gefüllt
+
+```{r}
+ggplot(data = d_le_latest) + 
+  geom_density_2d_filled(mapping = aes(x = he, y = le))
+```
+
+- `geom_density_2d_filled()` färbt nach der geschätzten Dichtefunktion
+
+# Korrelationskoeffizient
+
+## Korrelationskoeffizient berechnen
+
+```{r}
+d <- tibble(X = c(1, 3, 4, 8), Y = c(2, 3, 3.5, 5.5))
+cor(d$X, d$Y)
+```
+
+- Mit `cor(x, y)` wird der Korrelationkoeffizient $r$ für die Werte in `x` und `y` berechnet
+
+## Zugehöriger Plot
+
+```{r}
+ggplot(data = d, mapping = aes(x = X, y = Y)) + 
+  geom_vline(xintercept = mean(d$X), color = 'orange') + 
+  geom_hline(yintercept = mean(d$Y), color = 'orange') + 
+  geom_smooth(formula = y ~ x, method = 'lm', linewidth = 0.25) +
+  geom_point(size = 3)
+```
+
+## Korrelationskoeffizienten von Beispieldaten berechnen  (1/3)
+
+[]{.down40}
+
+### Wirtschaftsprognosen
+
+```{r}
+cor(d_svrw$Prognose, d_svrw$Wachstum)
+```
+
+$\rightarrow$ Mittlere Korrelation
+
+[]{.down40}
+
+### Pisa-Studie
+
+```{r}
+cor(d_pisa$read, d_pisa$math)
+```
+
+$\rightarrow$ Starke positive Korrelation
+
+## Korrelationskoeffizienten von Beispieldaten berechnen  (2/3)
+
+[]{.down40}
+
+### Gesundheitsausgaben und Lebenserwartung
+
+```{r}
+cor(d_le_latest$he, d_le_latest$le)
+```
+[]{.down40}
+
+### Gini-Koeffizient und Lebenserwartung
+
+```{r}
+cor(d_le_latest$gini, d_le_latest$le)
+```
+$\rightarrow$ Mittlere negative Korrelation
+
+## Korrelationskoeffizienten von Beispieldaten berechnen  (3/3)
+
+[]{.down40}
+
+
+### BIP pro Kopf und Lebenserwartung
+
+```{r}
+cor(d_le_latest$gdppc, d_le_latest$le)
+```
+[]{.down40}
+
+### BIP pro Kopf (logarithmisch) und Lebenserwartung
+
+```{r}
+cor(log10(d_le_latest$gdppc), d_le_latest$le)
+```
+
+# Lineare Regression
+
+## Rechenbeispiel
+
+### Berechnung der Ausgleichsgeraden
+
+```{r}
+d <- tibble(X = c(1, 2, 3), Y = c(1, 5, 3))
+xm = mean(d$X)
+ym = mean(d$Y) 
+betaD = sum((d$X - xm) * (d$Y - ym)) / sum((d$X - xm)^2)
+alphaD = ym - betaD * xm
+```
+
+- Rechenoperationen werden für Vektoren elementweise ausgeführt (anders als in Matlab)
+- Elemente eines Vektors aufsummieren mit `sum()`
+- Dazu später mehr (Verweis)
+
+##
+
+### Plot der Ausgleichsgeraden
+
+```{r}
+ggplot(data = d) + 
+  geom_abline(intercept = alphaD, slope = betaD, color = 'orange', size = 1) +
+  geom_point(mapping = aes(x = X, y = Y), size = 3)
+```
+
+##
+
+### Ausgleichsgerade mit `geom_smooth()`
+
+```{r}
+ggplot(data = d, mapping = aes(x = X, y = Y)) + 
+  geom_smooth(formula = y ~ x, method = 'lm', se = FALSE, color = 'orange') +
+  geom_point(size = 3)
+```
+
+- smooth wie glätten $\rightarrow$ Glättende Gerade
+
+## Ausgleichskurven mit LOESS, Beispiel 1
+
+```{r}
+d <- tibble( X = 10 * runif(300), Y = sin(2 * pi * X / 10) + 0.2 * rnorm(300))
+ggplot(data = d, mapping = aes(x = X, y = Y)) +
+  geom_point() + geom_smooth(formula = y ~ x, method = "loess", se = FALSE) 
+```
+
+## Ausgleichskurven mit LOESS, Beispiel 2
+
+```{r}
+d <- tibble(X = 10 * runif(20), Y = sin(2 * pi * X / 10) + 0.2 * rnorm(20))
+ggplot(data = d, mapping = aes(x = X, y = Y)) +
+  geom_point() + geom_smooth(formula = y ~ x, method = "loess", se = TRUE) 
+```
+
+- LOESS: Locally Estimated Scatterplot Smoothing
+- Konfidenzintervall anzeigen mit `se = TRUE`
+- Auskunft darüber, wie vertrauenswürdig die berechnete Kurve ist
+
+# Zusammenfassung
+
+## `geom_point()`
+
+| AES/Argument | Beschreibung                       | Optional |
+|--------------|------------------------------------|----------|
+| x            | Merkmal für x-Position             | Nein     |
+| y            | Merkmal für y-Position             | Nein     |
+| shape        | Form (nur qualitative Merkmale)    | Ja       |
+| size         | Größe (nur stetige Merkmale)       | Ja       |
+| alpha        | Transparenz (nur stetige Merkmale) | Ja       |
+| color        | Farbe                              | Ja       |
+| fill         | Füllfarbe für Shapes 21 ‒ 24       | Ja       |
+
+: {tbl-colwidths="[20,50,30]"}
+
+## Geglättete Daten mit `geom_smooth()`
+
+```{r}
+#| eval: false
+ggplot(data = <DATAFRAME>) +
+  geom_smooth(mapping = aes(x = <M>, y = <M>), Argumente)
+```
+
+| AES | Beschreibung        | Optional |
+|-----|---------------------|----------|
+| x   | Merkmal für x-Achse | Nein     |
+| y   | Merkmal für y-Achse | Nein     |
+
+: {tbl-colwidths="[20,50,30]"}
+
+| Argumente | Beschreibung                                       | Optional |
+|-----------|----------------------------------------------------|----------|
+| formula   | In der Regel `y ~ x`                               | Nein     |
+| method    | Methode (Linear mit `'lm'`, LOESS mit `'loess'`)   | Ja       |
+| se        | Konfidenzintervall anzeigen (`TRUE` oder `FALSE`)  | Ja       |
+| color     | Farbe                                              | Ja       |
+| size      | Linienstärke                                       | Ja       |
+
+: {tbl-colwidths="[20,50,30]"}

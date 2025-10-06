@@ -1,0 +1,125 @@
+---
+title: "Musterlösung Aufgabe 2"
+subtitle: "Mobilitätsbefragung an der BO"
+author: "Matthias Baitsch"
+output: html_document
+---
+
+```{r setup, include=FALSE, message=FALSE}
+library(readxl)
+source("style/setup.R")
+```
+
+# 1. Einlesen und Aufbereiten der Daten
+
+```{r}
+d_mb <- read_excel("daten/BefragungMVP2017_0.xlsx") |>
+  select(
+    geschlecht_id = V1_Ge,
+    fachbereich_id = V2_FB,
+    vm_heute_id = V3_VMheute,
+    ort_id = V5_Ort,
+    ort_ir = V51_OrtRuhr,
+    ort_nir = V52_Ortaußer,
+    zeit = V6_Zeit
+  ) |>
+  mutate(im_ruhrgebiet = ort_id != 9) |>
+  left_join(read_excel("daten/BefragungMVP2017_0_kodierung.xlsx", sheet = "geschlecht")) |>
+  left_join(read_excel("daten/BefragungMVP2017_0_kodierung.xlsx", sheet = "fachbereich")) |>
+  left_join(read_excel("daten/BefragungMVP2017_0_kodierung.xlsx", sheet = "vm_heute")) |>
+  left_join(read_excel("daten/BefragungMVP2017_0_kodierung.xlsx", sheet = "ort")) |>
+  mutate(
+    ort = if_else(ort == "IR", ort_ir, ort),
+    ort = if_else(ort == "NIR", ort_nir, ort),
+    ort = recode(
+      ort,
+      "Wupperta" = "Wuppertal",
+      "Remschei" = "Remscheid",
+    )
+  ) |>
+  filter(!is.na(vm_heute)) |>
+  select(-ends_with("_id"), -ort_ir, -ort_nir)
+bo_kable(d_mb)
+```
+
+- Die Kodierung steht in einer eigenen Excel-Tabelle im data Ordner
+
+# 2.1 Angehörige der Fachbereiche
+
+```{r}
+ggplot(data = d_mb) +
+  geom_bar(
+    mapping = aes(x = fct_infreq(fachbereich), fill = fachbereich), 
+    show.legend = FALSE
+  )
+```
+
+- Mit `fct_infreq()` wird die Reihenfolge nach der Häufigkeit gewählt
+
+# 2.2 Fachbereiche und Verkehrsmittel
+
+```{r}
+ggplot(data = d_mb) +
+  geom_bar(
+    mapping = aes(x = fct_infreq(fachbereich), fill = vm_heute), 
+    position = position_dodge(preserve = "single")
+  )
+```
+
+- Mit `position = position_dodge(preserve = "single")` werden die Balken nebeneinander dargestellt
+
+# 2.3 Häufigste Orte
+
+```{r}
+orte <- (d_mb |> group_by(ort) |> summarise(n = n()) |> arrange(desc(n)) |> filter(!is.na(ort)) |> head(5))$ort
+d_mb <- d_mb |> 
+  mutate(
+    ort2 = if_else(ort %in% orte, ort, "Andere"),
+    ort2 = factor(ort2, levels = c(orte, "Andere"))
+  )
+ggplot(data = d_mb) +
+  geom_bar(
+    mapping = aes(x = ort2, fill = ort), 
+    show.legend = FALSE
+  ) 
+```
+
+- Mit `ort2 = factor(ort2, levels = c(orte, "Andere"))` wird die Reihenfolge festgelegt
+
+# 2.4 Fahrzeiten und Ort
+
+```{r}
+ggplot(data = d_mb) + 
+  geom_boxplot(mapping = aes(x = ort2, y = zeit))
+```
+
+# 2.5 Fahrzeiten und Verkehrsmittel
+
+```{r}
+ggplot(data = d_mb) + 
+  geom_boxplot(mapping = aes(x = vm_heute, y = zeit))
+```
+
+# 3. Wegstrecke und Fahrzeit
+
+```{r message=FALSE}
+d_e <- tibble(
+  ort = c("Essen", "Dortmund", "Herne", "Wuppertal", "Gelsenkirchen", "Mühlheim"),
+  entfernung = c(17.8, 15.4, 10.7, 21.4, 14.1, 27.2)
+)
+d_mb_e <- d_mb |> left_join(d_e) |> filter(!is.na(entfernung))
+ggplot(data = d_mb_e) +
+  geom_point(mapping = aes(x = entfernung, y = zeit, color = fachbereich)) +
+  scale_x_continuous(breaks = d_e$entfernung, minor_breaks = NULL)
+```
+
+- Kein unmittelbarer Zusammenhang erkennbar
+
+# 4. Reisezeit und Verkehrsmittel
+
+```{r}
+ggplot(data = d_mb) +
+  geom_boxplot(mapping = aes(x = vm_heute, y = zeit), varwidth = TRUE)
+```
+
+- Mit dem ÖPNV ist man tendenziell länger unterwegs

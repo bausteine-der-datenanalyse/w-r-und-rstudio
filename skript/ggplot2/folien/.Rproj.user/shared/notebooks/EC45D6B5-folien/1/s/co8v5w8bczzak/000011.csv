@@ -1,0 +1,2 @@
+"0","ggplot(data=d) + "
+"0","  geom_step(mapping=aes(x=X, color=Y), stat=""ecdf"")"
