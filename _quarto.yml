@@ -1,0 +1,43 @@
+project:
+  type: book
+
+book:
+  title: "Titel"
+  author:
+    - Lukas Arnold
+    - Simone Arnold
+    - Florian Bagemihl
+    - Matthias Baitsch
+    - Marc Fehr
+    - Maik Poetzsch
+    - Sebastian Seipel
+  date: today
+  language: de-DE
+  downloads: [pdf]
+  repo-url: "https://github.com/bausteine-der-datenanalyse/titel"
+  repo-actions: [source]
+  favicon: "skript/00-bilder/favicon_bcd_new.svg"
+  sidebar:
+    title: "Titel"
+    logo: "skript/00-bilder/logo_bcd_new.svg"
+
+bibliography: skript/references.bib
+
+format:
+  html:
+    theme: [cosmo, theme.scss]
+    lang: de
+    tbl-cap-location: bottom
+  pdf:
+    documentclass: scrreprt
+    lang: de
+    toc-depth: 1
+
+execute:
+  freeze: auto
+
+profile:
+  default: full
+  group: 
+    - [full]
+

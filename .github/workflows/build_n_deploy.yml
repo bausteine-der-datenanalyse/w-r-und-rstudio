@@ -1,0 +1,16 @@
+name: Build and deploy
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write  # 🔐 Needed for pushing changes in the called workflow
+
+jobs:
+  deploy:
+    uses: bausteine-der-datenanalyse/shared-media-and-workflows/.github/workflows/build_and_deploy.yml@main
+    with:
+      quarto_profile: "full"
