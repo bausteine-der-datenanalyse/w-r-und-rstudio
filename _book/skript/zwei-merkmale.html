@@ -1,0 +1,3278 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.24">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>10&nbsp; Untersuchung von zwei Merkmalen in R – Bausteine Computergestützter Datenanalyse</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../skript/zwei-merkmale-aufgabe.html" rel="next">
+<link href="../skript/dichtekurven-aufgabe.html" rel="prev">
+<link href="../skript/00-bilder/favicon_bcd_new.svg" rel="icon" type="image/svg+xml">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-0b984170a42629a489084289cb1ad9fe.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="../site_libs/kePrint-0.0.1/kePrint.js"></script>
+
+<link href="../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+<script src="../site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+
+<script src="../site_libs/plotly-binding-4.11.0/plotly.js"></script>
+
+<script src="../site_libs/typedarray-0.1/typedarray.min.js"></script>
+
+<script src="../site_libs/jquery-3.5.1/jquery.min.js"></script>
+
+<link href="../site_libs/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet">
+
+<script src="../site_libs/crosstalk-1.2.2/js/crosstalk.min.js"></script>
+
+<link href="../site_libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet">
+
+<script src="../site_libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+
+<link rel="shortcut icon" href="skript/00-bilder/favicon_bcd_new.svg">
+<link rel="icon" type="image/x-icon" href="logo.ico">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../skript/zwei-merkmale.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Untersuchung von zwei Merkmalen in R</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="../skript/00-bilder/logo_bcd_new.svg" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="../skript/00-bilder/logo_bcd_new.svg" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Titel</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/bausteine-der-datenanalyse/Werkzeugbaustein-R-und-RStudio" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="../Bausteine-Computergestützter-Datenanalyse.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Werkzeugbaustein R und RStudio</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/erste-schritte.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Erste Schritte in RStudio</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/erste-schritte-aufgabe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">erste-schritte-aufgabe.html</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/ggplot2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Grundlagen von ggplot2</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/einzelne-merkmale.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Untersuchung einzelner Merkmale in R</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/einzelne-merkmale-aufgabe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Aufgaben zur Untersuchung einzelner Merkmale</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/kenngrößen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Kenngrößen und Beschreibung von Verteilungen in R</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/kenngrößen-aufgabe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Aufgaben zu Kenngrößen und Beschreibung von Verteilungen</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/dichtekurven.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Dichtekurven und Normalverteilung</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/dichtekurven-aufgabe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Aufgaben zu Dichtekurven und Normalverteilung</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/zwei-merkmale.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Untersuchung von zwei Merkmalen in R</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/zwei-merkmale-aufgabe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Aufgaben zur Untersuchung von zwei Merkmalen</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/weitere-geoms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Weitere Geoms und Aufbereiten von Plots</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/weitere-geoms-aufgabe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Aufgaben zum Aufbereiten von Plots</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/grundlagen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Basics der Programmiersprache R</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/grundlagen-aufgabe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Übung zur Programmiersprache R</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/daten-einlesen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Daten einlesen</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/daten-aufbereiten.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Daten aufbereiten</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/daten-aufbereiten-aufgabe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Aufgaben zum Einlesen und Aufbereiten von Daten</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/räumliche-daten.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Räumliche Daten</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/räumliche-daten-aufgabe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Aufgaben zu räumlichen Daten</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/mehrere-datensätze.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Mehrere Datensätze</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/tipps-und-tricks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Tipps und Tricks</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/rdwd-anwenden.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Das Paket rdwd verwenden</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/lineare-trends.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Lineare Trends für viele Datensätze</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/zeitreihen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Arbeiten mit Zeitreihen</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/schreiben-mit-quarto.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Schreiben mit Quarto</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/praesentationen-mit-quarto.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Präsentationen erstellen mit Quarto</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#übersicht-dataframes-für-diese-folien" id="toc-übersicht-dataframes-für-diese-folien" class="nav-link active" data-scroll-target="#übersicht-dataframes-für-diese-folien"><span class="header-section-number">10.1</span> Übersicht Dataframes für diese Folien</a></li>
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"><span class="header-section-number">10.2</span> </a>
+  <ul class="collapse">
+  <li><a href="#sachverständigenrat-für-wirtschaft" id="toc-sachverständigenrat-für-wirtschaft" class="nav-link" data-scroll-target="#sachverständigenrat-für-wirtschaft">Sachverständigenrat für Wirtschaft</a></li>
+  </ul></li>
+  <li><a href="#section-1" id="toc-section-1" class="nav-link" data-scroll-target="#section-1"><span class="header-section-number">10.3</span> </a>
+  <ul class="collapse">
+  <li><a href="#weltbank" id="toc-weltbank" class="nav-link" data-scroll-target="#weltbank">Weltbank</a></li>
+  </ul></li>
+  <li><a href="#section-2" id="toc-section-2" class="nav-link" data-scroll-target="#section-2"><span class="header-section-number">10.4</span> </a>
+  <ul class="collapse">
+  <li><a href="#pisa-studie" id="toc-pisa-studie" class="nav-link" data-scroll-target="#pisa-studie">Pisa-Studie</a></li>
+  </ul></li>
+  <li><a href="#streudiagramme-und-blasendiagramme" id="toc-streudiagramme-und-blasendiagramme" class="nav-link" data-scroll-target="#streudiagramme-und-blasendiagramme"><span class="header-section-number">11</span> Streudiagramme und Blasendiagramme</a>
+  <ul class="collapse">
+  <li><a href="#prognosen-sachverständigenrat" id="toc-prognosen-sachverständigenrat" class="nav-link" data-scroll-target="#prognosen-sachverständigenrat"><span class="header-section-number">11.1</span> Prognosen Sachverständigenrat</a></li>
+  <li><a href="#prognosen-sachverständigenrat-erweitert" id="toc-prognosen-sachverständigenrat-erweitert" class="nav-link" data-scroll-target="#prognosen-sachverständigenrat-erweitert"><span class="header-section-number">11.2</span> Prognosen Sachverständigenrat erweitert</a></li>
+  <li><a href="#prognosen-sachverständigenrat-erweitert-erklärt" id="toc-prognosen-sachverständigenrat-erweitert-erklärt" class="nav-link" data-scroll-target="#prognosen-sachverständigenrat-erweitert-erklärt"><span class="header-section-number">11.3</span> Prognosen Sachverständigenrat erweitert erklärt</a></li>
+  <li><a href="#ausgaben-gesundheitswesen-und-lebenserwartung" id="toc-ausgaben-gesundheitswesen-und-lebenserwartung" class="nav-link" data-scroll-target="#ausgaben-gesundheitswesen-und-lebenserwartung"><span class="header-section-number">11.4</span> Ausgaben Gesundheitswesen und Lebenserwartung</a></li>
+  <li><a href="#ausgaben-gesundheitswesen-und-lebenserwartung-1" id="toc-ausgaben-gesundheitswesen-und-lebenserwartung-1" class="nav-link" data-scroll-target="#ausgaben-gesundheitswesen-und-lebenserwartung-1"><span class="header-section-number">11.5</span> Ausgaben Gesundheitswesen und Lebenserwartung</a></li>
+  <li><a href="#geom_point-shapes" id="toc-geom_point-shapes" class="nav-link" data-scroll-target="#geom_point-shapes"><span class="header-section-number">11.6</span> <code>geom_point()</code>: Shapes</a></li>
+  <li><a href="#interaktive-diagramme-mit-plotly" id="toc-interaktive-diagramme-mit-plotly" class="nav-link" data-scroll-target="#interaktive-diagramme-mit-plotly"><span class="header-section-number">11.7</span> Interaktive Diagramme mit <code>plotly</code></a></li>
+  <li><a href="#ausgaben-gesundheitswesen-und-lebenserwartung-mit-beschriftung-schritt-1" id="toc-ausgaben-gesundheitswesen-und-lebenserwartung-mit-beschriftung-schritt-1" class="nav-link" data-scroll-target="#ausgaben-gesundheitswesen-und-lebenserwartung-mit-beschriftung-schritt-1"><span class="header-section-number">11.8</span> Ausgaben Gesundheitswesen und Lebenserwartung mit Beschriftung, Schritt 1</a></li>
+  <li><a href="#ausgaben-gesundheitswesen-und-lebenserwartung-mit-beschriftung-schritt-2" id="toc-ausgaben-gesundheitswesen-und-lebenserwartung-mit-beschriftung-schritt-2" class="nav-link" data-scroll-target="#ausgaben-gesundheitswesen-und-lebenserwartung-mit-beschriftung-schritt-2"><span class="header-section-number">11.9</span> Ausgaben Gesundheitswesen und Lebenserwartung mit Beschriftung, Schritt 2</a></li>
+  <li><a href="#ausgaben-gesundheitswesen-und-lebenserwartung-mit-beschriftung-darstellung" id="toc-ausgaben-gesundheitswesen-und-lebenserwartung-mit-beschriftung-darstellung" class="nav-link" data-scroll-target="#ausgaben-gesundheitswesen-und-lebenserwartung-mit-beschriftung-darstellung"><span class="header-section-number">11.10</span> Ausgaben Gesundheitswesen und Lebenserwartung mit Beschriftung, Darstellung</a></li>
+  <li><a href="#blasendiagramm" id="toc-blasendiagramm" class="nav-link" data-scroll-target="#blasendiagramm"><span class="header-section-number">11.11</span> Blasendiagramm</a></li>
+  <li><a href="#darstellung-von-fünf-merkmalen" id="toc-darstellung-von-fünf-merkmalen" class="nav-link" data-scroll-target="#darstellung-von-fünf-merkmalen"><span class="header-section-number">11.12</span> Darstellung von fünf Merkmalen</a></li>
+  </ul></li>
+  <li><a href="#histogramme-und-dichtefunktionen" id="toc-histogramme-und-dichtefunktionen" class="nav-link" data-scroll-target="#histogramme-und-dichtefunktionen"><span class="header-section-number">12</span> Histogramme und Dichtefunktionen</a>
+  <ul class="collapse">
+  <li><a href="#histogramm-2d-basisversion" id="toc-histogramm-2d-basisversion" class="nav-link" data-scroll-target="#histogramm-2d-basisversion"><span class="header-section-number">12.1</span> Histogramm 2D (Basisversion)</a></li>
+  <li><a href="#histogramm-2d-mit-klassenbreiten" id="toc-histogramm-2d-mit-klassenbreiten" class="nav-link" data-scroll-target="#histogramm-2d-mit-klassenbreiten"><span class="header-section-number">12.2</span> Histogramm 2D (mit Klassenbreiten)</a></li>
+  <li><a href="#alternativ-mit-sechsecken" id="toc-alternativ-mit-sechsecken" class="nav-link" data-scroll-target="#alternativ-mit-sechsecken"><span class="header-section-number">12.3</span> Alternativ mit Sechsecken</a></li>
+  <li><a href="#dichtefunktion" id="toc-dichtefunktion" class="nav-link" data-scroll-target="#dichtefunktion"><span class="header-section-number">12.4</span> Dichtefunktion</a></li>
+  <li><a href="#dichtefunktion-gefüllt" id="toc-dichtefunktion-gefüllt" class="nav-link" data-scroll-target="#dichtefunktion-gefüllt"><span class="header-section-number">12.5</span> Dichtefunktion gefüllt</a></li>
+  </ul></li>
+  <li><a href="#korrelationskoeffizient" id="toc-korrelationskoeffizient" class="nav-link" data-scroll-target="#korrelationskoeffizient"><span class="header-section-number">13</span> Korrelationskoeffizient</a>
+  <ul class="collapse">
+  <li><a href="#korrelationskoeffizient-berechnen" id="toc-korrelationskoeffizient-berechnen" class="nav-link" data-scroll-target="#korrelationskoeffizient-berechnen"><span class="header-section-number">13.1</span> Korrelationskoeffizient berechnen</a></li>
+  <li><a href="#zugehöriger-plot" id="toc-zugehöriger-plot" class="nav-link" data-scroll-target="#zugehöriger-plot"><span class="header-section-number">13.2</span> Zugehöriger Plot</a></li>
+  <li><a href="#korrelationskoeffizienten-von-beispieldaten-berechnen-13" id="toc-korrelationskoeffizienten-von-beispieldaten-berechnen-13" class="nav-link" data-scroll-target="#korrelationskoeffizienten-von-beispieldaten-berechnen-13"><span class="header-section-number">13.3</span> Korrelationskoeffizienten von Beispieldaten berechnen (1/3)</a>
+  <ul class="collapse">
+  <li><a href="#wirtschaftsprognosen" id="toc-wirtschaftsprognosen" class="nav-link" data-scroll-target="#wirtschaftsprognosen">Wirtschaftsprognosen</a></li>
+  <li><a href="#pisa-studie-1" id="toc-pisa-studie-1" class="nav-link" data-scroll-target="#pisa-studie-1">Pisa-Studie</a></li>
+  </ul></li>
+  <li><a href="#korrelationskoeffizienten-von-beispieldaten-berechnen-23" id="toc-korrelationskoeffizienten-von-beispieldaten-berechnen-23" class="nav-link" data-scroll-target="#korrelationskoeffizienten-von-beispieldaten-berechnen-23"><span class="header-section-number">13.4</span> Korrelationskoeffizienten von Beispieldaten berechnen (2/3)</a>
+  <ul class="collapse">
+  <li><a href="#gesundheitsausgaben-und-lebenserwartung" id="toc-gesundheitsausgaben-und-lebenserwartung" class="nav-link" data-scroll-target="#gesundheitsausgaben-und-lebenserwartung">Gesundheitsausgaben und Lebenserwartung</a></li>
+  <li><a href="#gini-koeffizient-und-lebenserwartung" id="toc-gini-koeffizient-und-lebenserwartung" class="nav-link" data-scroll-target="#gini-koeffizient-und-lebenserwartung">Gini-Koeffizient und Lebenserwartung</a></li>
+  </ul></li>
+  <li><a href="#korrelationskoeffizienten-von-beispieldaten-berechnen-33" id="toc-korrelationskoeffizienten-von-beispieldaten-berechnen-33" class="nav-link" data-scroll-target="#korrelationskoeffizienten-von-beispieldaten-berechnen-33"><span class="header-section-number">13.5</span> Korrelationskoeffizienten von Beispieldaten berechnen (3/3)</a>
+  <ul class="collapse">
+  <li><a href="#bip-pro-kopf-und-lebenserwartung" id="toc-bip-pro-kopf-und-lebenserwartung" class="nav-link" data-scroll-target="#bip-pro-kopf-und-lebenserwartung">BIP pro Kopf und Lebenserwartung</a></li>
+  <li><a href="#bip-pro-kopf-logarithmisch-und-lebenserwartung" id="toc-bip-pro-kopf-logarithmisch-und-lebenserwartung" class="nav-link" data-scroll-target="#bip-pro-kopf-logarithmisch-und-lebenserwartung">BIP pro Kopf (logarithmisch) und Lebenserwartung</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#lineare-regression" id="toc-lineare-regression" class="nav-link" data-scroll-target="#lineare-regression"><span class="header-section-number">14</span> Lineare Regression</a>
+  <ul class="collapse">
+  <li><a href="#rechenbeispiel" id="toc-rechenbeispiel" class="nav-link" data-scroll-target="#rechenbeispiel"><span class="header-section-number">14.1</span> Rechenbeispiel</a>
+  <ul class="collapse">
+  <li><a href="#berechnung-der-ausgleichsgeraden" id="toc-berechnung-der-ausgleichsgeraden" class="nav-link" data-scroll-target="#berechnung-der-ausgleichsgeraden">Berechnung der Ausgleichsgeraden</a></li>
+  </ul></li>
+  <li><a href="#section-3" id="toc-section-3" class="nav-link" data-scroll-target="#section-3"><span class="header-section-number">14.2</span> </a>
+  <ul class="collapse">
+  <li><a href="#plot-der-ausgleichsgeraden" id="toc-plot-der-ausgleichsgeraden" class="nav-link" data-scroll-target="#plot-der-ausgleichsgeraden">Plot der Ausgleichsgeraden</a></li>
+  </ul></li>
+  <li><a href="#section-4" id="toc-section-4" class="nav-link" data-scroll-target="#section-4"><span class="header-section-number">14.3</span> </a>
+  <ul class="collapse">
+  <li><a href="#ausgleichsgerade-mit-geom_smooth" id="toc-ausgleichsgerade-mit-geom_smooth" class="nav-link" data-scroll-target="#ausgleichsgerade-mit-geom_smooth">Ausgleichsgerade mit <code>geom_smooth()</code></a></li>
+  </ul></li>
+  <li><a href="#ausgleichskurven-mit-loess-beispiel-1" id="toc-ausgleichskurven-mit-loess-beispiel-1" class="nav-link" data-scroll-target="#ausgleichskurven-mit-loess-beispiel-1"><span class="header-section-number">14.4</span> Ausgleichskurven mit LOESS, Beispiel 1</a></li>
+  <li><a href="#ausgleichskurven-mit-loess-beispiel-2" id="toc-ausgleichskurven-mit-loess-beispiel-2" class="nav-link" data-scroll-target="#ausgleichskurven-mit-loess-beispiel-2"><span class="header-section-number">14.5</span> Ausgleichskurven mit LOESS, Beispiel 2</a></li>
+  </ul></li>
+  <li><a href="#zusammenfassung" id="toc-zusammenfassung" class="nav-link" data-scroll-target="#zusammenfassung"><span class="header-section-number">15</span> Zusammenfassung</a>
+  <ul class="collapse">
+  <li><a href="#geom_point" id="toc-geom_point" class="nav-link" data-scroll-target="#geom_point"><span class="header-section-number">15.1</span> <code>geom_point()</code></a></li>
+  <li><a href="#geglättete-daten-mit-geom_smooth" id="toc-geglättete-daten-mit-geom_smooth" class="nav-link" data-scroll-target="#geglättete-daten-mit-geom_smooth"><span class="header-section-number">15.2</span> Geglättete Daten mit <code>geom_smooth()</code></a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/bausteine-der-datenanalyse/Werkzeugbaustein-R-und-RStudio/blob/main/skript/zwei-merkmale.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Untersuchung von zwei Merkmalen in R</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="übersicht-dataframes-für-diese-folien" class="level2" data-number="10.1">
+<h2 data-number="10.1" class="anchored" data-anchor-id="übersicht-dataframes-für-diese-folien"><span class="header-section-number">10.1</span> Übersicht Dataframes für diese Folien</h2>
+<p><br><br></p>
+<table class="table">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 85%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Inhalt</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>d_svrw</code></td>
+<td>Jahreswerte für Wirtschaftswachstum und -prognosen vom Sachverständigenrat für Wirtschaft</td>
+</tr>
+<tr class="even">
+<td><code>d_le_latest</code></td>
+<td>Lebenserwartung und Entwicklungsindikatoren in verschiedenen Ländern von der Weltbank</td>
+</tr>
+<tr class="odd">
+<td><code>d_pisa</code></td>
+<td>Pisa-Studie vom OECD</td>
+</tr>
+</tbody>
+</table>
+<p><br><br></p>
+<p>Quellen: Fahrmeir et al.&nbsp;(2023): Statistik - Der Weg zur Datenanalyse, Weltbank, OECD</p>
+</section>
+<section id="section" class="level2" data-number="10.2">
+<h2 data-number="10.2" class="anchored" data-anchor-id="section"><span class="header-section-number">10.2</span> </h2>
+<section id="sachverständigenrat-für-wirtschaft" class="level3">
+<h3 class="anchored" data-anchor-id="sachverständigenrat-für-wirtschaft">Sachverständigenrat für Wirtschaft</h3>
+<table class="table">
+<colgroup>
+<col style="width: 19%">
+<col style="width: 80%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Inhalt</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Jahr</code></td>
+<td>Betrachtetes Jahr</td>
+</tr>
+<tr class="even">
+<td><code>Prognose</code></td>
+<td>Vom Sachverständigenrat prognostiziertes Wirtschaftswachstum</td>
+</tr>
+<tr class="odd">
+<td><code>Wachstum</code></td>
+<td>Tatsächlich eingetretenes Wirtschaftswachstum</td>
+</tr>
+</tbody>
+</table>
+<div class="cell">
+<div class="cell-output-display">
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:300px; ">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">Jahr</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">Prognose</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">Wachstum</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1975</td>
+<td style="text-align: right;">2.00</td>
+<td style="text-align: right;">-3.6</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1976</td>
+<td style="text-align: right;">4.50</td>
+<td style="text-align: right;">5.6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1977</td>
+<td style="text-align: right;">4.50</td>
+<td style="text-align: right;">2.4</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1978</td>
+<td style="text-align: right;">3.50</td>
+<td style="text-align: right;">3.4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1979</td>
+<td style="text-align: right;">3.75</td>
+<td style="text-align: right;">4.4</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1980</td>
+<td style="text-align: right;">2.75</td>
+<td style="text-align: right;">1.8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1981</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">-0.3</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1982</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">-1.2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1983</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1.2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1984</td>
+<td style="text-align: right;">2.50</td>
+<td style="text-align: right;">2.6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1985</td>
+<td style="text-align: right;">3.00</td>
+<td style="text-align: right;">2.5</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1986</td>
+<td style="text-align: right;">3.00</td>
+<td style="text-align: right;">2.5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1987</td>
+<td style="text-align: right;">2.00</td>
+<td style="text-align: right;">1.7</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1988</td>
+<td style="text-align: right;">1.50</td>
+<td style="text-align: right;">3.4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1989</td>
+<td style="text-align: right;">2.50</td>
+<td style="text-align: right;">4.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1990</td>
+<td style="text-align: right;">3.00</td>
+<td style="text-align: right;">4.6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1991</td>
+<td style="text-align: right;">3.50</td>
+<td style="text-align: right;">3.4</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1992</td>
+<td style="text-align: right;">2.50</td>
+<td style="text-align: right;">1.5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1993</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">-1.9</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1994</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">2.3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1995</td>
+<td style="text-align: right;">3.00</td>
+<td style="text-align: right;">1.9</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1996</td>
+<td style="text-align: right;">2.00</td>
+<td style="text-align: right;">1.4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1997</td>
+<td style="text-align: right;">2.50</td>
+<td style="text-align: right;">2.2</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p><span class="down10"></span></p>
+</section>
+</section>
+<section id="section-1" class="level2" data-number="10.3">
+<h2 data-number="10.3" class="anchored" data-anchor-id="section-1"><span class="header-section-number">10.3</span> </h2>
+<section id="weltbank" class="level3">
+<h3 class="anchored" data-anchor-id="weltbank">Weltbank</h3>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Inhalt</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>year</code></td>
+<td>Jahr</td>
+</tr>
+<tr class="even">
+<td><code>country</code></td>
+<td>Land</td>
+</tr>
+<tr class="odd">
+<td><code>le</code></td>
+<td>Life expectancy at birth, total (years) <a href="https://data.worldbank.org/indicator/SP.DYN.LE00.IN">SP.DYN.LE00.IN</a></td>
+</tr>
+<tr class="even">
+<td><code>gdppc</code></td>
+<td>GDP per capita (current US$) - <a href="https://data.worldbank.org/indicator/NY.GDP.PCAP.CD">NY.GDP.PCAP.CD</a></td>
+</tr>
+<tr class="odd">
+<td><code>edu</code></td>
+<td>Gov.&nbsp;expenditure on education (% of GDP) - <a href="https://data.worldbank.org/indicator/SE.XPD.TOTL.GD.ZS">SE.XPD.TOTL.GD.ZS</a></td>
+</tr>
+<tr class="even">
+<td><code>he</code></td>
+<td>Current health expenditure (% of GDP) - <a href="https://data.worldbank.org/indicator/SH.XPD.CHEX.GD.ZS">SH.XPD.CHEX.GD.ZS</a></td>
+</tr>
+<tr class="odd">
+<td><code>gini</code></td>
+<td>GINI index - <a href="https://data.worldbank.org/indicator/SI.POV.GINI">SI.POV.GINI</a></td>
+</tr>
+</tbody>
+</table>
+<p><span class="down10"></span></p>
+<div class="cell">
+<div class="cell-output-display">
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:200px; ">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">year</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">country</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">le</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">gdppc</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">edu</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">he</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">gini</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">2005</td>
+<td style="text-align: left;">Albania</td>
+<td style="text-align: right;">75.21700</td>
+<td style="text-align: right;">2709.1429</td>
+<td style="text-align: right;">3.23872</td>
+<td style="text-align: right;">6.342830</td>
+<td style="text-align: right;">30.6</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2000</td>
+<td style="text-align: left;">Angola</td>
+<td style="text-align: right;">47.11300</td>
+<td style="text-align: right;">555.2969</td>
+<td style="text-align: right;">2.60753</td>
+<td style="text-align: right;">2.503650</td>
+<td style="text-align: right;">52.0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2014</td>
+<td style="text-align: left;">Argentina</td>
+<td style="text-align: right;">76.25200</td>
+<td style="text-align: right;">12245.2564</td>
+<td style="text-align: right;">5.36144</td>
+<td style="text-align: right;">6.407625</td>
+<td style="text-align: right;">41.4</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2015</td>
+<td style="text-align: left;">Armenia</td>
+<td style="text-align: right;">74.44500</td>
+<td style="text-align: right;">3617.9357</td>
+<td style="text-align: right;">2.80591</td>
+<td style="text-align: right;">10.140838</td>
+<td style="text-align: right;">32.4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2010</td>
+<td style="text-align: left;">Australia</td>
+<td style="text-align: right;">81.69512</td>
+<td style="text-align: right;">51936.8887</td>
+<td style="text-align: right;">5.56590</td>
+<td style="text-align: right;">8.467782</td>
+<td style="text-align: right;">34.7</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2014</td>
+<td style="text-align: left;">Austria</td>
+<td style="text-align: right;">81.49024</td>
+<td style="text-align: right;">51704.5412</td>
+<td style="text-align: right;">5.44898</td>
+<td style="text-align: right;">10.285967</td>
+<td style="text-align: right;">30.5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2005</td>
+<td style="text-align: left;">Azerbaijan</td>
+<td style="text-align: right;">68.75000</td>
+<td style="text-align: right;">1578.4024</td>
+<td style="text-align: right;">2.97462</td>
+<td style="text-align: right;">7.398073</td>
+<td style="text-align: right;">16.6</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2000</td>
+<td style="text-align: left;">Bangladesh</td>
+<td style="text-align: right;">65.32400</td>
+<td style="text-align: right;">405.6033</td>
+<td style="text-align: right;">2.12508</td>
+<td style="text-align: right;">2.403331</td>
+<td style="text-align: right;">33.4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2015</td>
+<td style="text-align: left;">Belarus</td>
+<td style="text-align: right;">73.62439</td>
+<td style="text-align: right;">5949.1063</td>
+<td style="text-align: right;">4.78752</td>
+<td style="text-align: right;">6.111325</td>
+<td style="text-align: right;">26.7</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2014</td>
+<td style="text-align: left;">Belgium</td>
+<td style="text-align: right;">81.28780</td>
+<td style="text-align: right;">47351.9742</td>
+<td style="text-align: right;">6.59685</td>
+<td style="text-align: right;">10.395034</td>
+<td style="text-align: right;">28.1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2015</td>
+<td style="text-align: left;">Benin</td>
+<td style="text-align: right;">60.63900</td>
+<td style="text-align: right;">783.9631</td>
+<td style="text-align: right;">4.35652</td>
+<td style="text-align: right;">3.991901</td>
+<td style="text-align: right;">47.8</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2014</td>
+<td style="text-align: left;">Bolivia</td>
+<td style="text-align: right;">68.35700</td>
+<td style="text-align: right;">3124.0003</td>
+<td style="text-align: right;">7.28535</td>
+<td style="text-align: right;">5.777249</td>
+<td style="text-align: right;">47.8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2009</td>
+<td style="text-align: left;">Botswana</td>
+<td style="text-align: right;">58.45000</td>
+<td style="text-align: right;">5185.7298</td>
+<td style="text-align: right;">9.63292</td>
+<td style="text-align: right;">6.745773</td>
+<td style="text-align: right;">60.5</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2014</td>
+<td style="text-align: left;">Brazil</td>
+<td style="text-align: right;">75.04200</td>
+<td style="text-align: right;">12026.6194</td>
+<td style="text-align: right;">5.94848</td>
+<td style="text-align: right;">8.431892</td>
+<td style="text-align: right;">51.5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2013</td>
+<td style="text-align: left;">Bulgaria</td>
+<td style="text-align: right;">74.86098</td>
+<td style="text-align: right;">7674.8619</td>
+<td style="text-align: right;">4.06197</td>
+<td style="text-align: right;">7.849151</td>
+<td style="text-align: right;">36.6</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2014</td>
+<td style="text-align: left;">Burkina Faso</td>
+<td style="text-align: right;">59.45700</td>
+<td style="text-align: right;">703.8217</td>
+<td style="text-align: right;">4.55994</td>
+<td style="text-align: right;">5.554305</td>
+<td style="text-align: right;">35.3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2013</td>
+<td style="text-align: left;">Burundi</td>
+<td style="text-align: right;">56.25900</td>
+<td style="text-align: right;">282.7555</td>
+<td style="text-align: right;">5.41475</td>
+<td style="text-align: right;">8.229415</td>
+<td style="text-align: right;">38.6</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2007</td>
+<td style="text-align: left;">Cabo Verde</td>
+<td style="text-align: right;">71.86900</td>
+<td style="text-align: right;">3112.2856</td>
+<td style="text-align: right;">5.40755</td>
+<td style="text-align: right;">4.189011</td>
+<td style="text-align: right;">47.2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2007</td>
+<td style="text-align: left;">Cameroon</td>
+<td style="text-align: right;">54.03300</td>
+<td style="text-align: right;">1215.8082</td>
+<td style="text-align: right;">3.07523</td>
+<td style="text-align: right;">4.553726</td>
+<td style="text-align: right;">42.8</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2010</td>
+<td style="text-align: left;">Canada</td>
+<td style="text-align: right;">81.19756</td>
+<td style="text-align: right;">47447.4760</td>
+<td style="text-align: right;">5.36993</td>
+<td style="text-align: right;">10.562243</td>
+<td style="text-align: right;">33.6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2008</td>
+<td style="text-align: left;">Central African Republic</td>
+<td style="text-align: right;">46.19000</td>
+<td style="text-align: right;">456.8618</td>
+<td style="text-align: right;">1.29002</td>
+<td style="text-align: right;">4.372744</td>
+<td style="text-align: right;">56.2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2011</td>
+<td style="text-align: left;">Chad</td>
+<td style="text-align: right;">50.77800</td>
+<td style="text-align: right;">989.2364</td>
+<td style="text-align: right;">2.25790</td>
+<td style="text-align: right;">3.914704</td>
+<td style="text-align: right;">43.3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2015</td>
+<td style="text-align: left;">Chile</td>
+<td style="text-align: right;">79.31500</td>
+<td style="text-align: right;">13736.6357</td>
+<td style="text-align: right;">4.90347</td>
+<td style="text-align: right;">8.071086</td>
+<td style="text-align: right;">47.7</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2015</td>
+<td style="text-align: left;">Colombia</td>
+<td style="text-align: right;">74.20000</td>
+<td style="text-align: right;">6044.5256</td>
+<td style="text-align: right;">4.50048</td>
+<td style="text-align: right;">6.191328</td>
+<td style="text-align: right;">51.1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2013</td>
+<td style="text-align: left;">Comoros</td>
+<td style="text-align: right;">62.92300</td>
+<td style="text-align: right;">834.3411</td>
+<td style="text-align: right;">4.29787</td>
+<td style="text-align: right;">8.288526</td>
+<td style="text-align: right;">45.3</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2005</td>
+<td style="text-align: left;">Congo, Rep.</td>
+<td style="text-align: right;">54.68700</td>
+<td style="text-align: right;">1637.0644</td>
+<td style="text-align: right;">1.83577</td>
+<td style="text-align: right;">1.875872</td>
+<td style="text-align: right;">47.3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2015</td>
+<td style="text-align: left;">Costa Rica</td>
+<td style="text-align: right;">79.63400</td>
+<td style="text-align: right;">11393.0240</td>
+<td style="text-align: right;">7.07426</td>
+<td style="text-align: right;">8.145585</td>
+<td style="text-align: right;">48.4</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2013</td>
+<td style="text-align: left;">Croatia</td>
+<td style="text-align: right;">77.12683</td>
+<td style="text-align: right;">13648.9899</td>
+<td style="text-align: right;">4.58756</td>
+<td style="text-align: right;">7.299483</td>
+<td style="text-align: right;">32.0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2014</td>
+<td style="text-align: left;">Cyprus</td>
+<td style="text-align: right;">80.17300</td>
+<td style="text-align: right;">27400.8030</td>
+<td style="text-align: right;">6.12496</td>
+<td style="text-align: right;">6.801041</td>
+<td style="text-align: right;">35.6</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2014</td>
+<td style="text-align: left;">Czech Republic</td>
+<td style="text-align: right;">78.82439</td>
+<td style="text-align: right;">19744.5586</td>
+<td style="text-align: right;">3.99462</td>
+<td style="text-align: right;">7.653085</td>
+<td style="text-align: right;">25.9</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2014</td>
+<td style="text-align: left;">Denmark</td>
+<td style="text-align: right;">80.70000</td>
+<td style="text-align: right;">62548.9850</td>
+<td style="text-align: right;">7.63485</td>
+<td style="text-align: right;">10.261738</td>
+<td style="text-align: right;">28.4</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2002</td>
+<td style="text-align: left;">Djibouti</td>
+<td style="text-align: right;">57.23300</td>
+<td style="text-align: right;">792.1541</td>
+<td style="text-align: right;">8.44760</td>
+<td style="text-align: right;">5.035922</td>
+<td style="text-align: right;">40.0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2007</td>
+<td style="text-align: left;">Dominican Republic</td>
+<td style="text-align: right;">72.07800</td>
+<td style="text-align: right;">4647.3104</td>
+<td style="text-align: right;">2.04679</td>
+<td style="text-align: right;">4.216517</td>
+<td style="text-align: right;">48.6</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2015</td>
+<td style="text-align: left;">Ecuador</td>
+<td style="text-align: right;">76.10200</td>
+<td style="text-align: right;">6150.1560</td>
+<td style="text-align: right;">4.99870</td>
+<td style="text-align: right;">8.543160</td>
+<td style="text-align: right;">46.0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2008</td>
+<td style="text-align: left;">Egypt, Arab Rep.</td>
+<td style="text-align: right;">69.98000</td>
+<td style="text-align: right;">2011.2462</td>
+<td style="text-align: right;">3.76083</td>
+<td style="text-align: right;">4.696259</td>
+<td style="text-align: right;">31.1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2015</td>
+<td style="text-align: left;">El Salvador</td>
+<td style="text-align: right;">73.26700</td>
+<td style="text-align: right;">3669.8790</td>
+<td style="text-align: right;">3.51756</td>
+<td style="text-align: right;">6.914531</td>
+<td style="text-align: right;">40.6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2014</td>
+<td style="text-align: left;">Estonia</td>
+<td style="text-align: right;">77.03415</td>
+<td style="text-align: right;">19949.5814</td>
+<td style="text-align: right;">5.47941</td>
+<td style="text-align: right;">6.210524</td>
+<td style="text-align: right;">34.6</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2010</td>
+<td style="text-align: left;">Ethiopia</td>
+<td style="text-align: right;">61.62500</td>
+<td style="text-align: right;">341.3099</td>
+<td style="text-align: right;">4.49659</td>
+<td style="text-align: right;">5.541436</td>
+<td style="text-align: right;">33.2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2013</td>
+<td style="text-align: left;">Fiji</td>
+<td style="text-align: right;">69.79600</td>
+<td style="text-align: right;">4763.0690</td>
+<td style="text-align: right;">3.88289</td>
+<td style="text-align: right;">3.466693</td>
+<td style="text-align: right;">36.7</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2014</td>
+<td style="text-align: left;">Finland</td>
+<td style="text-align: right;">81.18049</td>
+<td style="text-align: right;">49914.6186</td>
+<td style="text-align: right;">7.15156</td>
+<td style="text-align: right;">9.480012</td>
+<td style="text-align: right;">26.8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2014</td>
+<td style="text-align: left;">France</td>
+<td style="text-align: right;">82.67073</td>
+<td style="text-align: right;">43008.6526</td>
+<td style="text-align: right;">5.51760</td>
+<td style="text-align: right;">11.100077</td>
+<td style="text-align: right;">32.3</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2010</td>
+<td style="text-align: left;">Gambia, The</td>
+<td style="text-align: right;">59.62200</td>
+<td style="text-align: right;">562.4838</td>
+<td style="text-align: right;">4.15611</td>
+<td style="text-align: right;">5.735967</td>
+<td style="text-align: right;">43.6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2012</td>
+<td style="text-align: left;">Georgia</td>
+<td style="text-align: right;">72.74200</td>
+<td style="text-align: right;">4142.8692</td>
+<td style="text-align: right;">1.98331</td>
+<td style="text-align: right;">8.373142</td>
+<td style="text-align: right;">38.8</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2013</td>
+<td style="text-align: left;">Germany</td>
+<td style="text-align: right;">80.49024</td>
+<td style="text-align: right;">46530.9114</td>
+<td style="text-align: right;">4.93497</td>
+<td style="text-align: right;">10.968000</td>
+<td style="text-align: right;">31.1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2012</td>
+<td style="text-align: left;">Ghana</td>
+<td style="text-align: right;">61.56100</td>
+<td style="text-align: right;">1629.8002</td>
+<td style="text-align: right;">7.91914</td>
+<td style="text-align: right;">5.460606</td>
+<td style="text-align: right;">42.4</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2005</td>
+<td style="text-align: left;">Greece</td>
+<td style="text-align: right;">79.23902</td>
+<td style="text-align: right;">22551.7357</td>
+<td style="text-align: right;">3.96396</td>
+<td style="text-align: right;">8.996584</td>
+<td style="text-align: right;">34.6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2014</td>
+<td style="text-align: left;">Guatemala</td>
+<td style="text-align: right;">72.86900</td>
+<td style="text-align: right;">3687.7638</td>
+<td style="text-align: right;">2.94139</td>
+<td style="text-align: right;">6.204822</td>
+<td style="text-align: right;">48.3</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2012</td>
+<td style="text-align: left;">Guinea</td>
+<td style="text-align: right;">57.78200</td>
+<td style="text-align: right;">665.2307</td>
+<td style="text-align: right;">1.89600</td>
+<td style="text-align: right;">4.567361</td>
+<td style="text-align: right;">33.7</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2010</td>
+<td style="text-align: left;">Guinea-Bissau</td>
+<td style="text-align: right;">55.05000</td>
+<td style="text-align: right;">546.7217</td>
+<td style="text-align: right;">1.86082</td>
+<td style="text-align: right;">6.159266</td>
+<td style="text-align: right;">50.7</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2013</td>
+<td style="text-align: left;">Honduras</td>
+<td style="text-align: right;">72.99000</td>
+<td style="text-align: right;">2136.7717</td>
+<td style="text-align: right;">5.87493</td>
+<td style="text-align: right;">8.231703</td>
+<td style="text-align: right;">52.6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2014</td>
+<td style="text-align: left;">Hungary</td>
+<td style="text-align: right;">75.76341</td>
+<td style="text-align: right;">14201.4488</td>
+<td style="text-align: right;">4.63195</td>
+<td style="text-align: right;">7.140811</td>
+<td style="text-align: right;">30.9</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2013</td>
+<td style="text-align: left;">Iceland</td>
+<td style="text-align: right;">82.06098</td>
+<td style="text-align: right;">48023.6269</td>
+<td style="text-align: right;">7.75945</td>
+<td style="text-align: right;">8.696444</td>
+<td style="text-align: right;">25.4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2011</td>
+<td style="text-align: left;">India</td>
+<td style="text-align: right;">67.01300</td>
+<td style="text-align: right;">1461.6720</td>
+<td style="text-align: right;">3.83972</td>
+<td style="text-align: right;">3.246450</td>
+<td style="text-align: right;">35.1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2013</td>
+<td style="text-align: left;">Indonesia</td>
+<td style="text-align: right;">68.68400</td>
+<td style="text-align: right;">3620.6640</td>
+<td style="text-align: right;">3.35904</td>
+<td style="text-align: right;">3.370694</td>
+<td style="text-align: right;">39.5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2014</td>
+<td style="text-align: left;">Iran, Islamic Rep.</td>
+<td style="text-align: right;">75.46600</td>
+<td style="text-align: right;">5540.9841</td>
+<td style="text-align: right;">2.80135</td>
+<td style="text-align: right;">7.055384</td>
+<td style="text-align: right;">38.8</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2014</td>
+<td style="text-align: left;">Ireland</td>
+<td style="text-align: right;">81.34878</td>
+<td style="text-align: right;">55412.9286</td>
+<td style="text-align: right;">4.88844</td>
+<td style="text-align: right;">9.913169</td>
+<td style="text-align: right;">31.9</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2012</td>
+<td style="text-align: left;">Israel</td>
+<td style="text-align: right;">81.70488</td>
+<td style="text-align: right;">32525.9566</td>
+<td style="text-align: right;">5.66923</td>
+<td style="text-align: right;">7.131971</td>
+<td style="text-align: right;">41.4</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2014</td>
+<td style="text-align: left;">Italy</td>
+<td style="text-align: right;">83.09024</td>
+<td style="text-align: right;">35396.6657</td>
+<td style="text-align: right;">4.07525</td>
+<td style="text-align: right;">9.011441</td>
+<td style="text-align: right;">34.7</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2004</td>
+<td style="text-align: left;">Jamaica</td>
+<td style="text-align: right;">73.16700</td>
+<td style="text-align: right;">3719.9735</td>
+<td style="text-align: right;">3.91255</td>
+<td style="text-align: right;">4.812797</td>
+<td style="text-align: right;">45.5</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2008</td>
+<td style="text-align: left;">Japan</td>
+<td style="text-align: right;">82.58756</td>
+<td style="text-align: right;">39339.2976</td>
+<td style="text-align: right;">3.31915</td>
+<td style="text-align: right;">8.199514</td>
+<td style="text-align: right;">32.1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2015</td>
+<td style="text-align: left;">Kazakhstan</td>
+<td style="text-align: right;">72.00000</td>
+<td style="text-align: right;">10510.7719</td>
+<td style="text-align: right;">2.78858</td>
+<td style="text-align: right;">3.880475</td>
+<td style="text-align: right;">26.9</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2015</td>
+<td style="text-align: left;">Kenya</td>
+<td style="text-align: right;">66.69500</td>
+<td style="text-align: right;">1355.0458</td>
+<td style="text-align: right;">5.27157</td>
+<td style="text-align: right;">5.220177</td>
+<td style="text-align: right;">40.8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2012</td>
+<td style="text-align: left;">Korea, Rep.</td>
+<td style="text-align: right;">80.81951</td>
+<td style="text-align: right;">24358.7822</td>
+<td style="text-align: right;">4.61823</td>
+<td style="text-align: right;">6.727507</td>
+<td style="text-align: right;">31.6</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2015</td>
+<td style="text-align: left;">Kyrgyz Republic</td>
+<td style="text-align: right;">70.65122</td>
+<td style="text-align: right;">1121.0828</td>
+<td style="text-align: right;">5.98551</td>
+<td style="text-align: right;">8.217884</td>
+<td style="text-align: right;">29.0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2012</td>
+<td style="text-align: left;">Lao PDR</td>
+<td style="text-align: right;">65.20800</td>
+<td style="text-align: right;">1588.6331</td>
+<td style="text-align: right;">1.82147</td>
+<td style="text-align: right;">2.251828</td>
+<td style="text-align: right;">36.4</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2014</td>
+<td style="text-align: left;">Latvia</td>
+<td style="text-align: right;">74.12439</td>
+<td style="text-align: right;">15716.3691</td>
+<td style="text-align: right;">5.26880</td>
+<td style="text-align: right;">7.825038</td>
+<td style="text-align: right;">35.1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2011</td>
+<td style="text-align: left;">Lebanon</td>
+<td style="text-align: right;">78.65600</td>
+<td style="text-align: right;">8734.1892</td>
+<td style="text-align: right;">1.64639</td>
+<td style="text-align: right;">8.147124</td>
+<td style="text-align: right;">31.8</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2002</td>
+<td style="text-align: left;">Lesotho</td>
+<td style="text-align: right;">46.39400</td>
+<td style="text-align: right;">407.8094</td>
+<td style="text-align: right;">10.10045</td>
+<td style="text-align: right;">5.881629</td>
+<td style="text-align: right;">51.6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2014</td>
+<td style="text-align: left;">Lithuania</td>
+<td style="text-align: right;">74.51707</td>
+<td style="text-align: right;">16545.1227</td>
+<td style="text-align: right;">4.48551</td>
+<td style="text-align: right;">6.177918</td>
+<td style="text-align: right;">37.7</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2014</td>
+<td style="text-align: left;">Luxembourg</td>
+<td style="text-align: right;">82.22927</td>
+<td style="text-align: right;">119225.3800</td>
+<td style="text-align: right;">3.99439</td>
+<td style="text-align: right;">6.265727</td>
+<td style="text-align: right;">31.2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2012</td>
+<td style="text-align: left;">Madagascar</td>
+<td style="text-align: right;">64.28000</td>
+<td style="text-align: right;">443.9061</td>
+<td style="text-align: right;">2.73217</td>
+<td style="text-align: right;">3.801342</td>
+<td style="text-align: right;">42.6</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2010</td>
+<td style="text-align: left;">Malawi</td>
+<td style="text-align: right;">57.26300</td>
+<td style="text-align: right;">458.8682</td>
+<td style="text-align: right;">3.53980</td>
+<td style="text-align: right;">7.241414</td>
+<td style="text-align: right;">45.5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2015</td>
+<td style="text-align: left;">Malaysia</td>
+<td style="text-align: right;">75.14300</td>
+<td style="text-align: right;">9648.5535</td>
+<td style="text-align: right;">4.97613</td>
+<td style="text-align: right;">3.998686</td>
+<td style="text-align: right;">41.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2009</td>
+<td style="text-align: left;">Maldives</td>
+<td style="text-align: right;">75.92000</td>
+<td style="text-align: right;">6615.7638</td>
+<td style="text-align: right;">5.77493</td>
+<td style="text-align: right;">10.641740</td>
+<td style="text-align: right;">38.4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2009</td>
+<td style="text-align: left;">Mali</td>
+<td style="text-align: right;">54.75600</td>
+<td style="text-align: right;">697.0153</td>
+<td style="text-align: right;">3.87281</td>
+<td style="text-align: right;">4.696008</td>
+<td style="text-align: right;">33.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2014</td>
+<td style="text-align: left;">Malta</td>
+<td style="text-align: right;">81.94634</td>
+<td style="text-align: right;">25851.6593</td>
+<td style="text-align: right;">7.24964</td>
+<td style="text-align: right;">9.456058</td>
+<td style="text-align: right;">29.0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2008</td>
+<td style="text-align: left;">Mauritania</td>
+<td style="text-align: right;">61.46100</td>
+<td style="text-align: right;">1167.5357</td>
+<td style="text-align: right;">3.55225</td>
+<td style="text-align: right;">3.795996</td>
+<td style="text-align: right;">35.7</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2012</td>
+<td style="text-align: left;">Mauritius</td>
+<td style="text-align: right;">73.86341</td>
+<td style="text-align: right;">9291.2276</td>
+<td style="text-align: right;">3.41820</td>
+<td style="text-align: right;">4.360087</td>
+<td style="text-align: right;">35.8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2014</td>
+<td style="text-align: left;">Mexico</td>
+<td style="text-align: right;">76.75300</td>
+<td style="text-align: right;">10580.9725</td>
+<td style="text-align: right;">5.32586</td>
+<td style="text-align: right;">5.691027</td>
+<td style="text-align: right;">45.8</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2014</td>
+<td style="text-align: left;">Moldova</td>
+<td style="text-align: right;">71.25800</td>
+<td style="text-align: right;">2244.7638</td>
+<td style="text-align: right;">7.46451</td>
+<td style="text-align: right;">10.283841</td>
+<td style="text-align: right;">26.8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2014</td>
+<td style="text-align: left;">Mongolia</td>
+<td style="text-align: right;">68.84700</td>
+<td style="text-align: right;">4181.5833</td>
+<td style="text-align: right;">4.71485</td>
+<td style="text-align: right;">3.827088</td>
+<td style="text-align: right;">32.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2003</td>
+<td style="text-align: left;">Namibia</td>
+<td style="text-align: right;">53.69300</td>
+<td style="text-align: right;">2482.3686</td>
+<td style="text-align: right;">6.11511</td>
+<td style="text-align: right;">11.087850</td>
+<td style="text-align: right;">63.3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2010</td>
+<td style="text-align: left;">Nepal</td>
+<td style="text-align: right;">67.91400</td>
+<td style="text-align: right;">592.1835</td>
+<td style="text-align: right;">3.63172</td>
+<td style="text-align: right;">4.974750</td>
+<td style="text-align: right;">32.8</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2014</td>
+<td style="text-align: left;">Netherlands</td>
+<td style="text-align: right;">81.70732</td>
+<td style="text-align: right;">52157.4069</td>
+<td style="text-align: right;">5.52931</td>
+<td style="text-align: right;">10.858538</td>
+<td style="text-align: right;">28.6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2014</td>
+<td style="text-align: left;">Niger</td>
+<td style="text-align: right;">59.22800</td>
+<td style="text-align: right;">429.7910</td>
+<td style="text-align: right;">6.72771</td>
+<td style="text-align: right;">5.854648</td>
+<td style="text-align: right;">34.3</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2014</td>
+<td style="text-align: left;">Norway</td>
+<td style="text-align: right;">82.10000</td>
+<td style="text-align: right;">97199.9191</td>
+<td style="text-align: right;">7.68074</td>
+<td style="text-align: right;">9.346252</td>
+<td style="text-align: right;">26.8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2015</td>
+<td style="text-align: left;">Pakistan</td>
+<td style="text-align: right;">66.32200</td>
+<td style="text-align: right;">1428.6376</td>
+<td style="text-align: right;">2.65002</td>
+<td style="text-align: right;">2.689498</td>
+<td style="text-align: right;">33.5</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2011</td>
+<td style="text-align: left;">Panama</td>
+<td style="text-align: right;">77.02100</td>
+<td style="text-align: right;">9354.9794</td>
+<td style="text-align: right;">3.18772</td>
+<td style="text-align: right;">6.025180</td>
+<td style="text-align: right;">51.4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2012</td>
+<td style="text-align: left;">Paraguay</td>
+<td style="text-align: right;">72.63800</td>
+<td style="text-align: right;">3855.5377</td>
+<td style="text-align: right;">4.96304</td>
+<td style="text-align: right;">7.618913</td>
+<td style="text-align: right;">47.6</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2015</td>
+<td style="text-align: left;">Peru</td>
+<td style="text-align: right;">74.74700</td>
+<td style="text-align: right;">6053.1124</td>
+<td style="text-align: right;">3.98177</td>
+<td style="text-align: right;">5.264804</td>
+<td style="text-align: right;">43.5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2014</td>
+<td style="text-align: left;">Portugal</td>
+<td style="text-align: right;">81.12195</td>
+<td style="text-align: right;">22077.5361</td>
+<td style="text-align: right;">5.12325</td>
+<td style="text-align: right;">9.022326</td>
+<td style="text-align: right;">35.6</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2014</td>
+<td style="text-align: left;">Romania</td>
+<td style="text-align: right;">74.96098</td>
+<td style="text-align: right;">10020.2773</td>
+<td style="text-align: right;">3.12851</td>
+<td style="text-align: right;">5.034547</td>
+<td style="text-align: right;">36.0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2012</td>
+<td style="text-align: left;">Russian Federation</td>
+<td style="text-align: right;">70.07220</td>
+<td style="text-align: right;">15434.5748</td>
+<td style="text-align: right;">3.78973</td>
+<td style="text-align: right;">5.342901</td>
+<td style="text-align: right;">40.7</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2013</td>
+<td style="text-align: left;">Rwanda</td>
+<td style="text-align: right;">65.59800</td>
+<td style="text-align: right;">688.8223</td>
+<td style="text-align: right;">4.96194</td>
+<td style="text-align: right;">7.905883</td>
+<td style="text-align: right;">45.1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2008</td>
+<td style="text-align: left;">Samoa</td>
+<td style="text-align: right;">72.28800</td>
+<td style="text-align: right;">3509.7615</td>
+<td style="text-align: right;">5.14421</td>
+<td style="text-align: right;">4.766306</td>
+<td style="text-align: right;">42.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2011</td>
+<td style="text-align: left;">Senegal</td>
+<td style="text-align: right;">64.81400</td>
+<td style="text-align: right;">1081.9393</td>
+<td style="text-align: right;">6.06839</td>
+<td style="text-align: right;">3.949665</td>
+<td style="text-align: right;">40.3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2011</td>
+<td style="text-align: left;">Sierra Leone</td>
+<td style="text-align: right;">49.03400</td>
+<td style="text-align: right;">445.0520</td>
+<td style="text-align: right;">2.66890</td>
+<td style="text-align: right;">10.554614</td>
+<td style="text-align: right;">34.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2015</td>
+<td style="text-align: left;">Slovak Republic</td>
+<td style="text-align: right;">76.56341</td>
+<td style="text-align: right;">16132.8603</td>
+<td style="text-align: right;">4.64978</td>
+<td style="text-align: right;">6.885942</td>
+<td style="text-align: right;">26.5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2014</td>
+<td style="text-align: left;">Slovenia</td>
+<td style="text-align: right;">81.07805</td>
+<td style="text-align: right;">24202.4308</td>
+<td style="text-align: right;">5.29444</td>
+<td style="text-align: right;">8.541597</td>
+<td style="text-align: right;">25.7</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2014</td>
+<td style="text-align: left;">South Africa</td>
+<td style="text-align: right;">60.99300</td>
+<td style="text-align: right;">6433.9445</td>
+<td style="text-align: right;">6.04694</td>
+<td style="text-align: right;">7.925304</td>
+<td style="text-align: right;">63.0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2014</td>
+<td style="text-align: left;">Spain</td>
+<td style="text-align: right;">83.22927</td>
+<td style="text-align: right;">29623.1644</td>
+<td style="text-align: right;">4.27990</td>
+<td style="text-align: right;">9.083407</td>
+<td style="text-align: right;">36.1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2012</td>
+<td style="text-align: left;">Sri Lanka</td>
+<td style="text-align: right;">74.59300</td>
+<td style="text-align: right;">3350.6110</td>
+<td style="text-align: right;">1.49617</td>
+<td style="text-align: right;">2.605684</td>
+<td style="text-align: right;">39.2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2009</td>
+<td style="text-align: left;">Sudan</td>
+<td style="text-align: right;">62.19300</td>
+<td style="text-align: right;">1226.8844</td>
+<td style="text-align: right;">2.21868</td>
+<td style="text-align: right;">5.793957</td>
+<td style="text-align: right;">35.4</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2014</td>
+<td style="text-align: left;">Sweden</td>
+<td style="text-align: right;">82.25366</td>
+<td style="text-align: right;">59180.1990</td>
+<td style="text-align: right;">7.68125</td>
+<td style="text-align: right;">11.141271</td>
+<td style="text-align: right;">28.4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2014</td>
+<td style="text-align: left;">Switzerland</td>
+<td style="text-align: right;">83.19756</td>
+<td style="text-align: right;">86605.5634</td>
+<td style="text-align: right;">5.05123</td>
+<td style="text-align: right;">11.589601</td>
+<td style="text-align: right;">32.5</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2004</td>
+<td style="text-align: left;">Syrian Arab Republic</td>
+<td style="text-align: right;">74.25000</td>
+<td style="text-align: right;">1408.8527</td>
+<td style="text-align: right;">5.37148</td>
+<td style="text-align: right;">4.478601</td>
+<td style="text-align: right;">35.8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2015</td>
+<td style="text-align: left;">Tajikistan</td>
+<td style="text-align: right;">70.87900</td>
+<td style="text-align: right;">918.6772</td>
+<td style="text-align: right;">5.23215</td>
+<td style="text-align: right;">6.853735</td>
+<td style="text-align: right;">34.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2013</td>
+<td style="text-align: left;">Thailand</td>
+<td style="text-align: right;">74.67800</td>
+<td style="text-align: right;">6168.3949</td>
+<td style="text-align: right;">4.12211</td>
+<td style="text-align: right;">3.456792</td>
+<td style="text-align: right;">37.8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2015</td>
+<td style="text-align: left;">Togo</td>
+<td style="text-align: right;">59.94900</td>
+<td style="text-align: right;">551.1507</td>
+<td style="text-align: right;">5.22303</td>
+<td style="text-align: right;">6.649131</td>
+<td style="text-align: right;">43.1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2001</td>
+<td style="text-align: left;">Tonga</td>
+<td style="text-align: right;">70.94900</td>
+<td style="text-align: right;">1837.9774</td>
+<td style="text-align: right;">4.53256</td>
+<td style="text-align: right;">4.204030</td>
+<td style="text-align: right;">37.7</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2010</td>
+<td style="text-align: left;">Tunisia</td>
+<td style="text-align: right;">74.79300</td>
+<td style="text-align: right;">4140.1518</td>
+<td style="text-align: right;">6.25481</td>
+<td style="text-align: right;">5.883956</td>
+<td style="text-align: right;">35.8</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2014</td>
+<td style="text-align: left;">Turkey</td>
+<td style="text-align: right;">75.23900</td>
+<td style="text-align: right;">12127.4607</td>
+<td style="text-align: right;">4.37116</td>
+<td style="text-align: right;">4.347266</td>
+<td style="text-align: right;">41.2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2012</td>
+<td style="text-align: left;">Uganda</td>
+<td style="text-align: right;">58.34700</td>
+<td style="text-align: right;">636.6382</td>
+<td style="text-align: right;">2.48314</td>
+<td style="text-align: right;">7.817894</td>
+<td style="text-align: right;">41.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2014</td>
+<td style="text-align: left;">Ukraine</td>
+<td style="text-align: right;">71.18659</td>
+<td style="text-align: right;">3104.6583</td>
+<td style="text-align: right;">5.87494</td>
+<td style="text-align: right;">6.138769</td>
+<td style="text-align: right;">24.0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2015</td>
+<td style="text-align: left;">United Kingdom</td>
+<td style="text-align: right;">80.95610</td>
+<td style="text-align: right;">44305.5546</td>
+<td style="text-align: right;">5.63148</td>
+<td style="text-align: right;">9.876772</td>
+<td style="text-align: right;">33.2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2013</td>
+<td style="text-align: left;">United States</td>
+<td style="text-align: right;">78.74146</td>
+<td style="text-align: right;">52782.0865</td>
+<td style="text-align: right;">4.94379</td>
+<td style="text-align: right;">16.322920</td>
+<td style="text-align: right;">41.0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2011</td>
+<td style="text-align: left;">Uruguay</td>
+<td style="text-align: right;">76.73900</td>
+<td style="text-align: right;">14166.4991</td>
+<td style="text-align: right;">4.35527</td>
+<td style="text-align: right;">8.337299</td>
+<td style="text-align: right;">42.2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2006</td>
+<td style="text-align: left;">Venezuela, RB</td>
+<td style="text-align: right;">73.23500</td>
+<td style="text-align: right;">6735.7976</td>
+<td style="text-align: right;">3.66906</td>
+<td style="text-align: right;">4.125899</td>
+<td style="text-align: right;">46.9</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2012</td>
+<td style="text-align: left;">Vietnam</td>
+<td style="text-align: right;">75.47600</td>
+<td style="text-align: right;">1722.6839</td>
+<td style="text-align: right;">5.53329</td>
+<td style="text-align: right;">6.477713</td>
+<td style="text-align: right;">35.6</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2004</td>
+<td style="text-align: left;">Zambia</td>
+<td style="text-align: right;">48.43200</td>
+<td style="text-align: right;">530.2772</td>
+<td style="text-align: right;">2.46343</td>
+<td style="text-align: right;">7.448609</td>
+<td style="text-align: right;">54.3</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p><span class="down10"></span></p>
+</section>
+</section>
+<section id="section-2" class="level2" data-number="10.4">
+<h2 data-number="10.4" class="anchored" data-anchor-id="section-2"><span class="header-section-number">10.4</span> </h2>
+<section id="pisa-studie" class="level3">
+<h3 class="anchored" data-anchor-id="pisa-studie">Pisa-Studie</h3>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Inhalt</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>country</code></td>
+<td>Land</td>
+</tr>
+<tr class="even">
+<td><code>math</code></td>
+<td>PISA-Score im Fach Mathematik</td>
+</tr>
+<tr class="odd">
+<td><code>read</code></td>
+<td>PISA-Score im Bereich Lesekompetenz</td>
+</tr>
+</tbody>
+</table>
+<p><span class="down10"></span></p>
+<div class="cell">
+<div class="cell-output-display">
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:175px; ">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">country</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">math</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">read</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Albania</td>
+<td style="text-align: right;">413.16</td>
+<td style="text-align: right;">405.26</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">United Arab Emirates</td>
+<td style="text-align: right;">427.48</td>
+<td style="text-align: right;">433.54</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Australia</td>
+<td style="text-align: right;">493.90</td>
+<td style="text-align: right;">502.90</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Austria</td>
+<td style="text-align: right;">496.74</td>
+<td style="text-align: right;">484.87</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Belgium</td>
+<td style="text-align: right;">506.98</td>
+<td style="text-align: right;">498.52</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Bulgaria</td>
+<td style="text-align: right;">441.19</td>
+<td style="text-align: right;">431.72</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Brazil</td>
+<td style="text-align: right;">377.07</td>
+<td style="text-align: right;">407.35</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Canada</td>
+<td style="text-align: right;">515.65</td>
+<td style="text-align: right;">526.67</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Switzerland</td>
+<td style="text-align: right;">521.25</td>
+<td style="text-align: right;">492.20</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Chile</td>
+<td style="text-align: right;">422.67</td>
+<td style="text-align: right;">458.57</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Colombia</td>
+<td style="text-align: right;">389.64</td>
+<td style="text-align: right;">424.91</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Costa Rica</td>
+<td style="text-align: right;">400.25</td>
+<td style="text-align: right;">427.49</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Czech Republic</td>
+<td style="text-align: right;">492.33</td>
+<td style="text-align: right;">487.25</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Germany</td>
+<td style="text-align: right;">505.97</td>
+<td style="text-align: right;">509.10</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Denmark</td>
+<td style="text-align: right;">511.09</td>
+<td style="text-align: right;">499.81</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Dominican Republic</td>
+<td style="text-align: right;">327.70</td>
+<td style="text-align: right;">357.74</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Algeria</td>
+<td style="text-align: right;">359.61</td>
+<td style="text-align: right;">349.86</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Spain</td>
+<td style="text-align: right;">485.84</td>
+<td style="text-align: right;">495.58</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Estonia</td>
+<td style="text-align: right;">519.53</td>
+<td style="text-align: right;">519.14</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Finland</td>
+<td style="text-align: right;">511.08</td>
+<td style="text-align: right;">526.42</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">France</td>
+<td style="text-align: right;">492.92</td>
+<td style="text-align: right;">499.31</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">United Kingdom</td>
+<td style="text-align: right;">492.48</td>
+<td style="text-align: right;">497.97</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Georgia</td>
+<td style="text-align: right;">403.83</td>
+<td style="text-align: right;">401.29</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Greece</td>
+<td style="text-align: right;">453.63</td>
+<td style="text-align: right;">467.04</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Hong Kong</td>
+<td style="text-align: right;">547.93</td>
+<td style="text-align: right;">526.68</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Croatia</td>
+<td style="text-align: right;">464.04</td>
+<td style="text-align: right;">486.86</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Hungary</td>
+<td style="text-align: right;">476.83</td>
+<td style="text-align: right;">469.52</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Indonesia</td>
+<td style="text-align: right;">386.11</td>
+<td style="text-align: right;">397.26</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ireland</td>
+<td style="text-align: right;">503.72</td>
+<td style="text-align: right;">520.81</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Iceland</td>
+<td style="text-align: right;">488.03</td>
+<td style="text-align: right;">481.53</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Israel</td>
+<td style="text-align: right;">469.67</td>
+<td style="text-align: right;">478.96</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Italy</td>
+<td style="text-align: right;">489.73</td>
+<td style="text-align: right;">484.76</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Jordan</td>
+<td style="text-align: right;">380.26</td>
+<td style="text-align: right;">408.10</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Japan</td>
+<td style="text-align: right;">532.44</td>
+<td style="text-align: right;">515.96</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Korea</td>
+<td style="text-align: right;">524.11</td>
+<td style="text-align: right;">517.44</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Kosovo</td>
+<td style="text-align: right;">361.53</td>
+<td style="text-align: right;">347.13</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Lebanon</td>
+<td style="text-align: right;">396.25</td>
+<td style="text-align: right;">346.55</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Lithuania</td>
+<td style="text-align: right;">478.38</td>
+<td style="text-align: right;">472.41</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Luxembourg</td>
+<td style="text-align: right;">485.77</td>
+<td style="text-align: right;">481.44</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Latvia</td>
+<td style="text-align: right;">482.31</td>
+<td style="text-align: right;">487.76</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Macao</td>
+<td style="text-align: right;">543.81</td>
+<td style="text-align: right;">508.69</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Moldova</td>
+<td style="text-align: right;">419.66</td>
+<td style="text-align: right;">416.23</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mexico</td>
+<td style="text-align: right;">408.02</td>
+<td style="text-align: right;">423.28</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">FYROM</td>
+<td style="text-align: right;">371.31</td>
+<td style="text-align: right;">351.74</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Malta</td>
+<td style="text-align: right;">478.64</td>
+<td style="text-align: right;">446.67</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Montenegro</td>
+<td style="text-align: right;">417.93</td>
+<td style="text-align: right;">426.88</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Netherlands</td>
+<td style="text-align: right;">512.25</td>
+<td style="text-align: right;">502.96</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Norway</td>
+<td style="text-align: right;">501.73</td>
+<td style="text-align: right;">513.19</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">New Zealand</td>
+<td style="text-align: right;">495.22</td>
+<td style="text-align: right;">509.27</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Peru</td>
+<td style="text-align: right;">386.56</td>
+<td style="text-align: right;">397.54</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Poland</td>
+<td style="text-align: right;">504.47</td>
+<td style="text-align: right;">505.70</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Portugal</td>
+<td style="text-align: right;">491.63</td>
+<td style="text-align: right;">498.13</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Argentina (Ciudad Autónoma de Buenos)</td>
+<td style="text-align: right;">456.30</td>
+<td style="text-align: right;">475.33</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Qatar</td>
+<td style="text-align: right;">402.40</td>
+<td style="text-align: right;">401.89</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">B-S-J-G (China)</td>
+<td style="text-align: right;">531.30</td>
+<td style="text-align: right;">493.94</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Spain (Regions)</td>
+<td style="text-align: right;">486.24</td>
+<td style="text-align: right;">497.19</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Massachusettes (USA)</td>
+<td style="text-align: right;">500.12</td>
+<td style="text-align: right;">527.04</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Puerto Rico (USA)</td>
+<td style="text-align: right;">378.35</td>
+<td style="text-align: right;">410.00</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">North Carolina (USA)</td>
+<td style="text-align: right;">470.88</td>
+<td style="text-align: right;">499.92</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Romania</td>
+<td style="text-align: right;">443.95</td>
+<td style="text-align: right;">433.62</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Russian Federation</td>
+<td style="text-align: right;">494.06</td>
+<td style="text-align: right;">494.63</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Singapore</td>
+<td style="text-align: right;">564.19</td>
+<td style="text-align: right;">535.10</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Slovak Republic</td>
+<td style="text-align: right;">475.23</td>
+<td style="text-align: right;">452.51</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Slovenia</td>
+<td style="text-align: right;">509.92</td>
+<td style="text-align: right;">505.22</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sweden</td>
+<td style="text-align: right;">493.92</td>
+<td style="text-align: right;">500.16</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Chinese Taipei</td>
+<td style="text-align: right;">542.32</td>
+<td style="text-align: right;">497.10</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Thailand</td>
+<td style="text-align: right;">415.46</td>
+<td style="text-align: right;">409.13</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Trinidad and Tobago</td>
+<td style="text-align: right;">417.24</td>
+<td style="text-align: right;">427.27</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Tunisia</td>
+<td style="text-align: right;">366.82</td>
+<td style="text-align: right;">361.06</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Turkey</td>
+<td style="text-align: right;">420.45</td>
+<td style="text-align: right;">428.34</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Uruguay</td>
+<td style="text-align: right;">417.99</td>
+<td style="text-align: right;">436.57</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">United States</td>
+<td style="text-align: right;">469.63</td>
+<td style="text-align: right;">496.94</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Vietnam</td>
+<td style="text-align: right;">494.52</td>
+<td style="text-align: right;">486.77</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p><span class="down10"></span></p>
+<ul>
+<li>PISA-Ergebnisse sind Punktwerte auf einer künstlichen Skala, die für sich genommen keine direkte Bedeutung haben</li>
+<li>Aussagekraft entsteht erst durch den Vergleich zwischen Länder</li>
+<li>OECD-Berichte stellen daher häufig Länderranglisten in den Mittelpunkt</li>
+</ul>
+</section>
+</section>
+<section id="streudiagramme-und-blasendiagramme" class="level1" data-number="11">
+<h1 data-number="11"><span class="header-section-number">11</span> Streudiagramme und Blasendiagramme</h1>
+<section id="prognosen-sachverständigenrat" class="level2" data-number="11.1">
+<h2 data-number="11.1" class="anchored" data-anchor-id="prognosen-sachverständigenrat"><span class="header-section-number">11.1</span> Prognosen Sachverständigenrat</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_svrw) <span class="sc">+</span> </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> Prognose, <span class="at">y =</span> Wachstum))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="zwei-merkmale_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="prognosen-sachverständigenrat-erweitert" class="level2" data-number="11.2">
+<h2 data-number="11.2" class="anchored" data-anchor-id="prognosen-sachverständigenrat-erweitert"><span class="header-section-number">11.2</span> Prognosen Sachverständigenrat erweitert</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_svrw, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> Prognose, <span class="at">y =</span> Wachstum)) <span class="sc">+</span>   </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span> <span class="fu">geom_abline</span>(<span class="at">intercept =</span> <span class="dv">0</span>, <span class="at">slope =</span> <span class="dv">1</span>, <span class="at">color =</span> <span class="st">'red'</span>) <span class="sc">+</span> <span class="fu">geom_rug</span>(<span class="at">color =</span> <span class="st">'blue'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="zwei-merkmale_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="prognosen-sachverständigenrat-erweitert-erklärt" class="level2" data-number="11.3">
+<h2 data-number="11.3" class="anchored" data-anchor-id="prognosen-sachverständigenrat-erweitert-erklärt"><span class="header-section-number">11.3</span> Prognosen Sachverständigenrat erweitert erklärt</h2>
+<ul>
+<li>Gerade mit <code>geom_abline()</code> und <code>intercept</code> sowie <code>slope</code></li>
+<li>abline für eine Linie mit <span class="math inline">\(y = a + bx\)</span> mit dem y-Achsenabschnitt <span class="math inline">\(a\)</span> = <code>intercept</code> und der Steigung <span class="math inline">\(b\)</span> = <code>slope</code></li>
+<li>Beobachtungen entlang der Achsen mit <code>geom_rug()</code> (Blaue Striche)</li>
+<li>rug wie Teppich, da die Linien entlang der Achsen aussehen wie die Fransen eines Teppichs</li>
+<li>Mapping für <code>geom_point()</code> <strong>und</strong> <code>geom_rug()</code> (obere Zeile)</li>
+</ul>
+</section>
+<section id="ausgaben-gesundheitswesen-und-lebenserwartung" class="level2" data-number="11.4">
+<h2 data-number="11.4" class="anchored" data-anchor-id="ausgaben-gesundheitswesen-und-lebenserwartung"><span class="header-section-number">11.4</span> Ausgaben Gesundheitswesen und Lebenserwartung</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_le_latest) <span class="sc">+</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> he, <span class="at">y =</span> le))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="zwei-merkmale_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="ausgaben-gesundheitswesen-und-lebenserwartung-1" class="level2" data-number="11.5">
+<h2 data-number="11.5" class="anchored" data-anchor-id="ausgaben-gesundheitswesen-und-lebenserwartung-1"><span class="header-section-number">11.5</span> Ausgaben Gesundheitswesen und Lebenserwartung</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_le_latest) <span class="sc">+</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> he, <span class="at">y =</span> le), <span class="at">shape =</span> <span class="dv">21</span>, <span class="at">fill =</span> <span class="st">'orange'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="zwei-merkmale_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Farbe und Form der Punkte verändert</li>
+</ul>
+</section>
+<section id="geom_point-shapes" class="level2" data-number="11.6">
+<h2 data-number="11.6" class="anchored" data-anchor-id="geom_point-shapes"><span class="header-section-number">11.6</span> <code>geom_point()</code>: Shapes</h2>
+<p><span class="down10"></span></p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="zwei-merkmale_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="interaktive-diagramme-mit-plotly" class="level2" data-number="11.7">
+<h2 data-number="11.7" class="anchored" data-anchor-id="interaktive-diagramme-mit-plotly"><span class="header-section-number">11.7</span> Interaktive Diagramme mit <code>plotly</code></h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>d_le_latest) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> he, <span class="at">y =</span> le, <span class="at">label =</span> country), <span class="at">shape =</span> <span class="dv">21</span>, <span class="at">fill =</span> <span class="st">'orange'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in geom_point(mapping = aes(x = he, y = le, label = country), shape =
+21, : Ignoring unknown aesthetics: label</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplotly</span>(p, <span class="at">width =</span> <span class="dv">800</span>, <span class="at">height =</span> <span class="dv">400</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="htmlwidget-ddb192894a98af8525ee" style="width:100%;height:325px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ddb192894a98af8525ee">{"x":{"data":[{"x":[6.3428304899999999,2.5036498699999998,6.4076247999999998,10.140838130000001,8.4677824400000006,10.285966609999999,7.3980728600000001,2.40333094,6.1113249700000001,10.39503365,3.9919010300000002,5.7772491500000003,6.7457733800000002,8.4318921499999995,7.8491506800000002,5.5543053999999996,8.2294146300000008,4.1890110099999998,4.5537264899999998,10.562243029999999,4.3727438899999997,3.9147039700000001,8.0710858600000002,6.1913276399999999,8.2885261099999994,1.87587189,8.1455845700000005,7.2994826899999996,6.8010405599999997,7.6530852300000003,10.261737610000001,5.0359216800000004,4.2165169200000001,8.5431595999999992,4.69625907,6.9145306399999997,6.2105241800000002,5.5414361999999997,3.4666925900000001,9.4800115799999993,11.10007654,5.7359669100000001,8.3731417399999994,10.96799989,5.4606060000000003,8.9965835599999995,6.2048220499999998,4.5673610499999997,6.15926581,8.2317031699999994,7.1408110100000002,8.6964439799999997,3.2464502199999998,3.37069441,7.0553839399999996,9.9131692099999995,7.1319705100000004,9.0114409200000001,4.8127967900000002,8.1995143099999996,3.88047502,5.2201767099999996,6.72750746,8.2178836299999993,2.25182817,7.8250376900000003,8.1471243399999995,5.8816291400000003,6.1779174599999997,6.2657266500000004,3.8013421799999998,7.2414134700000004,3.99868581,10.64173956,4.6960075000000003,9.4560581199999998,3.7959956099999999,4.3600865000000004,5.6910274100000002,10.283840639999999,3.8270881299999999,11.08784962,4.9747502900000002,10.8585376,5.8546478200000003,9.3462523999999991,2.6894980999999998,6.0251803099999997,7.6189131200000002,5.2648040399999996,9.0223256299999992,5.0345464700000004,5.3429007799999999,7.9058833399999999,4.7663057599999998,3.9496651699999998,10.554614389999999,6.8859422800000001,8.5415965800000002,7.9253037400000004,9.0834073400000008,2.60568439,5.7939570800000002,11.14127066,11.589600799999999,4.4786015499999996,6.8537354300000004,3.45679151,6.6491304600000003,4.2040301900000001,5.8839559699999997,4.3472658600000003,7.81789384,6.1387685799999998,9.8767721099999992,16.322920199999999,8.3372986200000003,4.1258993100000003,6.4777134299999997,7.4486094500000002],"y":[75.216999999999999,47.113,76.251999999999995,74.444999999999993,81.695121951219505,81.490243902439005,68.75,65.323999999999998,73.624390243902496,81.287804878048803,60.639000000000003,68.356999999999999,58.450000000000003,75.042000000000002,74.860975609756096,59.457000000000001,56.259,71.869,54.033000000000001,81.197560975609804,46.189999999999998,50.777999999999999,79.314999999999998,74.200000000000003,62.923000000000002,54.686999999999998,79.634,77.126829268292695,80.173000000000002,78.8243902439024,80.700000000000003,57.232999999999997,72.078000000000003,76.102000000000004,69.980000000000004,73.266999999999996,77.034146341463398,61.625,69.796000000000006,81.180487804878098,82.670731707317103,59.622,72.742000000000004,80.490243902439005,61.561,79.239024390243898,72.869,57.781999999999996,55.049999999999997,72.989999999999995,75.763414634146301,82.060975609756099,67.013000000000005,68.683999999999997,75.465999999999994,81.348780487804902,81.7048780487805,83.090243902438999,73.167000000000002,82.587560975609804,72,66.694999999999993,80.819512195122002,70.651219512195098,65.207999999999998,74.124390243902397,78.656000000000006,46.393999999999998,74.517073170731706,82.229268292682903,64.280000000000001,57.262999999999998,75.143000000000001,75.920000000000002,54.756,81.946341463414598,61.460999999999999,73.863414634146395,76.753,71.257999999999996,68.846999999999994,53.692999999999998,67.914000000000001,81.707317073170699,59.228000000000002,82.099999999999994,66.322000000000003,77.021000000000001,72.638000000000005,74.747,81.121951219512198,74.960975609756105,70.072195121951196,65.597999999999999,72.287999999999997,64.813999999999993,49.033999999999999,76.563414634146298,81.078048780487805,60.993000000000002,83.229268292682903,74.593000000000004,62.192999999999998,82.253658536585405,83.197560975609804,74.25,70.879000000000005,74.677999999999997,59.948999999999998,70.948999999999998,74.793000000000006,75.239000000000004,58.347000000000001,71.186585365853702,80.956097560975607,78.741463414634197,76.739000000000004,73.234999999999999,75.475999999999999,48.432000000000002],"text":["he:  6.342830<br />le: 75.21700<br />country: Albania","he:  2.503650<br />le: 47.11300<br />country: Angola","he:  6.407625<br />le: 76.25200<br />country: Argentina","he: 10.140838<br />le: 74.44500<br />country: Armenia","he:  8.467782<br />le: 81.69512<br />country: Australia","he: 10.285967<br />le: 81.49024<br />country: Austria","he:  7.398073<br />le: 68.75000<br />country: Azerbaijan","he:  2.403331<br />le: 65.32400<br />country: Bangladesh","he:  6.111325<br />le: 73.62439<br />country: Belarus","he: 10.395034<br />le: 81.28780<br />country: Belgium","he:  3.991901<br />le: 60.63900<br />country: Benin","he:  5.777249<br />le: 68.35700<br />country: Bolivia","he:  6.745773<br />le: 58.45000<br />country: Botswana","he:  8.431892<br />le: 75.04200<br />country: Brazil","he:  7.849151<br />le: 74.86098<br />country: Bulgaria","he:  5.554305<br />le: 59.45700<br />country: Burkina Faso","he:  8.229415<br />le: 56.25900<br />country: Burundi","he:  4.189011<br />le: 71.86900<br />country: Cabo Verde","he:  4.553726<br />le: 54.03300<br />country: Cameroon","he: 10.562243<br />le: 81.19756<br />country: Canada","he:  4.372744<br />le: 46.19000<br />country: Central African Republic","he:  3.914704<br />le: 50.77800<br />country: Chad","he:  8.071086<br />le: 79.31500<br />country: Chile","he:  6.191328<br />le: 74.20000<br />country: Colombia","he:  8.288526<br />le: 62.92300<br />country: Comoros","he:  1.875872<br />le: 54.68700<br />country: Congo, Rep.","he:  8.145585<br />le: 79.63400<br />country: Costa Rica","he:  7.299483<br />le: 77.12683<br />country: Croatia","he:  6.801041<br />le: 80.17300<br />country: Cyprus","he:  7.653085<br />le: 78.82439<br />country: Czech Republic","he: 10.261738<br />le: 80.70000<br />country: Denmark","he:  5.035922<br />le: 57.23300<br />country: Djibouti","he:  4.216517<br />le: 72.07800<br />country: Dominican Republic","he:  8.543160<br />le: 76.10200<br />country: Ecuador","he:  4.696259<br />le: 69.98000<br />country: Egypt, Arab Rep.","he:  6.914531<br />le: 73.26700<br />country: El Salvador","he:  6.210524<br />le: 77.03415<br />country: Estonia","he:  5.541436<br />le: 61.62500<br />country: Ethiopia","he:  3.466693<br />le: 69.79600<br />country: Fiji","he:  9.480012<br />le: 81.18049<br />country: Finland","he: 11.100077<br />le: 82.67073<br />country: France","he:  5.735967<br />le: 59.62200<br />country: Gambia, The","he:  8.373142<br />le: 72.74200<br />country: Georgia","he: 10.968000<br />le: 80.49024<br />country: Germany","he:  5.460606<br />le: 61.56100<br />country: Ghana","he:  8.996584<br />le: 79.23902<br />country: Greece","he:  6.204822<br />le: 72.86900<br />country: Guatemala","he:  4.567361<br />le: 57.78200<br />country: Guinea","he:  6.159266<br />le: 55.05000<br />country: Guinea-Bissau","he:  8.231703<br />le: 72.99000<br />country: Honduras","he:  7.140811<br />le: 75.76341<br />country: Hungary","he:  8.696444<br />le: 82.06098<br />country: Iceland","he:  3.246450<br />le: 67.01300<br />country: India","he:  3.370694<br />le: 68.68400<br />country: Indonesia","he:  7.055384<br />le: 75.46600<br />country: Iran, Islamic Rep.","he:  9.913169<br />le: 81.34878<br />country: Ireland","he:  7.131971<br />le: 81.70488<br />country: Israel","he:  9.011441<br />le: 83.09024<br />country: Italy","he:  4.812797<br />le: 73.16700<br />country: Jamaica","he:  8.199514<br />le: 82.58756<br />country: Japan","he:  3.880475<br />le: 72.00000<br />country: Kazakhstan","he:  5.220177<br />le: 66.69500<br />country: Kenya","he:  6.727507<br />le: 80.81951<br />country: Korea, Rep.","he:  8.217884<br />le: 70.65122<br />country: Kyrgyz Republic","he:  2.251828<br />le: 65.20800<br />country: Lao PDR","he:  7.825038<br />le: 74.12439<br />country: Latvia","he:  8.147124<br />le: 78.65600<br />country: Lebanon","he:  5.881629<br />le: 46.39400<br />country: Lesotho","he:  6.177917<br />le: 74.51707<br />country: Lithuania","he:  6.265727<br />le: 82.22927<br />country: Luxembourg","he:  3.801342<br />le: 64.28000<br />country: Madagascar","he:  7.241413<br />le: 57.26300<br />country: Malawi","he:  3.998686<br />le: 75.14300<br />country: Malaysia","he: 10.641740<br />le: 75.92000<br />country: Maldives","he:  4.696008<br />le: 54.75600<br />country: Mali","he:  9.456058<br />le: 81.94634<br />country: Malta","he:  3.795996<br />le: 61.46100<br />country: Mauritania","he:  4.360087<br />le: 73.86341<br />country: Mauritius","he:  5.691027<br />le: 76.75300<br />country: Mexico","he: 10.283841<br />le: 71.25800<br />country: Moldova","he:  3.827088<br />le: 68.84700<br />country: Mongolia","he: 11.087850<br />le: 53.69300<br />country: Namibia","he:  4.974750<br />le: 67.91400<br />country: Nepal","he: 10.858538<br />le: 81.70732<br />country: Netherlands","he:  5.854648<br />le: 59.22800<br />country: Niger","he:  9.346252<br />le: 82.10000<br />country: Norway","he:  2.689498<br />le: 66.32200<br />country: Pakistan","he:  6.025180<br />le: 77.02100<br />country: Panama","he:  7.618913<br />le: 72.63800<br />country: Paraguay","he:  5.264804<br />le: 74.74700<br />country: Peru","he:  9.022326<br />le: 81.12195<br />country: Portugal","he:  5.034546<br />le: 74.96098<br />country: Romania","he:  5.342901<br />le: 70.07220<br />country: Russian Federation","he:  7.905883<br />le: 65.59800<br />country: Rwanda","he:  4.766306<br />le: 72.28800<br />country: Samoa","he:  3.949665<br />le: 64.81400<br />country: Senegal","he: 10.554614<br />le: 49.03400<br />country: Sierra Leone","he:  6.885942<br />le: 76.56341<br />country: Slovak Republic","he:  8.541597<br />le: 81.07805<br />country: Slovenia","he:  7.925304<br />le: 60.99300<br />country: South Africa","he:  9.083407<br />le: 83.22927<br />country: Spain","he:  2.605684<br />le: 74.59300<br />country: Sri Lanka","he:  5.793957<br />le: 62.19300<br />country: Sudan","he: 11.141271<br />le: 82.25366<br />country: Sweden","he: 11.589601<br />le: 83.19756<br />country: Switzerland","he:  4.478602<br />le: 74.25000<br />country: Syrian Arab Republic","he:  6.853735<br />le: 70.87900<br />country: Tajikistan","he:  3.456792<br />le: 74.67800<br />country: Thailand","he:  6.649130<br />le: 59.94900<br />country: Togo","he:  4.204030<br />le: 70.94900<br />country: Tonga","he:  5.883956<br />le: 74.79300<br />country: Tunisia","he:  4.347266<br />le: 75.23900<br />country: Turkey","he:  7.817894<br />le: 58.34700<br />country: Uganda","he:  6.138769<br />le: 71.18659<br />country: Ukraine","he:  9.876772<br />le: 80.95610<br />country: United Kingdom","he: 16.322920<br />le: 78.74146<br />country: United States","he:  8.337299<br />le: 76.73900<br />country: Uruguay","he:  4.125899<br />le: 73.23500<br />country: Venezuela, RB","he:  6.477713<br />le: 75.47600<br />country: Vietnam","he:  7.448609<br />le: 48.43200<br />country: Zambia"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(255,165,0,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(0,0,0,1)"}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":23.305936073059364,"r":7.3059360730593621,"b":37.260273972602747,"l":37.260273972602747},"plot_bgcolor":"rgba(235,235,235,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[1.1535194744999999,17.0452726155],"tickmode":"array","ticktext":["4","8","12","16"],"tickvals":[4,8,12,16],"categoryorder":"array","categoryarray":["4","8","12","16"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0,"zeroline":false,"anchor":"y","title":{"text":"he","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[44.338036585365856,85.081231707317045],"tickmode":"array","ticktext":["45","55","65","75","85"],"tickvals":[45,55,65,75,85],"categoryorder":"array","categoryarray":["45","55","65","75","85"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0,"zeroline":false,"anchor":"x","title":{"text":"le","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","layer":"below","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.68949771689498}},"hovermode":"closest","width":800,"height":400,"barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"7940455f315e":{"x":{},"y":{},"label":{},"type":"scatter"}},"cur_data":"7940455f315e","visdat":{"7940455f315e":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<ul>
+<li>Weitere Informationen anzeigen mit <code>label=&lt;M&gt;</code></li>
+<li>Funktioniert nur in HTML (und nicht auf Papier)</li>
+</ul>
+</section>
+<section id="ausgaben-gesundheitswesen-und-lebenserwartung-mit-beschriftung-schritt-1" class="level2" data-number="11.8">
+<h2 data-number="11.8" class="anchored" data-anchor-id="ausgaben-gesundheitswesen-und-lebenserwartung-mit-beschriftung-schritt-1"><span class="header-section-number">11.8</span> Ausgaben Gesundheitswesen und Lebenserwartung mit Beschriftung, Schritt 1</h2>
+<p><span class="down20"></span></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>countries <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"United States"</span>, <span class="st">"Sierra Leone"</span>, <span class="st">"Sri Lanka"</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>d_le_latest <span class="ot">&lt;-</span> d_le_latest <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">highlight =</span> country <span class="sc">%in%</span> countries)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>d_le_labels <span class="ot">&lt;-</span> d_le_latest <span class="sc">|&gt;</span> <span class="fu">filter</span>(country <span class="sc">%in%</span> countries)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><span class="down20"></span></p>
+<ul>
+<li>Array (verweis zu Basics) mit interessanten/markanten/… Ländern</li>
+<li><code>mutate()</code>: Länder hervorheben mit Merkmal <code>highlight</code></li>
+<li><code>filter()</code>: Zeilen mit anderen Ländern herausfiltern</li>
+<li>Dazu später mehr (Verweis auf Stelle)</li>
+</ul>
+</section>
+<section id="ausgaben-gesundheitswesen-und-lebenserwartung-mit-beschriftung-schritt-2" class="level2" data-number="11.9">
+<h2 data-number="11.9" class="anchored" data-anchor-id="ausgaben-gesundheitswesen-und-lebenserwartung-mit-beschriftung-schritt-2"><span class="header-section-number">11.9</span> Ausgaben Gesundheitswesen und Lebenserwartung mit Beschriftung, Schritt 2</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> he, <span class="at">y =</span> le, <span class="at">label =</span> country)) <span class="sc">+</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> d_le_latest, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">color =</span> highlight)) <span class="sc">+</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_label</span>(<span class="at">data =</span> d_le_labels, <span class="at">hjust =</span> <span class="fl">0.7</span>, <span class="at">nudge_y =</span> <span class="dv">2</span>, <span class="at">size =</span> <span class="fl">2.5</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li>Plot in Variable <code>p</code> speichern und auf nächster Folie ausgegeben</li>
+<li>Farblich hervorheben mit Merkmal <code>highlight</code> (siehe oben)</li>
+<li>Beschriftung hinzufügen mit <code>geom_label()</code> (Dokumentation!)</li>
+<li>Details später (Verweis)</li>
+</ul>
+</section>
+<section id="ausgaben-gesundheitswesen-und-lebenserwartung-mit-beschriftung-darstellung" class="level2" data-number="11.10">
+<h2 data-number="11.10" class="anchored" data-anchor-id="ausgaben-gesundheitswesen-und-lebenserwartung-mit-beschriftung-darstellung"><span class="header-section-number">11.10</span> Ausgaben Gesundheitswesen und Lebenserwartung mit Beschriftung, Darstellung</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>p</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="zwei-merkmale_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="blasendiagramm" class="level2" data-number="11.11">
+<h2 data-number="11.11" class="anchored" data-anchor-id="blasendiagramm"><span class="header-section-number">11.11</span> Blasendiagramm</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_le_latest) <span class="sc">+</span> </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x =</span> he, <span class="at">y =</span> le, <span class="at">size =</span> gdppc))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="zwei-merkmale_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Skalierung nach BIP pro Kopf</li>
+</ul>
+</section>
+<section id="darstellung-von-fünf-merkmalen" class="level2" data-number="11.12">
+<h2 data-number="11.12" class="anchored" data-anchor-id="darstellung-von-fünf-merkmalen"><span class="header-section-number">11.12</span> Darstellung von fünf Merkmalen</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">A =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">6</span>, <span class="dv">2</span>, <span class="dv">8</span>), <span class="at">B =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">5</span>, <span class="fl">3.75</span>), <span class="at">C =</span> <span class="fu">c</span>(<span class="dv">16</span>, <span class="dv">2</span>, <span class="dv">8</span>, <span class="dv">4</span>), <span class="at">D =</span> <span class="fu">c</span>(<span class="st">'a'</span>, <span class="st">'b'</span>, <span class="st">'b'</span>, <span class="st">'a'</span>), <span class="at">E =</span> <span class="fu">c</span>(<span class="st">'u'</span>, <span class="st">'u'</span>, <span class="st">'v'</span>, <span class="st">'v'</span>))</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> A, <span class="at">y =</span> B, <span class="at">size =</span> C, <span class="at">color =</span> D, <span class="at">shape =</span> E))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="zwei-merkmale_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Hier schwer zu lesen, von Fall zu Fall entscheiden</li>
+</ul>
+</section>
+</section>
+<section id="histogramme-und-dichtefunktionen" class="level1" data-number="12">
+<h1 data-number="12"><span class="header-section-number">12</span> Histogramme und Dichtefunktionen</h1>
+<section id="histogramm-2d-basisversion" class="level2" data-number="12.1">
+<h2 data-number="12.1" class="anchored" data-anchor-id="histogramm-2d-basisversion"><span class="header-section-number">12.1</span> Histogramm 2D (Basisversion)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_le_latest) <span class="sc">+</span> </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bin2d</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> he, <span class="at">y =</span> le))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin2d()` using `bins = 30`. Pick better value `binwidth`.</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="zwei-merkmale_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Histogramm für zwei Merkmale mit <code>geom_bin2d()</code></li>
+<li>bin wie Feld, Zelle, Klasse + 2D (zweidimensional)</li>
+</ul>
+</section>
+<section id="histogramm-2d-mit-klassenbreiten" class="level2" data-number="12.2">
+<h2 data-number="12.2" class="anchored" data-anchor-id="histogramm-2d-mit-klassenbreiten"><span class="header-section-number">12.2</span> Histogramm 2D (mit Klassenbreiten)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_le_latest) <span class="sc">+</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bin2d</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> he, <span class="at">y =</span> le), <span class="at">binwidth =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">4</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="zwei-merkmale_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Klassenbreiten mit <code>binwidth()</code> und Werten für jede Richtung</li>
+</ul>
+</section>
+<section id="alternativ-mit-sechsecken" class="level2" data-number="12.3">
+<h2 data-number="12.3" class="anchored" data-anchor-id="alternativ-mit-sechsecken"><span class="header-section-number">12.3</span> Alternativ mit Sechsecken</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_le_latest) <span class="sc">+</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hex</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x=</span>he, <span class="at">y=</span>le), <span class="at">binwidth =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">4</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="zwei-merkmale_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Unterschied zu vorher: <code>geom_hex</code> statt <code>geom_bin2d</code></li>
+<li>hex wie hexagonal</li>
+</ul>
+</section>
+<section id="dichtefunktion" class="level2" data-number="12.4">
+<h2 data-number="12.4" class="anchored" data-anchor-id="dichtefunktion"><span class="header-section-number">12.4</span> Dichtefunktion</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_le_latest) <span class="sc">+</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density_2d</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> he, <span class="at">y =</span> le))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="zwei-merkmale_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li><code>geom_density_2d()</code> erzeugt Höhenlinien der geschätzten Dichtefunktion</li>
+</ul>
+</section>
+<section id="dichtefunktion-gefüllt" class="level2" data-number="12.5">
+<h2 data-number="12.5" class="anchored" data-anchor-id="dichtefunktion-gefüllt"><span class="header-section-number">12.5</span> Dichtefunktion gefüllt</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_le_latest) <span class="sc">+</span> </span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density_2d_filled</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> he, <span class="at">y =</span> le))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="zwei-merkmale_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li><code>geom_density_2d_filled()</code> färbt nach der geschätzten Dichtefunktion</li>
+</ul>
+</section>
+</section>
+<section id="korrelationskoeffizient" class="level1" data-number="13">
+<h1 data-number="13"><span class="header-section-number">13</span> Korrelationskoeffizient</h1>
+<section id="korrelationskoeffizient-berechnen" class="level2" data-number="13.1">
+<h2 data-number="13.1" class="anchored" data-anchor-id="korrelationskoeffizient-berechnen"><span class="header-section-number">13.1</span> Korrelationskoeffizient berechnen</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">X =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">8</span>), <span class="at">Y =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="fl">3.5</span>, <span class="fl">5.5</span>))</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(d<span class="sc">$</span>X, d<span class="sc">$</span>Y)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1</code></pre>
+</div>
+</div>
+<ul>
+<li>Mit <code>cor(x, y)</code> wird der Korrelationkoeffizient <span class="math inline">\(r\)</span> für die Werte in <code>x</code> und <code>y</code> berechnet</li>
+</ul>
+</section>
+<section id="zugehöriger-plot" class="level2" data-number="13.2">
+<h2 data-number="13.2" class="anchored" data-anchor-id="zugehöriger-plot"><span class="header-section-number">13.2</span> Zugehöriger Plot</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> X, <span class="at">y =</span> Y)) <span class="sc">+</span> </span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(d<span class="sc">$</span>X), <span class="at">color =</span> <span class="st">'orange'</span>) <span class="sc">+</span> </span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fu">mean</span>(d<span class="sc">$</span>Y), <span class="at">color =</span> <span class="st">'orange'</span>) <span class="sc">+</span> </span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">formula =</span> y <span class="sc">~</span> x, <span class="at">method =</span> <span class="st">'lm'</span>, <span class="at">linewidth =</span> <span class="fl">0.25</span>) <span class="sc">+</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="zwei-merkmale_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="korrelationskoeffizienten-von-beispieldaten-berechnen-13" class="level2" data-number="13.3">
+<h2 data-number="13.3" class="anchored" data-anchor-id="korrelationskoeffizienten-von-beispieldaten-berechnen-13"><span class="header-section-number">13.3</span> Korrelationskoeffizienten von Beispieldaten berechnen (1/3)</h2>
+<p><span class="down40"></span></p>
+<section id="wirtschaftsprognosen" class="level3">
+<h3 class="anchored" data-anchor-id="wirtschaftsprognosen">Wirtschaftsprognosen</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(d_svrw<span class="sc">$</span>Prognose, d_svrw<span class="sc">$</span>Wachstum)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.6367805</code></pre>
+</div>
+</div>
+<p><span class="math inline">\(\rightarrow\)</span> Mittlere Korrelation</p>
+<p><span class="down40"></span></p>
+</section>
+<section id="pisa-studie-1" class="level3">
+<h3 class="anchored" data-anchor-id="pisa-studie-1">Pisa-Studie</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(d_pisa<span class="sc">$</span>read, d_pisa<span class="sc">$</span>math)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.939363</code></pre>
+</div>
+</div>
+<p><span class="math inline">\(\rightarrow\)</span> Starke positive Korrelation</p>
+</section>
+</section>
+<section id="korrelationskoeffizienten-von-beispieldaten-berechnen-23" class="level2" data-number="13.4">
+<h2 data-number="13.4" class="anchored" data-anchor-id="korrelationskoeffizienten-von-beispieldaten-berechnen-23"><span class="header-section-number">13.4</span> Korrelationskoeffizienten von Beispieldaten berechnen (2/3)</h2>
+<p><span class="down40"></span></p>
+<section id="gesundheitsausgaben-und-lebenserwartung" class="level3">
+<h3 class="anchored" data-anchor-id="gesundheitsausgaben-und-lebenserwartung">Gesundheitsausgaben und Lebenserwartung</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(d_le_latest<span class="sc">$</span>he, d_le_latest<span class="sc">$</span>le)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.4420217</code></pre>
+</div>
+</div>
+<p><span class="down40"></span></p>
+</section>
+<section id="gini-koeffizient-und-lebenserwartung" class="level3">
+<h3 class="anchored" data-anchor-id="gini-koeffizient-und-lebenserwartung">Gini-Koeffizient und Lebenserwartung</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(d_le_latest<span class="sc">$</span>gini, d_le_latest<span class="sc">$</span>le)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -0.4759603</code></pre>
+</div>
+</div>
+<p><span class="math inline">\(\rightarrow\)</span> Mittlere negative Korrelation</p>
+</section>
+</section>
+<section id="korrelationskoeffizienten-von-beispieldaten-berechnen-33" class="level2" data-number="13.5">
+<h2 data-number="13.5" class="anchored" data-anchor-id="korrelationskoeffizienten-von-beispieldaten-berechnen-33"><span class="header-section-number">13.5</span> Korrelationskoeffizienten von Beispieldaten berechnen (3/3)</h2>
+<p><span class="down40"></span></p>
+<section id="bip-pro-kopf-und-lebenserwartung" class="level3">
+<h3 class="anchored" data-anchor-id="bip-pro-kopf-und-lebenserwartung">BIP pro Kopf und Lebenserwartung</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(d_le_latest<span class="sc">$</span>gdppc, d_le_latest<span class="sc">$</span>le)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.617262</code></pre>
+</div>
+</div>
+<p><span class="down40"></span></p>
+</section>
+<section id="bip-pro-kopf-logarithmisch-und-lebenserwartung" class="level3">
+<h3 class="anchored" data-anchor-id="bip-pro-kopf-logarithmisch-und-lebenserwartung">BIP pro Kopf (logarithmisch) und Lebenserwartung</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(<span class="fu">log10</span>(d_le_latest<span class="sc">$</span>gdppc), d_le_latest<span class="sc">$</span>le)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.8616588</code></pre>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="lineare-regression" class="level1" data-number="14">
+<h1 data-number="14"><span class="header-section-number">14</span> Lineare Regression</h1>
+<section id="rechenbeispiel" class="level2" data-number="14.1">
+<h2 data-number="14.1" class="anchored" data-anchor-id="rechenbeispiel"><span class="header-section-number">14.1</span> Rechenbeispiel</h2>
+<section id="berechnung-der-ausgleichsgeraden" class="level3">
+<h3 class="anchored" data-anchor-id="berechnung-der-ausgleichsgeraden">Berechnung der Ausgleichsgeraden</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">X =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>), <span class="at">Y =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">3</span>))</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>xm <span class="ot">=</span> <span class="fu">mean</span>(d<span class="sc">$</span>X)</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>ym <span class="ot">=</span> <span class="fu">mean</span>(d<span class="sc">$</span>Y) </span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>betaD <span class="ot">=</span> <span class="fu">sum</span>((d<span class="sc">$</span>X <span class="sc">-</span> xm) <span class="sc">*</span> (d<span class="sc">$</span>Y <span class="sc">-</span> ym)) <span class="sc">/</span> <span class="fu">sum</span>((d<span class="sc">$</span>X <span class="sc">-</span> xm)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>alphaD <span class="ot">=</span> ym <span class="sc">-</span> betaD <span class="sc">*</span> xm</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li>Rechenoperationen werden für Vektoren elementweise ausgeführt (anders als in Matlab)</li>
+<li>Elemente eines Vektors aufsummieren mit <code>sum()</code></li>
+<li>Dazu später mehr (Verweis)</li>
+</ul>
+</section>
+</section>
+<section id="section-3" class="level2" data-number="14.2">
+<h2 data-number="14.2" class="anchored" data-anchor-id="section-3"><span class="header-section-number">14.2</span> </h2>
+<section id="plot-der-ausgleichsgeraden" class="level3">
+<h3 class="anchored" data-anchor-id="plot-der-ausgleichsgeraden">Plot der Ausgleichsgeraden</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d) <span class="sc">+</span> </span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept =</span> alphaD, <span class="at">slope =</span> betaD, <span class="at">color =</span> <span class="st">'orange'</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> X, <span class="at">y =</span> Y), <span class="at">size =</span> <span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+ℹ Please use `linewidth` instead.</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="zwei-merkmale_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="section-4" class="level2" data-number="14.3">
+<h2 data-number="14.3" class="anchored" data-anchor-id="section-4"><span class="header-section-number">14.3</span> </h2>
+<section id="ausgleichsgerade-mit-geom_smooth" class="level3">
+<h3 class="anchored" data-anchor-id="ausgleichsgerade-mit-geom_smooth">Ausgleichsgerade mit <code>geom_smooth()</code></h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> X, <span class="at">y =</span> Y)) <span class="sc">+</span> </span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">formula =</span> y <span class="sc">~</span> x, <span class="at">method =</span> <span class="st">'lm'</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">'orange'</span>) <span class="sc">+</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="zwei-merkmale_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>smooth wie glätten <span class="math inline">\(\rightarrow\)</span> Glättende Gerade</li>
+</ul>
+</section>
+</section>
+<section id="ausgleichskurven-mit-loess-beispiel-1" class="level2" data-number="14.4">
+<h2 data-number="14.4" class="anchored" data-anchor-id="ausgleichskurven-mit-loess-beispiel-1"><span class="header-section-number">14.4</span> Ausgleichskurven mit LOESS, Beispiel 1</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">tibble</span>( <span class="at">X =</span> <span class="dv">10</span> <span class="sc">*</span> <span class="fu">runif</span>(<span class="dv">300</span>), <span class="at">Y =</span> <span class="fu">sin</span>(<span class="dv">2</span> <span class="sc">*</span> pi <span class="sc">*</span> X <span class="sc">/</span> <span class="dv">10</span>) <span class="sc">+</span> <span class="fl">0.2</span> <span class="sc">*</span> <span class="fu">rnorm</span>(<span class="dv">300</span>))</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> X, <span class="at">y =</span> Y)) <span class="sc">+</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">geom_smooth</span>(<span class="at">formula =</span> y <span class="sc">~</span> x, <span class="at">method =</span> <span class="st">"loess"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="zwei-merkmale_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="ausgleichskurven-mit-loess-beispiel-2" class="level2" data-number="14.5">
+<h2 data-number="14.5" class="anchored" data-anchor-id="ausgleichskurven-mit-loess-beispiel-2"><span class="header-section-number">14.5</span> Ausgleichskurven mit LOESS, Beispiel 2</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">X =</span> <span class="dv">10</span> <span class="sc">*</span> <span class="fu">runif</span>(<span class="dv">20</span>), <span class="at">Y =</span> <span class="fu">sin</span>(<span class="dv">2</span> <span class="sc">*</span> pi <span class="sc">*</span> X <span class="sc">/</span> <span class="dv">10</span>) <span class="sc">+</span> <span class="fl">0.2</span> <span class="sc">*</span> <span class="fu">rnorm</span>(<span class="dv">20</span>))</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> X, <span class="at">y =</span> Y)) <span class="sc">+</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">geom_smooth</span>(<span class="at">formula =</span> y <span class="sc">~</span> x, <span class="at">method =</span> <span class="st">"loess"</span>, <span class="at">se =</span> <span class="cn">TRUE</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="zwei-merkmale_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>LOESS: Locally Estimated Scatterplot Smoothing</li>
+<li>Konfidenzintervall anzeigen mit <code>se = TRUE</code></li>
+<li>Auskunft darüber, wie vertrauenswürdig die berechnete Kurve ist</li>
+</ul>
+</section>
+</section>
+<section id="zusammenfassung" class="level1" data-number="15">
+<h1 data-number="15"><span class="header-section-number">15</span> Zusammenfassung</h1>
+<section id="geom_point" class="level2" data-number="15.1">
+<h2 data-number="15.1" class="anchored" data-anchor-id="geom_point"><span class="header-section-number">15.1</span> <code>geom_point()</code></h2>
+<table class="table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 50%">
+<col style="width: 30%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>AES/Argument</th>
+<th>Beschreibung</th>
+<th>Optional</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>x</td>
+<td>Merkmal für x-Position</td>
+<td>Nein</td>
+</tr>
+<tr class="even">
+<td>y</td>
+<td>Merkmal für y-Position</td>
+<td>Nein</td>
+</tr>
+<tr class="odd">
+<td>shape</td>
+<td>Form (nur qualitative Merkmale)</td>
+<td>Ja</td>
+</tr>
+<tr class="even">
+<td>size</td>
+<td>Größe (nur stetige Merkmale)</td>
+<td>Ja</td>
+</tr>
+<tr class="odd">
+<td>alpha</td>
+<td>Transparenz (nur stetige Merkmale)</td>
+<td>Ja</td>
+</tr>
+<tr class="even">
+<td>color</td>
+<td>Farbe</td>
+<td>Ja</td>
+</tr>
+<tr class="odd">
+<td>fill</td>
+<td>Füllfarbe für Shapes 21 ‒ 24</td>
+<td>Ja</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="geglättete-daten-mit-geom_smooth" class="level2" data-number="15.2">
+<h2 data-number="15.2" class="anchored" data-anchor-id="geglättete-daten-mit-geom_smooth"><span class="header-section-number">15.2</span> Geglättete Daten mit <code>geom_smooth()</code></h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> <span class="sc">&lt;</span>DATAFRAME<span class="sc">&gt;</span>) <span class="sc">+</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> <span class="sc">&lt;</span>M<span class="sc">&gt;</span>, <span class="at">y =</span> <span class="sc">&lt;</span>M<span class="sc">&gt;</span>), Argumente)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<table class="table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 50%">
+<col style="width: 30%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>AES</th>
+<th>Beschreibung</th>
+<th>Optional</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>x</td>
+<td>Merkmal für x-Achse</td>
+<td>Nein</td>
+</tr>
+<tr class="even">
+<td>y</td>
+<td>Merkmal für y-Achse</td>
+<td>Nein</td>
+</tr>
+</tbody>
+</table>
+<table class="table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 50%">
+<col style="width: 30%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Argumente</th>
+<th>Beschreibung</th>
+<th>Optional</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>formula</td>
+<td>In der Regel <code>y ~ x</code></td>
+<td>Nein</td>
+</tr>
+<tr class="even">
+<td>method</td>
+<td>Methode (Linear mit <code>'lm'</code>, LOESS mit <code>'loess'</code>)</td>
+<td>Ja</td>
+</tr>
+<tr class="odd">
+<td>se</td>
+<td>Konfidenzintervall anzeigen (<code>TRUE</code> oder <code>FALSE</code>)</td>
+<td>Ja</td>
+</tr>
+<tr class="even">
+<td>color</td>
+<td>Farbe</td>
+<td>Ja</td>
+</tr>
+<tr class="odd">
+<td>size</td>
+<td>Linienstärke</td>
+<td>Ja</td>
+</tr>
+</tbody>
+</table>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../skript/dichtekurven-aufgabe.html" class="pagination-link" aria-label="Aufgaben zu Dichtekurven und Normalverteilung">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Aufgaben zu Dichtekurven und Normalverteilung</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../skript/zwei-merkmale-aufgabe.html" class="pagination-link" aria-label="Aufgaben zur Untersuchung von zwei Merkmalen">
+        <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Aufgaben zur Untersuchung von zwei Merkmalen</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/bausteine-der-datenanalyse/Werkzeugbaustein-R-und-RStudio/blob/main/skript/zwei-merkmale.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></div></div></footer></body></html>

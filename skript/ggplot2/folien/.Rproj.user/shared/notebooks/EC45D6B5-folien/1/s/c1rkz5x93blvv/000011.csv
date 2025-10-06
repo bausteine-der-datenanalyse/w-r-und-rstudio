@@ -1,3 +1,0 @@
-"0","d <- tibble(farbe=c(""rot"", ""gruen"", ""blau"", ""gruen"", ""rot"", ""gruen""))"
-"0",""
-"0","kable(d)"

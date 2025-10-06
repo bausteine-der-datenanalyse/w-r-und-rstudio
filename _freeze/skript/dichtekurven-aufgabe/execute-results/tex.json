@@ -1,0 +1,21 @@
+{
+  "hash": "a489337bb73cc2edfef886a2c3d63a3d",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Aufgaben zu Dichtekurven und Normalverteilung\"\nauthor: \"TODO: Namen eintragen\"\n---\n\n\n::: {.cell}\n\n:::\n\n\n## Dataframe\n\n\n::: {.cell}\n\n```{.r .cell-code}\nshow(d_unistrasse)\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n# A tibble: 20,710 x 5\n   Datum               Tag   VZ    Fahrzeug    Geschwindigkeit\n   <dttm>              <ord> <chr> <chr>                 <dbl>\n 1 2017-12-13 00:03:31 Mi    SVZ   PKW                      70\n 2 2017-12-13 00:03:37 Mi    SVZ   PKW                      59\n 3 2017-12-13 00:03:53 Mi    SVZ   PKW                      79\n 4 2017-12-13 00:05:42 Mi    SVZ   PKW                      58\n 5 2017-12-13 00:06:51 Mi    SVZ   PKW                      60\n 6 2017-12-13 00:07:08 Mi    SVZ   Transporter              57\n 7 2017-12-13 00:08:11 Mi    SVZ   PKW                      58\n 8 2017-12-13 00:09:41 Mi    SVZ   PKW                      54\n 9 2017-12-13 00:11:42 Mi    SVZ   Transporter              56\n10 2017-12-13 00:17:31 Mi    SVZ   PKW                      61\n# i 20,700 more rows\n```\n\n\n:::\n:::\n\n",
+    "supporting": [
+      "dichtekurven-aufgabe_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {
+      "knitr": [
+        "{\"type\":\"list\",\"attributes\":{},\"value\":[]}"
+      ]
+    },
+    "preserve": null,
+    "postProcess": false
+  }
+}

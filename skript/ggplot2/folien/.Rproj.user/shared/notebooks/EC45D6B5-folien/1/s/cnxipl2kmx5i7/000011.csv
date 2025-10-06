@@ -1,2 +1,0 @@
-"0","ggplot(data=d_wb_countries) +"
-"0","  geom_col(mapping=aes(x=year, y=gge / pop, fill=country))"

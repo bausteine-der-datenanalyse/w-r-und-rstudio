@@ -1,5 +1,0 @@
-"0","#| echo: false"
-"0",""
-"0","ggplot(data = d_ns_monat) +"
-"0"," geom_boxplot(mapping = aes(x = Monat, y = Niederschlag, fill = Station)) +"
-"0"," labs(title = ""Monatliche Niederschläge (nach Stationen)"")"

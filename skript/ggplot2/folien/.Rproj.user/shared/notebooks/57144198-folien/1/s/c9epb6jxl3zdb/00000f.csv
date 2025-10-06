@@ -1,3 +1,0 @@
-"0","ggplot(data = d_wb_2012) +"
-"0","  geom_point(mapping = aes(x=gdp, y=gge, color=region, size=pop)) +"
-"0","  scale_x_log10() + scale_y_log10()"

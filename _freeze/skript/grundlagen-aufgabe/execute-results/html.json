@@ -1,0 +1,15 @@
+{
+  "hash": "ac7c2cdbc2fcb171f045dc6260d919be",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Übung zur Programmiersprache R\"\nauthor: \"TODO\"\n---\n\n\n::: {.cell}\n\n:::\n\n\n# Aufgabe 1\n\n1.  Berechnet R den Wert $10^{16}(1 - \\frac{1}{49} \\cdot (5 \\cdot 18 - 83)^2)$ korrekt? Warum ist das so?\n2.  Ist $(3 + 4^5) - 23$ ohne Rest durch 7 teilbar?\n\n\n::: {.cell}\n\n```{.r .cell-code}\n# TODO\n```\n:::\n\n\nTODO: Hier die Erklärung\n\n# Aufgabe 2\n\n-   Definieren Sie für sich (oder jemand anderen) die Variablen `name`, `age`, `weight` und `height`\n-   Berechnen Sie den BMI (Gewicht durch Körpergröße in Metern zum Quadrat)\n-   Geben Sie in einer Zeile Namen, Alter und BMI (drei signifikante Stellen) aus\n\n\n::: {.cell}\n\n```{.r .cell-code}\n# TODO\n```\n:::\n\n\n# Aufgabe 3\n\n-   Berechnen Sie für die Werte $0, 1, 2, \\dots, 10$ Mittelwert und Standardabweichung ohne die Funktionen `mean`, `sd` und `var` zu verwenden\n\n\n::: {.cell}\n\n```{.r .cell-code}\n# TODO\n```\n:::\n\n\n# Aufgabe 4\n\n-   Lesen Sie die folgenden Datumswerte ein\n\n`\"1. Januar 2010\"`, `\"2015-Mar-06\"`, `\"6 Jun 2011\"`, `\"August 19 (1966)\"`, `\"12/30/14\"`\n\n\n::: {.cell}\n\n```{.r .cell-code}\n# TODO\n```\n:::\n\n\n# Aufgabe 5\n\n1.  An welchem Wochentag sind Sie geboren?\n2.  Welcher Tag im Jahr war das?\n\n\n::: {.cell}\n\n```{.r .cell-code}\n# TODO\n```\n:::\n\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

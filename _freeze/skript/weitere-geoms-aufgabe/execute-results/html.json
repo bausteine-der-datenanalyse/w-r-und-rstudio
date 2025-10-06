@@ -1,0 +1,17 @@
+{
+  "hash": "a3e00f6494ef9c2580be0891724d2bf8",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Aufgaben zum Aufbereiten von Plots\"\nauthor: \"TODO\"\n---\n\n\n::: {.cell}\n\n:::\n\n\n## Entfernungen in andere Städte\n\n\n::: {.cell}\n\n```{.r .cell-code}\nggplot(data=d_bo_entfernung) + geom_col(mapping=aes(x=Stadt, y=Entfernung))\n```\n\n::: {.cell-output-display}\n![](weitere-geoms-aufgabe_files/figure-html/unnamed-chunk-2-1.png){width=672}\n:::\n:::\n\n\n## Studierende an der BO: Geschlecht\n\n\n::: {.cell}\n::: {.cell-output-display}\n![](weitere-geoms-aufgabe_files/figure-html/unnamed-chunk-3-1.png){width=672}\n:::\n:::\n\n\n## Studierende an der BO: Fachbereiche\n\n\n::: {.cell}\n::: {.cell-output-display}\n![](weitere-geoms-aufgabe_files/figure-html/unnamed-chunk-4-1.png){width=672}\n:::\n:::\n\n\n## Histogramm mit Uhrzeit (Rechtecke)\n\n\n::: {.cell}\n::: {.cell-output-display}\n![](weitere-geoms-aufgabe_files/figure-html/unnamed-chunk-5-1.png){width=672}\n:::\n:::\n\n\n",
+    "supporting": [
+      "weitere-geoms-aufgabe_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

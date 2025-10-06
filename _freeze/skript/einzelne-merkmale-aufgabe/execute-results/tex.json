@@ -1,0 +1,21 @@
+{
+  "hash": "0e2b9fccccfc256a8bdff8af88817e58",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Aufgaben zur Untersuchung einzelner Merkmale\"\nauthor: \"TODO: Namen eintragen\"\n---\n\n\n::: {.cell}\n\n:::\n\n\n## Titel Folie 1\n\n\n::: {.cell}\n\n```{.r .cell-code}\n3 * 3\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 9\n```\n\n\n:::\n:::\n\n\n- Wie erwartet ergibt drei mal drei neun\n\n## Titel Folie 2\n\n\n::: {.cell}\n\n```{.r .cell-code}\nsqrt(4)\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 2\n```\n\n\n:::\n:::\n\n\n- Und die Wurzel aus vier ist zwei\n",
+    "supporting": [
+      "einzelne-merkmale-aufgabe_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {
+      "knitr": [
+        "{\"type\":\"list\",\"attributes\":{},\"value\":[]}"
+      ]
+    },
+    "preserve": null,
+    "postProcess": false
+  }
+}

@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.24">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>19&nbsp; Räumliche Daten – Bausteine Computergestützter Datenanalyse</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../skript/räumliche-daten-aufgabe.html" rel="next">
+<link href="../skript/daten-aufbereiten-aufgabe.html" rel="prev">
+<link href="../skript/00-bilder/favicon_bcd_new.svg" rel="icon" type="image/svg+xml">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-0b984170a42629a489084289cb1ad9fe.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<link rel="shortcut icon" href="skript/00-bilder/favicon_bcd_new.svg">
+<link rel="icon" type="image/x-icon" href="logo.ico">
+
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../skript/räumliche-daten.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Räumliche Daten</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="../skript/00-bilder/logo_bcd_new.svg" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="../skript/00-bilder/logo_bcd_new.svg" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Titel</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/bausteine-der-datenanalyse/Werkzeugbaustein-R-und-RStudio" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="../Bausteine-Computergestützter-Datenanalyse.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Werkzeugbaustein R und RStudio</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/erste-schritte.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Erste Schritte in RStudio</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/erste-schritte-aufgabe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">erste-schritte-aufgabe.html</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/ggplot2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Grundlagen von ggplot2</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/einzelne-merkmale.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Untersuchung einzelner Merkmale in R</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/einzelne-merkmale-aufgabe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Aufgaben zur Untersuchung einzelner Merkmale</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/kenngrößen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Kenngrößen und Beschreibung von Verteilungen in R</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/kenngrößen-aufgabe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Aufgaben zu Kenngrößen und Beschreibung von Verteilungen</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/dichtekurven.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Dichtekurven und Normalverteilung</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/dichtekurven-aufgabe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Aufgaben zu Dichtekurven und Normalverteilung</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/zwei-merkmale.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Untersuchung von zwei Merkmalen in R</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/zwei-merkmale-aufgabe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Aufgaben zur Untersuchung von zwei Merkmalen</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/weitere-geoms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Weitere Geoms und Aufbereiten von Plots</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/weitere-geoms-aufgabe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Aufgaben zum Aufbereiten von Plots</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/grundlagen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Basics der Programmiersprache R</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/grundlagen-aufgabe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Übung zur Programmiersprache R</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/daten-einlesen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Daten einlesen</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/daten-aufbereiten.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Daten aufbereiten</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/daten-aufbereiten-aufgabe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Aufgaben zum Einlesen und Aufbereiten von Daten</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/räumliche-daten.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Räumliche Daten</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/räumliche-daten-aufgabe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Aufgaben zu räumlichen Daten</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/mehrere-datensätze.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Mehrere Datensätze</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/tipps-und-tricks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Tipps und Tricks</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/rdwd-anwenden.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Das Paket rdwd verwenden</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/lineare-trends.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Lineare Trends für viele Datensätze</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/zeitreihen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Arbeiten mit Zeitreihen</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/schreiben-mit-quarto.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Schreiben mit Quarto</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/praesentationen-mit-quarto.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Präsentationen erstellen mit Quarto</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#einführung" id="toc-einführung" class="nav-link active" data-scroll-target="#einführung"><span class="header-section-number">20</span> Einführung</a>
+  <ul class="collapse">
+  <li><a href="#räumliche-daten" id="toc-räumliche-daten" class="nav-link" data-scroll-target="#räumliche-daten"><span class="header-section-number">20.1</span> Räumliche Daten</a></li>
+  <li><a href="#geographische-daten-einzelne-punkte" id="toc-geographische-daten-einzelne-punkte" class="nav-link" data-scroll-target="#geographische-daten-einzelne-punkte"><span class="header-section-number">20.2</span> Geographische Daten: Einzelne Punkte</a></li>
+  <li><a href="#gps-koordinaten-hochschule-bochum" id="toc-gps-koordinaten-hochschule-bochum" class="nav-link" data-scroll-target="#gps-koordinaten-hochschule-bochum"><span class="header-section-number">20.3</span> GPS-Koordinaten Hochschule Bochum</a></li>
+  <li><a href="#mercator-projektion-12" id="toc-mercator-projektion-12" class="nav-link" data-scroll-target="#mercator-projektion-12"><span class="header-section-number">20.4</span> Mercator-Projektion 1/2</a></li>
+  <li><a href="#mercator-projektion-22" id="toc-mercator-projektion-22" class="nav-link" data-scroll-target="#mercator-projektion-22"><span class="header-section-number">20.5</span> Mercator-Projektion 2/2</a></li>
+  <li><a href="#robinson-projektion" id="toc-robinson-projektion" class="nav-link" data-scroll-target="#robinson-projektion"><span class="header-section-number">20.6</span> Robinson-Projektion</a></li>
+  <li><a href="#lambertsche-azimutalprojektion" id="toc-lambertsche-azimutalprojektion" class="nav-link" data-scroll-target="#lambertsche-azimutalprojektion"><span class="header-section-number">20.7</span> Lambertsche Azimutalprojektion</a></li>
+  <li><a href="#geographische-daten-geometrien" id="toc-geographische-daten-geometrien" class="nav-link" data-scroll-target="#geographische-daten-geometrien"><span class="header-section-number">20.8</span> Geographische Daten: Geometrien</a></li>
+  <li><a href="#r-paket-sf-simple-features-for-r" id="toc-r-paket-sf-simple-features-for-r" class="nav-link" data-scroll-target="#r-paket-sf-simple-features-for-r"><span class="header-section-number">20.9</span> R-Paket sf (Simple Features for R)</a></li>
+  </ul></li>
+  <li><a href="#weltkarte-mit-natural-earth" id="toc-weltkarte-mit-natural-earth" class="nav-link" data-scroll-target="#weltkarte-mit-natural-earth"><span class="header-section-number">21</span> Weltkarte mit Natural Earth</a>
+  <ul class="collapse">
+  <li><a href="#daten-die-welt-als-dataframe" id="toc-daten-die-welt-als-dataframe" class="nav-link" data-scroll-target="#daten-die-welt-als-dataframe"><span class="header-section-number">21.1</span> Daten: Die Welt als Dataframe</a></li>
+  <li><a href="#plot-der-weltkarte" id="toc-plot-der-weltkarte" class="nav-link" data-scroll-target="#plot-der-weltkarte"><span class="header-section-number">21.2</span> Plot der Weltkarte</a></li>
+  </ul></li>
+  <li><a href="#berechnung-neuer-daten" id="toc-berechnung-neuer-daten" class="nav-link" data-scroll-target="#berechnung-neuer-daten"><span class="header-section-number">22</span> Berechnung neuer Daten</a>
+  <ul class="collapse">
+  <li><a href="#weltkarte-mit-fläche-der-länder-12" id="toc-weltkarte-mit-fläche-der-länder-12" class="nav-link" data-scroll-target="#weltkarte-mit-fläche-der-länder-12"><span class="header-section-number">22.1</span> Weltkarte mit Fläche der Länder 1/2</a></li>
+  <li><a href="#weltkarte-mit-fläche-der-länder-22" id="toc-weltkarte-mit-fläche-der-länder-22" class="nav-link" data-scroll-target="#weltkarte-mit-fläche-der-länder-22"><span class="header-section-number">22.2</span> Weltkarte mit Fläche der Länder 2/2</a></li>
+  </ul></li>
+  <li><a href="#kombination-mit-anderen-daten" id="toc-kombination-mit-anderen-daten" class="nav-link" data-scroll-target="#kombination-mit-anderen-daten"><span class="header-section-number">23</span> Kombination mit anderen Daten</a>
+  <ul class="collapse">
+  <li><a href="#weltkarte-mit-der-lebenswerwartung" id="toc-weltkarte-mit-der-lebenswerwartung" class="nav-link" data-scroll-target="#weltkarte-mit-der-lebenswerwartung"><span class="header-section-number">23.1</span> Weltkarte mit der Lebenswerwartung</a></li>
+  <li><a href="#dataframes-miteinander-verknüpfen" id="toc-dataframes-miteinander-verknüpfen" class="nav-link" data-scroll-target="#dataframes-miteinander-verknüpfen"><span class="header-section-number">23.2</span> Dataframes miteinander verknüpfen</a></li>
+  <li><a href="#weltkarte-mit-lebenserwartung" id="toc-weltkarte-mit-lebenserwartung" class="nav-link" data-scroll-target="#weltkarte-mit-lebenserwartung"><span class="header-section-number">23.3</span> Weltkarte mit Lebenserwartung</a></li>
+  </ul></li>
+  <li><a href="#werte-zu-einzelnen-koordinaten-plotten" id="toc-werte-zu-einzelnen-koordinaten-plotten" class="nav-link" data-scroll-target="#werte-zu-einzelnen-koordinaten-plotten"><span class="header-section-number">24</span> Werte zu einzelnen Koordinaten plotten</a>
+  <ul class="collapse">
+  <li><a href="#erste-möglichkeit-mit-geom_point" id="toc-erste-möglichkeit-mit-geom_point" class="nav-link" data-scroll-target="#erste-möglichkeit-mit-geom_point"><span class="header-section-number">24.1</span> Erste Möglichkeit: Mit <code>geom_point</code></a></li>
+  <li><a href="#besser-dataframe-konvertieren-und-geom_sf" id="toc-besser-dataframe-konvertieren-und-geom_sf" class="nav-link" data-scroll-target="#besser-dataframe-konvertieren-und-geom_sf"><span class="header-section-number">24.2</span> Besser: Dataframe konvertieren und <code>geom_sf</code></a></li>
+  </ul></li>
+  <li><a href="#landesgrenzen-mit-giscor" id="toc-landesgrenzen-mit-giscor" class="nav-link" data-scroll-target="#landesgrenzen-mit-giscor"><span class="header-section-number">25</span> Landesgrenzen mit <code>giscoR</code></a>
+  <ul class="collapse">
+  <li><a href="#landesgrenzen-12" id="toc-landesgrenzen-12" class="nav-link" data-scroll-target="#landesgrenzen-12"><span class="header-section-number">25.1</span> Landesgrenzen 1/2</a></li>
+  <li><a href="#landesgrenzen-22" id="toc-landesgrenzen-22" class="nav-link" data-scroll-target="#landesgrenzen-22"><span class="header-section-number">25.2</span> Landesgrenzen 2/2</a></li>
+  </ul></li>
+  <li><a href="#open-street-map" id="toc-open-street-map" class="nav-link" data-scroll-target="#open-street-map"><span class="header-section-number">26</span> Open Street Map</a>
+  <ul class="collapse">
+  <li><a href="#über-open-street-map" id="toc-über-open-street-map" class="nav-link" data-scroll-target="#über-open-street-map"><span class="header-section-number">26.1</span> Über Open Street Map</a></li>
+  <li><a href="#straßen-in-bochum-12" id="toc-straßen-in-bochum-12" class="nav-link" data-scroll-target="#straßen-in-bochum-12"><span class="header-section-number">26.2</span> Straßen in Bochum 1/2</a></li>
+  <li><a href="#straßen-in-bochum-22" id="toc-straßen-in-bochum-22" class="nav-link" data-scroll-target="#straßen-in-bochum-22"><span class="header-section-number">26.3</span> Straßen in Bochum 2/2</a></li>
+  <li><a href="#karte-von-bochum-13" id="toc-karte-von-bochum-13" class="nav-link" data-scroll-target="#karte-von-bochum-13"><span class="header-section-number">26.4</span> Karte von Bochum 1/3</a></li>
+  <li><a href="#karte-von-bochum-23" id="toc-karte-von-bochum-23" class="nav-link" data-scroll-target="#karte-von-bochum-23"><span class="header-section-number">26.5</span> Karte von Bochum 2/3</a></li>
+  <li><a href="#karte-von-bochum-33" id="toc-karte-von-bochum-33" class="nav-link" data-scroll-target="#karte-von-bochum-33"><span class="header-section-number">26.6</span> Karte von Bochum 3/3</a></li>
+  <li><a href="#bundesautobahnen-12" id="toc-bundesautobahnen-12" class="nav-link" data-scroll-target="#bundesautobahnen-12"><span class="header-section-number">26.7</span> Bundesautobahnen 1/2</a></li>
+  <li><a href="#bundesautobahnen-22" id="toc-bundesautobahnen-22" class="nav-link" data-scroll-target="#bundesautobahnen-22"><span class="header-section-number">26.8</span> Bundesautobahnen 2/2</a></li>
+  <li><a href="#ausschnitt-festlegen-möglichkeit-12" id="toc-ausschnitt-festlegen-möglichkeit-12" class="nav-link" data-scroll-target="#ausschnitt-festlegen-möglichkeit-12"><span class="header-section-number">26.9</span> Ausschnitt festlegen: Möglichkeit 1/2</a></li>
+  <li><a href="#ausschnitt-festlegen-möglichkeit-22" id="toc-ausschnitt-festlegen-möglichkeit-22" class="nav-link" data-scroll-target="#ausschnitt-festlegen-möglichkeit-22"><span class="header-section-number">26.10</span> Ausschnitt festlegen: Möglichkeit 2/2</a></li>
+  <li><a href="#weitere-hilfreiche-quelle-zu-osm" id="toc-weitere-hilfreiche-quelle-zu-osm" class="nav-link" data-scroll-target="#weitere-hilfreiche-quelle-zu-osm"><span class="header-section-number">26.11</span> Weitere hilfreiche Quelle zu OSM</a></li>
+  </ul></li>
+  <li><a href="#shapefiles" id="toc-shapefiles" class="nav-link" data-scroll-target="#shapefiles"><span class="header-section-number">27</span> Shapefiles</a>
+  <ul class="collapse">
+  <li><a href="#shapefiles-1" id="toc-shapefiles-1" class="nav-link" data-scroll-target="#shapefiles-1"><span class="header-section-number">27.1</span> Shapefiles</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/bausteine-der-datenanalyse/Werkzeugbaustein-R-und-RStudio/blob/main/skript/räumliche-daten.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Räumliche Daten</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="einführung" class="level1" data-number="20">
+<h1 data-number="20"><span class="header-section-number">20</span> Einführung</h1>
+<section id="räumliche-daten" class="level2" data-number="20.1">
+<h2 data-number="20.1" class="anchored" data-anchor-id="räumliche-daten"><span class="header-section-number">20.1</span> Räumliche Daten</h2>
+<p><img src="bilder/GISLayers.png" class="img-fluid" alt="GIS Layers"> <span class="imagesource">Quelle: http//landportal.org</span></p>
+<ul>
+<li>Viele Daten haben räumlichen Bezug</li>
+<li>Klassische Anwendung von Geoinformationssystemen (GIS)
+<ul>
+<li>Programme: ArcGIS (kommerziell) und QGIS (Open Source)</li>
+</ul></li>
+<li>Verarbeitung räumlicher Daten schon seit langem auch in R</li>
+<li>Gute Integration in ggplot2: <a href="https://r-spatial.github.io/sf/">Paket sf</a> (simple feature)</li>
+</ul>
+</section>
+<section id="geographische-daten-einzelne-punkte" class="level2 smaller" data-number="20.2">
+<h2 class="smaller anchored" data-number="20.2" data-anchor-id="geographische-daten-einzelne-punkte"><span class="header-section-number">20.2</span> Geographische Daten: Einzelne Punkte</h2>
+<p><img src="bilder/koordinaten.svg" class="img-fluid"></p>
+<p><strong>Koordinatensystem mit Breiten- und Längengraden</strong></p>
+<ul>
+<li>Koordinaten eines Punktes mit Breitengrad (<em>latitute</em>) und Längengrad (<em>longitude</em>)
+<ul>
+<li>Angaben im Winkelmaß</li>
+<li>Breitengrad ab Äquator (zwischen -90° und 90° oder mit Zusatz N/S)</li>
+<li>Längengrad ab Nullmeridian (zwischen -180° und 180° oder mit Zusatz O/W)</li>
+</ul></li>
+<li>Schreibweise manchmal im Sexagesimalsystem (Winkelminuten und Sekunden)
+<ul>
+<li>Koordinaten des Gipfels der Zugspitze: 47°25′16″N, 010°59′7″O</li>
+</ul></li>
+<li>Die Erde ist keine Kugel
+<ul>
+<li>Referenzellipsoid, häufig World Geodetic System 1984 (WGS 84)</li>
+</ul></li>
+</ul>
+</section>
+<section id="gps-koordinaten-hochschule-bochum" class="level2" data-number="20.3">
+<h2 data-number="20.3" class="anchored" data-anchor-id="gps-koordinaten-hochschule-bochum"><span class="header-section-number">20.3</span> GPS-Koordinaten Hochschule Bochum</h2>
+<p><img src="bilder/gps.jpg" class="img-fluid"></p>
+<ul>
+<li>Etwas oberhalb vom 50. Breitengrad und etwas östlich vom 7. Längengrad</li>
+</ul>
+</section>
+<section id="mercator-projektion-12" class="level2" data-number="20.4">
+<h2 data-number="20.4" class="anchored" data-anchor-id="mercator-projektion-12"><span class="header-section-number">20.4</span> Mercator-Projektion 1/2</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="räumliche-daten_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Breiten- und Längengrad in kartesischem Koordinatensystem</li>
+<li>Problem: Länder am Äquator zu klein (oder umgekehrt)</li>
+</ul>
+</section>
+<section id="mercator-projektion-22" class="level2" data-number="20.5">
+<h2 data-number="20.5" class="anchored" data-anchor-id="mercator-projektion-22"><span class="header-section-number">20.5</span> Mercator-Projektion 2/2</h2>
+<p><a href="https://commons.wikimedia.org/wiki/File:Die_Weltkarte_von_Mercator.webm"><img src="bilder/mercator-projektion-film.png" class="img-fluid"></a> <span class="imagesource">Bild ist Link zum Film</span></p>
+</section>
+<section id="robinson-projektion" class="level2" data-number="20.6">
+<h2 data-number="20.6" class="anchored" data-anchor-id="robinson-projektion"><span class="header-section-number">20.6</span> Robinson-Projektion</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="räumliche-daten_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Breiten- und Längengrad in gekrümmtem Koordinatensystem aufgetragen</li>
+<li>Keine Projektion im mathematischen Sinne</li>
+</ul>
+</section>
+<section id="lambertsche-azimutalprojektion" class="level2" data-number="20.7">
+<h2 data-number="20.7" class="anchored" data-anchor-id="lambertsche-azimutalprojektion"><span class="header-section-number">20.7</span> Lambertsche Azimutalprojektion</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="räumliche-daten_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Flächen werden korrekt abgebildet</li>
+<li>Weder winkel- noch längentreu</li>
+</ul>
+</section>
+<section id="geographische-daten-geometrien" class="level2" data-number="20.8">
+<h2 data-number="20.8" class="anchored" data-anchor-id="geographische-daten-geometrien"><span class="header-section-number">20.8</span> Geographische Daten: Geometrien</h2>
+<p><img src="bilder/sf-classes.svg" class="img-fluid"></p>
+<p><strong>Simple Features</strong></p>
+<ul>
+<li>Offener Standard für geometrische Daten (ISO 19125-1:2004)</li>
+<li>Entwickelt vom <em>Open Geospatial Consortium</em> (OGC)</li>
+<li>Grundlage für viele GIS-Programme</li>
+</ul>
+</section>
+<section id="r-paket-sf-simple-features-for-r" class="level2" data-number="20.9">
+<h2 data-number="20.9" class="anchored" data-anchor-id="r-paket-sf-simple-features-for-r"><span class="header-section-number">20.9</span> R-Paket sf (Simple Features for R)</h2>
+<p><img src="bilder/simple-feature.png" class="img-fluid"></p>
+<p><strong>Paket sf: Simple Features in Dataframes</strong></p>
+<ul>
+<li>Beispiel oben: Dataframe der Weltkarte (Ausschnitt)</li>
+<li>Ganz normaler Dataframe mit Spalten
+<ul>
+<li><code>ISO3</code> (Ländercode)</li>
+<li><code>geometry</code> (Geometrie eines Landes als Simple Feature)</li>
+</ul></li>
+<li>Kann mit ggplot2 geplottet werden</li>
+<li>Mehr Informationen <a href="https://rstudio.com/resources/rstudioconf-2018/tidy-spatial-data-analysis">hier</a></li>
+</ul>
+</section>
+</section>
+<section id="weltkarte-mit-natural-earth" class="level1" data-number="21">
+<h1 data-number="21"><span class="header-section-number">21</span> Weltkarte mit Natural Earth</h1>
+<section id="daten-die-welt-als-dataframe" class="level2" data-number="21.1">
+<h2 data-number="21.1" class="anchored" data-anchor-id="daten-die-welt-als-dataframe"><span class="header-section-number">21.1</span> Daten: Die Welt als Dataframe</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>d_world <span class="ot">&lt;-</span> <span class="fu">ne_countries</span>(<span class="at">returnclass =</span> <span class="st">"sf"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(admin, adm0_a3, geometry) <span class="sc">|&gt;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(adm0_a3 <span class="sc">!=</span> <span class="st">"ATA"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li>Weltkarte mit <code>ne_countries()</code> <a href="http://www.naturalearthdata.com">weitere Infos hier</a> als <code>sf</code>-Objekt</li>
+<li>Benötigte Spalten mit <code>select()</code> auswählen
+<ul>
+<li>ISO3-Codes der Länder (eindeutig)</li>
+<li>Geometrie</li>
+</ul></li>
+<li>Die Antarktis interessiert uns nicht</li>
+</ul>
+</section>
+<section id="plot-der-weltkarte" class="level2" data-number="21.2">
+<h2 data-number="21.2" class="anchored" data-anchor-id="plot-der-weltkarte"><span class="header-section-number">21.2</span> Plot der Weltkarte</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> d_world)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="räumliche-daten_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Plotten von <code>sf</code> Dataframes mit <code>geom_sf()</code></li>
+<li>Mapping für Geometrie ist eingebaut</li>
+</ul>
+</section>
+</section>
+<section id="berechnung-neuer-daten" class="level1" data-number="22">
+<h1 data-number="22"><span class="header-section-number">22</span> Berechnung neuer Daten</h1>
+<section id="weltkarte-mit-fläche-der-länder-12" class="level2 smaller" data-number="22.1">
+<h2 class="smaller anchored" data-number="22.1" data-anchor-id="weltkarte-mit-fläche-der-länder-12"><span class="header-section-number">22.1</span> Weltkarte mit Fläche der Länder 1/2</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>d_world_a <span class="ot">&lt;-</span> d_world <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">area =</span> <span class="fu">as.numeric</span>(<span class="fu">st_area</span>(geometry)) <span class="sc">*</span> <span class="fl">1e-6</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="bilder/simple-feature-area-2.png" class="img-fluid figure-img"></p>
+<figcaption>Welt mit Fläche</figcaption>
+</figure>
+</div>
+<ul>
+<li>Berechnung der Flächen mit <code>st_area()</code></li>
+<li>Alle Funktionen im <code>sf</code>-Paket beginnen mit <code>st_</code> (man muss nicht alles verstehen)</li>
+<li>Einheiten entfernen mit <code>as.numeric()</code> und in Quadratkilometern</li>
+<li>Fläche Argentinien laut Wikipedia: 2.780.400 km<sup>2</sup> (Vermutung: Karte nicht sehr genau)</li>
+</ul>
+</section>
+<section id="weltkarte-mit-fläche-der-länder-22" class="level2 smaller" data-number="22.2">
+<h2 class="smaller anchored" data-number="22.2" data-anchor-id="weltkarte-mit-fläche-der-länder-22"><span class="header-section-number">22.2</span> Weltkarte mit Fläche der Länder 2/2</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_world_a) <span class="sc">+</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">fill =</span> area)) <span class="sc">+</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_distiller</span>(<span class="at">palette =</span> <span class="dv">8</span>, <span class="at">direction =</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="räumliche-daten_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>→ Eine solche Karte heißt Choroplethenkarte (auch Flächenkartogramm oder Flächenwertstufenkarte)</p>
+</section>
+</section>
+<section id="kombination-mit-anderen-daten" class="level1" data-number="23">
+<h1 data-number="23"><span class="header-section-number">23</span> Kombination mit anderen Daten</h1>
+<section id="weltkarte-mit-der-lebenswerwartung" class="level2" data-number="23.1">
+<h2 data-number="23.1" class="anchored" data-anchor-id="weltkarte-mit-der-lebenswerwartung"><span class="header-section-number">23.1</span> Weltkarte mit der Lebenswerwartung</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>d_le <span class="ot">&lt;-</span> <span class="fu">wb_data</span>(<span class="at">indicator =</span> <span class="st">"SP.DYN.LE00.IN"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="at">adm0_a3 =</span> iso3c, date, <span class="at">le =</span> SP.DYN.LE00.IN) <span class="sc">|&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(le)) <span class="sc">|&gt;</span> </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(adm0_a3) <span class="sc">|&gt;</span> </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_max</span>(date)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li>Dataframe zu Weltbankindikatoren mit <code>wb_data()</code> (Paket <code>wbstats</code>) herunterladen
+<ul>
+<li>Indikator [hier] (https://data.worldbank.org heraussuchen) (Details)</li>
+</ul></li>
+<li>Wichtige Merkmale auswählen und passend umbenennen</li>
+<li>Für jedes Land den neuesten Wert heraussuchen</li>
+</ul>
+</section>
+<section id="dataframes-miteinander-verknüpfen" class="level2" data-number="23.2">
+<h2 data-number="23.2" class="anchored" data-anchor-id="dataframes-miteinander-verknüpfen"><span class="header-section-number">23.2</span> Dataframes miteinander verknüpfen</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>d_world_le <span class="ot">&lt;-</span> d_world <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(d_le, <span class="at">by =</span> <span class="st">"adm0_a3"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li>Funktioniert, weil beide Dataframes eine Variable <code>adm0_a3</code> haben</li>
+<li>Natürlich nicht nur mit Daten von der Weltbank</li>
+</ul>
+</section>
+<section id="weltkarte-mit-lebenserwartung" class="level2" data-number="23.3">
+<h2 data-number="23.3" class="anchored" data-anchor-id="weltkarte-mit-lebenserwartung"><span class="header-section-number">23.3</span> Weltkarte mit Lebenserwartung</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_world_le) <span class="sc">+</span> </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">fill =</span> le)) <span class="sc">+</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_distiller</span>(<span class="at">palette=</span><span class="st">"RdPu"</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="räumliche-daten_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="werte-zu-einzelnen-koordinaten-plotten" class="level1" data-number="24">
+<h1 data-number="24"><span class="header-section-number">24</span> Werte zu einzelnen Koordinaten plotten</h1>
+<section id="erste-möglichkeit-mit-geom_point" class="level2 smaller" data-number="24.1">
+<h2 class="smaller anchored" data-number="24.1" data-anchor-id="erste-möglichkeit-mit-geom_point"><span class="header-section-number">24.1</span> Erste Möglichkeit: Mit <code>geom_point</code></h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>d_cities <span class="ot">&lt;-</span> <span class="fu">read_xlsx</span>(<span class="st">"daten/cities.xlsx"</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> <span class="fu">geom_sf</span>(<span class="at">data =</span> d_world) <span class="sc">+</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> d_cities, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> long, <span class="at">y =</span> lat, <span class="at">size =</span> pop), <span class="at">color =</span> <span class="st">"hotpink"</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="räumliche-daten_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Geodaten zu Punkten mit Breitengrad und Längengrad</li>
+<li>Darstellen mit <code>geom_point()</code> wie gehabt</li>
+<li>Dataframe als Parameter zu geom</li>
+<li>Klappt so einfach nur mit Mercator-Projektion</li>
+</ul>
+</section>
+<section id="besser-dataframe-konvertieren-und-geom_sf" class="level2 smaller" data-number="24.2">
+<h2 class="smaller anchored" data-number="24.2" data-anchor-id="besser-dataframe-konvertieren-und-geom_sf"><span class="header-section-number">24.2</span> Besser: Dataframe konvertieren und <code>geom_sf</code></h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>d_cities_sf <span class="ot">&lt;-</span> d_cities <span class="sc">|&gt;</span> <span class="fu">st_as_sf</span>(<span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"long"</span>, <span class="st">"lat"</span>), <span class="at">crs =</span> <span class="st">"+proj=longlat"</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> <span class="fu">geom_sf</span>(<span class="at">data =</span> d_world) <span class="sc">+</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> d_cities_sf, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">size =</span> pop), <span class="at">color =</span> <span class="st">'hotpink'</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="räumliche-daten_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Dataframe in Simple Feature Objekt konvertieren mit <code>st_as_sf</code>
+<ul>
+<li>Mit <code>coords</code> angeben in welchen Spalten die Koordinaten stehen</li>
+<li>Referenzkoordinatensystem angeben</li>
+</ul></li>
+<li>Plotten mit <code>geom_sf</code></li>
+</ul>
+</section>
+</section>
+<section id="landesgrenzen-mit-giscor" class="level1" data-number="25">
+<h1 data-number="25"><span class="header-section-number">25</span> Landesgrenzen mit <code>giscoR</code></h1>
+<section id="landesgrenzen-12" class="level2 smaller" data-number="25.1">
+<h2 class="smaller anchored" data-number="25.1" data-anchor-id="landesgrenzen-12"><span class="header-section-number">25.1</span> Landesgrenzen 1/2</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>d_de <span class="ot">&lt;-</span> <span class="fu">gisco_get_nuts</span>(<span class="at">country =</span> <span class="st">"Germany"</span>, <span class="at">nuts_level =</span> <span class="dv">0</span>, <span class="at">resolution =</span> <span class="dv">03</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>d_bl <span class="ot">&lt;-</span> <span class="fu">gisco_get_nuts</span>(<span class="at">country =</span> <span class="st">"Germany"</span>, <span class="at">nuts_level =</span> <span class="dv">2</span>, <span class="at">resolution =</span> <span class="dv">03</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>d_rb <span class="ot">&lt;-</span> <span class="fu">gisco_get_nuts</span>(<span class="at">country =</span> <span class="st">"Germany"</span>, <span class="at">nuts_level =</span> <span class="dv">3</span>, <span class="at">resolution =</span> <span class="dv">03</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li>GISCO: Geografisches Informationssystem der EU-Kommission</li>
+<li>Paket <a href="https://ropengov.github.io/giscoR/"><code>giscoR</code></a> (R-Schnittstelle zu Daten der EU)</li>
+<li>Datensatz laden mit <code>gisco_get_nuts</code>
+<ul>
+<li><code>country</code> Land</li>
+<li><code>nuts_level</code> gibt Ebene an (Staat/Bundesländer/Regierungsbezirke)</li>
+<li><code>resolution</code> Auflösung, siehe Dokumentation</li>
+<li><a href="https://en.wikipedia.org/wiki/Nomenclature_of_Territorial_Units_for_Statistics">NUTS</a> ist ein System zur Bezeichnung von Ländern</li>
+</ul></li>
+</ul>
+</section>
+<section id="landesgrenzen-22" class="level2 smaller" data-number="25.2">
+<h2 class="smaller anchored" data-number="25.2" data-anchor-id="landesgrenzen-22"><span class="header-section-number">25.2</span> Landesgrenzen 2/2</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> d_rb, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">fill =</span> NUTS_NAME), <span class="at">linewidth =</span> <span class="fl">0.1</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> d_bl, <span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">linewidth =</span> <span class="fl">0.5</span>, <span class="at">color =</span> <span class="st">'white'</span>) <span class="sc">+</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> d_de, <span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">linewidth =</span> <span class="fl">0.75</span>, <span class="at">color=</span><span class="st">'black'</span>) <span class="sc">+</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="räumliche-daten_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="open-street-map" class="level1" data-number="26">
+<h1 data-number="26"><span class="header-section-number">26</span> Open Street Map</h1>
+<section id="über-open-street-map" class="level2" data-number="26.1">
+<h2 data-number="26.1" class="anchored" data-anchor-id="über-open-street-map"><span class="header-section-number">26.1</span> Über Open Street Map</h2>
+<p><img src="bilder/osm.svg" class="img-fluid"></p>
+<ul>
+<li>Freie Alternative zu Google Maps</li>
+<li>Zugriff auf Daten aus eigenen Programmen</li>
+<li>SEHR umfangreich aber nicht ganz einfach zu nutzen</li>
+<li>In R mit Paket <code>osmdata</code> (https://github.com/ropensci/osmdata)</li>
+</ul>
+</section>
+<section id="straßen-in-bochum-12" class="level2" data-number="26.2">
+<h2 data-number="26.2" class="anchored" data-anchor-id="straßen-in-bochum-12"><span class="header-section-number">26.2</span> Straßen in Bochum 1/2</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># q &lt;- opq(getbb('Bochum, Germany'))</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># s1 &lt;- add_osm_feature(q, key = "highway", value = "motorway") |&gt; osmdata_sf()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li>Bereich festlegen mit <code>getbb</code> (bb steht für Bounding Box)</li>
+<li>Anfrage <code>q</code> erzeugen mit <code>opq</code></li>
+<li>Objekte zu Anfrage hinzufügen mit <code>add_osm_feature</code>
+<ul>
+<li><code>key</code> ist die Kategorie</li>
+<li><code>value</code> sagt was genau gemeint ist</li>
+<li>https://wiki.openstreetmap.org/wiki/Map_features</li>
+</ul></li>
+<li>Mit <code>osmdata_sf</code> zur Verwendung mit SF aufbereiten
+<ul>
+<li>Objekt enthält <code>osm_points</code>, <code>osm_lines</code>, <code>osm_polygons</code>, …</li>
+<li>Dies sind die eigentlichen SF-Objekte</li>
+</ul></li>
+</ul>
+</section>
+<section id="straßen-in-bochum-22" class="level2" data-number="26.3">
+<h2 data-number="26.3" class="anchored" data-anchor-id="straßen-in-bochum-22"><span class="header-section-number">26.3</span> Straßen in Bochum 2/2</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ggplot() + </span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_sf(data = s1$osm_lines)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li>Mit <code>$osm_lines</code> die Linien heraussuchen</li>
+</ul>
+</section>
+<section id="karte-von-bochum-13" class="level2" data-number="26.4">
+<h2 data-number="26.4" class="anchored" data-anchor-id="karte-von-bochum-13"><span class="header-section-number">26.4</span> Karte von Bochum 1/3</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># if (!file.exists("daten/strassen-bochum.RData")) {</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   q  &lt;- opq(getbb('Bochum, Germany'), timeout = 600)</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   s1 &lt;- add_osm_feature(q, key = "highway", value = c("motorway", "primary", "motorway_link", "primary_link")) |&gt; osmdata_sf()</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   s2 &lt;- add_osm_feature(q, key = "highway", value = c("secondary", "tertiary", "secondary_link", "tertiary_link")) |&gt; osmdata_sf()</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   s3 &lt;- add_osm_feature(q, key = "highway", value = c("unclassified", "residential")) |&gt; osmdata_sf()</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   f1 &lt;- add_osm_feature(q, key = "waterway", value = "river") |&gt; osmdata_sf()</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   u1 &lt;- add_osm_feature(q, key = "amenity", value = "university") |&gt; osmdata_sf()</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co"># save(s1, s2, s3, f1, u1, file = "daten/strassen-bochum.RData")</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co"># } else {</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="co">#   load(file = "daten/strassen-bochum.RData")</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="co"># }</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li>Mit <code>c</code> mehrere Objekte aus einer Kategorie kombinieren</li>
+<li>Daten teilweise recht umfangreich, Download kann dauern oder auch zu Abbrüchen oder Fehlermeldungen führen</li>
+<li>Daher: Daten einmal herunterladen, auf Festplatte speichern und ab dann nur noch einlesen</li>
+</ul>
+</section>
+<section id="karte-von-bochum-23" class="level2" data-number="26.5">
+<h2 data-number="26.5" class="anchored" data-anchor-id="karte-von-bochum-23"><span class="header-section-number">26.5</span> Karte von Bochum 2/3</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># p &lt;- ggplot() + </span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_sf(data = u1$osm_polygons, color = 'orange', linewidth = 0.35) +</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_sf(data = f1$osm_lines, color = 'steelblue', linewidth = 0.35) +</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_sf(data = s3$osm_lines, color = 'light gray', linewidth = 0.15) +</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_sf(data = s2$osm_lines, color = 'dark gray', linewidth = 0.25) +</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_sf(data = s1$osm_lines, color = 'black', linewidth = 0.35) +</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   coord_sf(xlim = c(7.1, 7.3), ylim = c(51.41, 51.52)) +</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co">#   theme_void()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li>Plot in Variable <code>p</code> speichern und auf nächster Folie ausgeben</li>
+</ul>
+</section>
+<section id="karte-von-bochum-33" class="level2" data-number="26.6">
+<h2 data-number="26.6" class="anchored" data-anchor-id="karte-von-bochum-33"><span class="header-section-number">26.6</span> Karte von Bochum 3/3</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># p</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="bundesautobahnen-12" class="level2" data-number="26.7">
+<h2 data-number="26.7" class="anchored" data-anchor-id="bundesautobahnen-12"><span class="header-section-number">26.7</span> Bundesautobahnen 1/2</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(<span class="st">"daten/bab.RData"</span>)) {</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  q <span class="ot">&lt;-</span> <span class="fu">opq</span>(<span class="at">bbox =</span> <span class="fu">getbb</span>(<span class="st">"Deutschland"</span>, <span class="at">featuretype =</span> <span class="st">"country"</span>), <span class="at">timeout =</span> <span class="dv">600</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  d_bab_raw <span class="ot">&lt;-</span> (<span class="fu">add_osm_feature</span>(q, <span class="at">key =</span> <span class="st">"highway"</span>, <span class="at">value =</span> <span class="st">"motorway"</span>) <span class="sc">|&gt;</span> <span class="fu">osmdata_sf</span>())<span class="sc">$</span>osm_lines</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  d_bab <span class="ot">&lt;-</span> d_bab_raw <span class="sc">|&gt;</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="fu">st_contains</span>(d_de, d_bab_raw, <span class="at">sparse =</span> <span class="cn">FALSE</span>)[<span class="dv">1</span>,]) <span class="sc">|&gt;</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">drop_na</span>(ref) <span class="sc">|&gt;</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(ref) <span class="sc">|&gt;</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>() <span class="sc">|&gt;</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_simplify</span>(<span class="at">dTolerance =</span> <span class="dv">100</span>) </span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">save</span>(d_bab, d_bab_raw, <span class="at">file =</span> <span class="st">"daten/bab.RData"</span>)</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">load</span>(<span class="at">file =</span> <span class="st">"daten/bab.RData"</span>)</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li>Daten einmal herunterladen, aufbereiten und speichern, dann nur noch einlesen</li>
+<li>Aufbereiten der Daten nicht trivial (zusammenfügen, auswählen und vereinfachen)</li>
+<li>siehe auch <a href="https://github.com/spiegel-daten/2019-02-tempolimit">GitHub</a></li>
+</ul>
+</section>
+<section id="bundesautobahnen-22" class="level2" data-number="26.8">
+<h2 data-number="26.8" class="anchored" data-anchor-id="bundesautobahnen-22"><span class="header-section-number">26.8</span> Bundesautobahnen 2/2</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> d_bl, <span class="at">linewidth =</span> <span class="fl">0.25</span>) <span class="sc">+</span> </span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> d_de, <span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">linewidth =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> d_bab, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">color =</span> ref), <span class="at">linewidth =</span> <span class="fl">0.35</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="räumliche-daten_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Zeichnen zusammen mit Karte</li>
+</ul>
+</section>
+<section id="ausschnitt-festlegen-möglichkeit-12" class="level2" data-number="26.9">
+<h2 data-number="26.9" class="anchored" data-anchor-id="ausschnitt-festlegen-möglichkeit-12"><span class="header-section-number">26.9</span> Ausschnitt festlegen: Möglichkeit 1/2</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># q &lt;- opq(getbb('Bochum, Germany'))</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># s1 &lt;-  add_osm_feature(q, key = "highway", value = "motorway") |&gt; osmdata_sf()</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ggplot() + geom_sf(data = s1$osm_lines) + coord_sf(xlim = c(7.1, 7.3), ylim = c(51.41, 51.52))</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li>Ausschnitt mit <code>coord_sf</code> festlegen</li>
+</ul>
+</section>
+<section id="ausschnitt-festlegen-möglichkeit-22" class="level2" data-number="26.10">
+<h2 data-number="26.10" class="anchored" data-anchor-id="ausschnitt-festlegen-möglichkeit-22"><span class="header-section-number">26.10</span> Ausschnitt festlegen: Möglichkeit 2/2</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># q &lt;- opq(c(7.1, 51.41, 7.3, 51.52))</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co"># s1 &lt;- add_osm_feature(q, key = "highway", value = "motorway") |&gt; osmdata_sf()</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ggplot() + geom_sf(data = s1$osm_lines)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li>Ausschnitt der Anfrage bei <code>opq</code> angeben (und nicht mittels <code>getbb</code>)</li>
+</ul>
+</section>
+<section id="weitere-hilfreiche-quelle-zu-osm" class="level2" data-number="26.11">
+<h2 data-number="26.11" class="anchored" data-anchor-id="weitere-hilfreiche-quelle-zu-osm"><span class="header-section-number">26.11</span> Weitere hilfreiche Quelle zu OSM</h2>
+<ul>
+<li>[OpenStreetMap Wiki] (https://wiki.openstreetmap.org/wiki/Map_features)</li>
+</ul>
+</section>
+</section>
+<section id="shapefiles" class="level1" data-number="27">
+<h1 data-number="27"><span class="header-section-number">27</span> Shapefiles</h1>
+<section id="shapefiles-1" class="level2 smaller" data-number="27.1">
+<h2 class="smaller anchored" data-number="27.1" data-anchor-id="shapefiles-1"><span class="header-section-number">27.1</span> Shapefiles</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>d_wkr <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"daten/Wkr_25833.shp"</span>, <span class="at">quiet =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">st_transform</span>(<span class="at">crs =</span> <span class="st">"+proj=longlat"</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_wkr) <span class="sc">+</span> <span class="fu">geom_sf</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">fill =</span> Wkr), <span class="at">show.legend =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="räumliche-daten_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Dateiformat Shapefile (Endung .shp): Ursprünglich für ArcView (ESRI) entwickeltes Format für vektorielle Geodaten</li>
+<li>Einlesen in R mit <code>st_read()</code></li>
+<li>[Quelle] (https://daten.berlin.de/datensaetze/geometrien-der-wahlkreise-für-die-abgeordnetenhauswahl-berlin-2016)</li>
+</ul>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../skript/daten-aufbereiten-aufgabe.html" class="pagination-link" aria-label="Aufgaben zum Einlesen und Aufbereiten von Daten">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Aufgaben zum Einlesen und Aufbereiten von Daten</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../skript/räumliche-daten-aufgabe.html" class="pagination-link" aria-label="Aufgaben zu räumlichen Daten">
+        <span class="nav-page-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Aufgaben zu räumlichen Daten</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/bausteine-der-datenanalyse/Werkzeugbaustein-R-und-RStudio/blob/main/skript/räumliche-daten.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></div></div></footer></body></html>

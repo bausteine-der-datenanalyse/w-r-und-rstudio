@@ -14,60 +14,6 @@ book:
     - Maik Poetzsch
     - Sebastian Seipel
   date: today
-
-
-  language: de-DE
-  downloads: [pdf]
-  repo-url: "https://github.com/bausteine-der-datenanalyse/titel"
-  repo-actions: [source]
-  favicon: "skript/00-bilder/favicon_bcd_new.svg"
-  sidebar:
-    title: "Titel"
-    logo: "skript/00-bilder/logo_bcd_new.svg"
-
-bibliography: skript/references.bib
-
-## Formatoption / formating options
-format:
-  html:
-    ## Logo
-    ### Logo in Quarto Books
-    favicon: "skript/00-bilder/favicon_bcd_new.svg"
-    
-    ### Logo in HTML
-    include-in-header:
-      text: |
-        <link rel="shortcut icon" href="skript/00-bilder/favicon_bcd_new.svg" />
-        <link rel="icon" type="image/x-icon" href="logo.ico">
-    
-    default-image-extension: svg
-    code-copy: true # hover is default
-  pdf:
-    cite-method: biblatex
-    biblio-title: Quellen
-    default-image-extension: pdf # Vektorgrafiken werden als PDF eingebunden / vector grafics are embedded as PDF
-
-## Inhaltsverzeichnis / table of contents
-toc: true
-number-sections: true
-number-depth: 2
-
-## Objekteinstellungen / object options
-cap-location: bottom
-fig-align: center
-mermaid: 
-  theme: neutral 
-execute:
-  freeze: auto
-
-profile:
-  default: full
-  group: 
-    - [full]
-
-project:  
-  output-dir: output/book/
-book:
   chapters:
     - index.qmd
     - skript/erste-schritte.qmd
@@ -96,6 +42,49 @@ book:
     - skript/lineare-trends.qmd
     - skript/zeitreihen.qmd
     - skript/schreiben-mit-quarto.qmd
-    - skript/präsentationen-mit-quarto.qmd
+    - skript/praesentationen-mit-quarto.qmd
 
+  language: de-DE
+  downloads: [pdf]
+  repo-url: "https://github.com/bausteine-der-datenanalyse/Werkzeugbaustein-R-und-RStudio"
+  repo-actions: [source]
+  favicon: "skript/00-bilder/favicon_bcd_new.svg"
+  sidebar:
+    title: "Titel"
+    logo: "skript/00-bilder/logo_bcd_new.svg"
 
+bibliography: skript/references.bib
+
+## Formatoption / formating options
+format:
+  html:
+    ## Logo
+    ### Logo in Quarto Books
+    favicon: "skript/00-bilder/favicon_bcd_new.svg"
+    
+    ### Logo in HTML
+    include-in-header:
+      text: |
+        <link rel="shortcut icon" href="skript/00-bilder/favicon_bcd_new.svg" />
+        <link rel="icon" type="image/x-icon" href="logo.ico">
+    
+    default-image-extension: svg
+    code-copy: true # hover is default
+
+## Inhaltsverzeichnis / table of contents
+toc: true
+number-sections: true
+number-depth: 2
+
+## Objekteinstellungen / object options
+cap-location: bottom
+fig-align: center
+mermaid: 
+  theme: neutral 
+execute:
+  freeze: auto
+
+profile:
+  default: full
+  group: 
+    - [full]

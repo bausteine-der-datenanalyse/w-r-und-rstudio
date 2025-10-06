@@ -1,0 +1,1529 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.24">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>8&nbsp; Dichtekurven und Normalverteilung – Bausteine Computergestützter Datenanalyse</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../skript/dichtekurven-aufgabe.html" rel="next">
+<link href="../skript/kenngrößen-aufgabe.html" rel="prev">
+<link href="../skript/00-bilder/favicon_bcd_new.svg" rel="icon" type="image/svg+xml">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-0b984170a42629a489084289cb1ad9fe.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<link rel="shortcut icon" href="skript/00-bilder/favicon_bcd_new.svg">
+<link rel="icon" type="image/x-icon" href="logo.ico">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../skript/dichtekurven.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Dichtekurven und Normalverteilung</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="../skript/00-bilder/logo_bcd_new.svg" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="../skript/00-bilder/logo_bcd_new.svg" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Titel</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/bausteine-der-datenanalyse/Werkzeugbaustein-R-und-RStudio" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="../Bausteine-Computergestützter-Datenanalyse.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Werkzeugbaustein R und RStudio</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/erste-schritte.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Erste Schritte in RStudio</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/erste-schritte-aufgabe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">erste-schritte-aufgabe.html</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/ggplot2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Grundlagen von ggplot2</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/einzelne-merkmale.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Untersuchung einzelner Merkmale in R</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/einzelne-merkmale-aufgabe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Aufgaben zur Untersuchung einzelner Merkmale</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/kenngrößen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Kenngrößen und Beschreibung von Verteilungen in R</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/kenngrößen-aufgabe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Aufgaben zu Kenngrößen und Beschreibung von Verteilungen</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/dichtekurven.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Dichtekurven und Normalverteilung</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/dichtekurven-aufgabe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Aufgaben zu Dichtekurven und Normalverteilung</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/zwei-merkmale.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Untersuchung von zwei Merkmalen in R</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/zwei-merkmale-aufgabe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Aufgaben zur Untersuchung von zwei Merkmalen</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/weitere-geoms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Weitere Geoms und Aufbereiten von Plots</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/weitere-geoms-aufgabe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Aufgaben zum Aufbereiten von Plots</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/grundlagen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Basics der Programmiersprache R</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/grundlagen-aufgabe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Übung zur Programmiersprache R</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/daten-einlesen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Daten einlesen</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/daten-aufbereiten.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Daten aufbereiten</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/daten-aufbereiten-aufgabe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Aufgaben zum Einlesen und Aufbereiten von Daten</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/räumliche-daten.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Räumliche Daten</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/räumliche-daten-aufgabe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Aufgaben zu räumlichen Daten</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/mehrere-datensätze.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Mehrere Datensätze</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/tipps-und-tricks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Tipps und Tricks</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/rdwd-anwenden.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Das Paket rdwd verwenden</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/lineare-trends.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Lineare Trends für viele Datensätze</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/zeitreihen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Arbeiten mit Zeitreihen</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/schreiben-mit-quarto.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Schreiben mit Quarto</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/praesentationen-mit-quarto.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Präsentationen erstellen mit Quarto</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#übersicht-dataframes-für-diese-folien" id="toc-übersicht-dataframes-für-diese-folien" class="nav-link active" data-scroll-target="#übersicht-dataframes-für-diese-folien"><span class="header-section-number">8.1</span> Übersicht Dataframes für diese Folien</a></li>
+  <li><a href="#normalverteilung" id="toc-normalverteilung" class="nav-link" data-scroll-target="#normalverteilung"><span class="header-section-number">9</span> Normalverteilung</a>
+  <ul class="collapse">
+  <li><a href="#exkurs-funktionen-erzeugen" id="toc-exkurs-funktionen-erzeugen" class="nav-link" data-scroll-target="#exkurs-funktionen-erzeugen"><span class="header-section-number">9.1</span> Exkurs: Funktionen erzeugen</a>
+  <ul class="collapse">
+  <li><a href="#eigene-funktionen" id="toc-eigene-funktionen" class="nav-link" data-scroll-target="#eigene-funktionen">Eigene Funktionen</a></li>
+  <li><a href="#normalverteilung-mit-mu-1-und-sigma-2" id="toc-normalverteilung-mit-mu-1-und-sigma-2" class="nav-link" data-scroll-target="#normalverteilung-mit-mu-1-und-sigma-2">Normalverteilung mit <span class="math inline">\(\mu = 1\)</span> und <span class="math inline">\(\sigma = 2\)</span></a></li>
+  </ul></li>
+  <li><a href="#funktion-plotten-mit-geom_function" id="toc-funktion-plotten-mit-geom_function" class="nav-link" data-scroll-target="#funktion-plotten-mit-geom_function"><span class="header-section-number">9.2</span> Funktion plotten mit <code>geom_function()</code></a></li>
+  <li><a href="#plotbereich-festlegen" id="toc-plotbereich-festlegen" class="nav-link" data-scroll-target="#plotbereich-festlegen"><span class="header-section-number">9.3</span> Plotbereich festlegen</a></li>
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"><span class="header-section-number">9.4</span> </a>
+  <ul class="collapse">
+  <li><a href="#erste-möglichkeit" id="toc-erste-möglichkeit" class="nav-link" data-scroll-target="#erste-möglichkeit">Erste Möglichkeit</a></li>
+  </ul></li>
+  <li><a href="#section-1" id="toc-section-1" class="nav-link" data-scroll-target="#section-1"><span class="header-section-number">9.5</span> </a>
+  <ul class="collapse">
+  <li><a href="#zweite-möglichkeit" id="toc-zweite-möglichkeit" class="nav-link" data-scroll-target="#zweite-möglichkeit">Zweite Möglichkeit</a></li>
+  </ul></li>
+  <li><a href="#funktion-plotten-mit-geom_ribbon" id="toc-funktion-plotten-mit-geom_ribbon" class="nav-link" data-scroll-target="#funktion-plotten-mit-geom_ribbon"><span class="header-section-number">9.6</span> Funktion plotten mit <code>geom_ribbon()</code></a></li>
+  <li><a href="#histogramm-mit-normalverteilung-niederschläge" id="toc-histogramm-mit-normalverteilung-niederschläge" class="nav-link" data-scroll-target="#histogramm-mit-normalverteilung-niederschläge"><span class="header-section-number">9.7</span> Histogramm mit Normalverteilung Niederschläge</a>
+  <ul class="collapse">
+  <li><a href="#mittelwert-und-standardabweichung-der-stichprobe-berechnen" id="toc-mittelwert-und-standardabweichung-der-stichprobe-berechnen" class="nav-link" data-scroll-target="#mittelwert-und-standardabweichung-der-stichprobe-berechnen">Mittelwert und Standardabweichung der Stichprobe berechnen</a></li>
+  <li><a href="#funktion-f-für-normalverteilung-x-mit-mu-und-sigma" id="toc-funktion-f-für-normalverteilung-x-mit-mu-und-sigma" class="nav-link" data-scroll-target="#funktion-f-für-normalverteilung-x-mit-mu-und-sigma">Funktion <code>f</code> für Normalverteilung x mit <code>mu</code> und <code>sigma</code></a></li>
+  <li><a href="#plot-in-variable-p-speichern-für-nächste-folie" id="toc-plot-in-variable-p-speichern-für-nächste-folie" class="nav-link" data-scroll-target="#plot-in-variable-p-speichern-für-nächste-folie">Plot in Variable <code>p</code> speichern (für nächste Folie)</a></li>
+  </ul></li>
+  <li><a href="#histogramm-mit-normalverteilung" id="toc-histogramm-mit-normalverteilung" class="nav-link" data-scroll-target="#histogramm-mit-normalverteilung"><span class="header-section-number">9.8</span> Histogramm mit Normalverteilung</a></li>
+  <li><a href="#kontrolle-normal-quantil-plot" id="toc-kontrolle-normal-quantil-plot" class="nav-link" data-scroll-target="#kontrolle-normal-quantil-plot"><span class="header-section-number">9.9</span> Kontrolle: Normal-Quantil-Plot</a></li>
+  <li><a href="#kontrolle-normal-quantil-plot-1" id="toc-kontrolle-normal-quantil-plot-1" class="nav-link" data-scroll-target="#kontrolle-normal-quantil-plot-1"><span class="header-section-number">9.10</span> Kontrolle: Normal-Quantil-Plot</a></li>
+  </ul></li>
+  <li><a href="#approximierte-dichtefunktionen" id="toc-approximierte-dichtefunktionen" class="nav-link" data-scroll-target="#approximierte-dichtefunktionen"><span class="header-section-number">10</span> 2. Approximierte Dichtefunktionen</a>
+  <ul class="collapse">
+  <li><a href="#dichtefunktion-niederschläge" id="toc-dichtefunktion-niederschläge" class="nav-link" data-scroll-target="#dichtefunktion-niederschläge"><span class="header-section-number">10.1</span> Dichtefunktion Niederschläge</a></li>
+  <li><a href="#dichtefunktion-niederschläge-1" id="toc-dichtefunktion-niederschläge-1" class="nav-link" data-scroll-target="#dichtefunktion-niederschläge-1"><span class="header-section-number">10.2</span> Dichtefunktion Niederschläge</a></li>
+  <li><a href="#dichtefunktion-niederschläge-2" id="toc-dichtefunktion-niederschläge-2" class="nav-link" data-scroll-target="#dichtefunktion-niederschläge-2"><span class="header-section-number">10.3</span> Dichtefunktion Niederschläge</a></li>
+  <li><a href="#dichtefunktion-in-monaten" id="toc-dichtefunktion-in-monaten" class="nav-link" data-scroll-target="#dichtefunktion-in-monaten"><span class="header-section-number">10.4</span> Dichtefunktion in Monaten</a></li>
+  <li><a href="#dichtefunktionen-untereinander" id="toc-dichtefunktionen-untereinander" class="nav-link" data-scroll-target="#dichtefunktionen-untereinander"><span class="header-section-number">10.5</span> Dichtefunktionen untereinander</a></li>
+  <li><a href="#violinenplot" id="toc-violinenplot" class="nav-link" data-scroll-target="#violinenplot"><span class="header-section-number">10.6</span> Violinenplot</a></li>
+  <li><a href="#violinenplot-1" id="toc-violinenplot-1" class="nav-link" data-scroll-target="#violinenplot-1"><span class="header-section-number">10.7</span> Violinenplot</a></li>
+  </ul></li>
+  <li><a href="#zusammenfassung" id="toc-zusammenfassung" class="nav-link" data-scroll-target="#zusammenfassung"><span class="header-section-number">11</span> Zusammenfassung</a>
+  <ul class="collapse">
+  <li><a href="#funktionen-definieren" id="toc-funktionen-definieren" class="nav-link" data-scroll-target="#funktionen-definieren"><span class="header-section-number">11.1</span> Funktionen definieren</a>
+  <ul class="collapse">
+  <li><a href="#normale-funktion" id="toc-normale-funktion" class="nav-link" data-scroll-target="#normale-funktion">Normale Funktion</a></li>
+  <li><a href="#normalverteilung-1" id="toc-normalverteilung-1" class="nav-link" data-scroll-target="#normalverteilung-1">Normalverteilung</a></li>
+  </ul></li>
+  <li><a href="#funktionen-plotten" id="toc-funktionen-plotten" class="nav-link" data-scroll-target="#funktionen-plotten"><span class="header-section-number">11.2</span> Funktionen plotten</a>
+  <ul class="collapse">
+  <li><a href="#mit-geom_function" id="toc-mit-geom_function" class="nav-link" data-scroll-target="#mit-geom_function">Mit <code>geom_function()</code></a></li>
+  <li><a href="#mit-geom_ribbon" id="toc-mit-geom_ribbon" class="nav-link" data-scroll-target="#mit-geom_ribbon">Mit <code>geom_ribbon()</code></a></li>
+  </ul></li>
+  <li><a href="#dichtefunktion-mit-geom_density" id="toc-dichtefunktion-mit-geom_density" class="nav-link" data-scroll-target="#dichtefunktion-mit-geom_density"><span class="header-section-number">11.3</span> Dichtefunktion mit <code>geom_density()</code></a></li>
+  <li><a href="#normal-quantil-plot" id="toc-normal-quantil-plot" class="nav-link" data-scroll-target="#normal-quantil-plot"><span class="header-section-number">11.4</span> Normal-Quantil-Plot</a></li>
+  <li><a href="#dichtefunktionen-untereinander-1" id="toc-dichtefunktionen-untereinander-1" class="nav-link" data-scroll-target="#dichtefunktionen-untereinander-1"><span class="header-section-number">11.5</span> Dichtefunktionen untereinander</a></li>
+  <li><a href="#violinenplot-2" id="toc-violinenplot-2" class="nav-link" data-scroll-target="#violinenplot-2"><span class="header-section-number">11.6</span> Violinenplot</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/bausteine-der-datenanalyse/Werkzeugbaustein-R-und-RStudio/blob/main/skript/dichtekurven.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Dichtekurven und Normalverteilung</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="übersicht-dataframes-für-diese-folien" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="übersicht-dataframes-für-diese-folien"><span class="header-section-number">8.1</span> Übersicht Dataframes für diese Folien</h2>
+<p><br><br></p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Inhalt</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>d_ns_m</code></td>
+<td>Monatswerte für Niederschläge in Bochum</td>
+</tr>
+</tbody>
+</table>
+<p><br><br></p>
+<p>Quellen: <a href="https://www.dwd.de" class="uri">https://www.dwd.de</a></p>
+</section>
+<section id="normalverteilung" class="level1" data-number="9">
+<h1 data-number="9"><span class="header-section-number">9</span> Normalverteilung</h1>
+<section id="exkurs-funktionen-erzeugen" class="level2 smaller" data-number="9.1">
+<h2 class="smaller anchored" data-number="9.1" data-anchor-id="exkurs-funktionen-erzeugen"><span class="header-section-number">9.1</span> Exkurs: Funktionen erzeugen</h2>
+<section id="eigene-funktionen" class="level3">
+<h3 class="anchored" data-anchor-id="eigene-funktionen">Eigene Funktionen</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="ot">&lt;-</span> <span class="cf">function</span>(x) x<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">f1</span>(<span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4</code></pre>
+</div>
+</div>
+<ul>
+<li>Funktion <code>f1</code> berechnet <code>x^2</code></li>
+<li>Dabei ist <code>function(x) x^2</code> die Funktion mit dem Namen <code>f1</code></li>
+</ul>
+</section>
+<section id="normalverteilung-mit-mu-1-und-sigma-2" class="level3">
+<h3 class="anchored" data-anchor-id="normalverteilung-mit-mu-1-und-sigma-2">Normalverteilung mit <span class="math inline">\(\mu = 1\)</span> und <span class="math inline">\(\sigma = 2\)</span></h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>f2 <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">dnorm</span>(x, <span class="at">mean =</span> <span class="dv">1</span>, <span class="at">sd =</span> <span class="dv">2</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">f2</span>(<span class="dv">0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1760327</code></pre>
+</div>
+</div>
+<ul>
+<li>Funktion <code>f2</code> berechnet mit <code>dnorm(x, mean = mu, sd = sigma)</code> Normalverteilung</li>
+<li>an der Stelle x</li>
+<li>mit Mittelwert <code>mu</code> und Standardabweichung <code>sigma</code></li>
+</ul>
+</section>
+</section>
+<section id="funktion-plotten-mit-geom_function" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="funktion-plotten-mit-geom_function"><span class="header-section-number">9.2</span> Funktion plotten mit <code>geom_function()</code></h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<section id="beispiel-1" class="level3">
+<h3 class="anchored" data-anchor-id="beispiel-1">Beispiel 1</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="ot">&lt;-</span> <span class="cf">function</span>(x) x<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_function</span>(<span class="at">fun =</span> f1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="dichtekurven_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li><code>geom_function()</code> plottet Kurve ohne Mapping</li>
+</ul>
+</section>
+</div><div class="column" style="width:50%;">
+<section id="beispiel-2" class="level3">
+<h3 class="anchored" data-anchor-id="beispiel-2">Beispiel 2</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>f2 <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">dnorm</span>(x, <span class="at">mean =</span> <span class="dv">1</span>, <span class="at">sd =</span> <span class="dv">2</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_function</span>(<span class="at">fun =</span> f2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="dichtekurven_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Funktion angeben mit <code>fun = &lt;Funktion&gt;</code></li>
+</ul>
+</section>
+</div>
+</div>
+</section>
+<section id="plotbereich-festlegen" class="level2" data-number="9.3">
+<h2 data-number="9.3" class="anchored" data-anchor-id="plotbereich-festlegen"><span class="header-section-number">9.3</span> Plotbereich festlegen</h2>
+<p>Die beiden Beispielfunktionen sehen nicht so charakteristisch aus wie wir es gewohnt sind. Dafür müssen wir den Bereich festlegen, der uns angezeigt wird.</p>
+</section>
+<section id="section" class="level2" data-number="9.4">
+<h2 data-number="9.4" class="anchored" data-anchor-id="section"><span class="header-section-number">9.4</span> </h2>
+<section id="erste-möglichkeit" class="level3">
+<h3 class="anchored" data-anchor-id="erste-möglichkeit">Erste Möglichkeit</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> <span class="fu">tibble</span>(<span class="at">A =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>), <span class="at">B =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))) <span class="sc">+</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_function</span>(<span class="at">fun =</span> f1) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> A, <span class="at">y =</span> B))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="dichtekurven_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Plotbereich aus zweitem Geom (zum Beispiel Punkte)</li>
+</ul>
+</section>
+</section>
+<section id="section-1" class="level2" data-number="9.5">
+<h2 data-number="9.5" class="anchored" data-anchor-id="section-1"><span class="header-section-number">9.5</span> </h2>
+<section id="zweite-möglichkeit" class="level3">
+<h3 class="anchored" data-anchor-id="zweite-möglichkeit">Zweite Möglichkeit</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_function</span>(<span class="at">fun =</span> f2, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">8</span>, <span class="dv">10</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="dichtekurven_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Mit <code>xlim</code> explizit angeben</li>
+<li>xlim wie limits = Grenzen für die x-Werte</li>
+</ul>
+</section>
+</section>
+<section id="funktion-plotten-mit-geom_ribbon" class="level2 smaller" data-number="9.6">
+<h2 class="smaller anchored" data-number="9.6" data-anchor-id="funktion-plotten-mit-geom_ribbon"><span class="header-section-number">9.6</span> Funktion plotten mit <code>geom_ribbon()</code></h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">after_stat</span>(x), <span class="at">ymin =</span> <span class="dv">0</span>, <span class="at">ymax =</span> <span class="fu">after_stat</span>(y)),</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">stat=</span><span class="st">'function'</span>, <span class="at">fun=</span>f2, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">8</span>, <span class="dv">10</span>), <span class="at">color=</span><span class="st">'black'</span>, <span class="at">fill=</span><span class="st">'linen'</span>, <span class="at">alpha=</span><span class="fl">0.8</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="dichtekurven_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Mapping mit <code>x</code> und <code>y</code> aus <code>stat = 'function'</code> mit <code>after_stat(x)</code> und <code>after_stat(y)</code></li>
+</ul>
+</section>
+<section id="histogramm-mit-normalverteilung-niederschläge" class="level2" data-number="9.7">
+<h2 data-number="9.7" class="anchored" data-anchor-id="histogramm-mit-normalverteilung-niederschläge"><span class="header-section-number">9.7</span> Histogramm mit Normalverteilung Niederschläge</h2>
+<p><span class="down40"></span></p>
+<section id="mittelwert-und-standardabweichung-der-stichprobe-berechnen" class="level3">
+<h3 class="anchored" data-anchor-id="mittelwert-und-standardabweichung-der-stichprobe-berechnen">Mittelwert und Standardabweichung der Stichprobe berechnen</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">&lt;-</span> <span class="fu">mean</span>(d_ns_m<span class="sc">$</span>Niederschlag)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">&lt;-</span> <span class="fu">sd</span>(d_ns_m<span class="sc">$</span>Niederschlag)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="funktion-f-für-normalverteilung-x-mit-mu-und-sigma" class="level3">
+<h3 class="anchored" data-anchor-id="funktion-f-für-normalverteilung-x-mit-mu-und-sigma">Funktion <code>f</code> für Normalverteilung x mit <code>mu</code> und <code>sigma</code></h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">dnorm</span>(x, <span class="at">mean=</span>mu, <span class="at">sd=</span>sigma)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="plot-in-variable-p-speichern-für-nächste-folie" class="level3">
+<h3 class="anchored" data-anchor-id="plot-in-variable-p-speichern-für-nächste-folie">Plot in Variable <code>p</code> speichern (für nächste Folie)</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> d_ns_m) <span class="sc">+</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> Niederschlag, <span class="at">y =</span> <span class="fu">stat</span>(density)), <span class="at">binwidth =</span> <span class="dv">5</span>, <span class="at">boundary =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">stat =</span> <span class="st">'function'</span>, <span class="at">fun =</span> f, <span class="at">color =</span> <span class="st">'red'</span>, <span class="at">linewidth =</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+</section>
+<section id="histogramm-mit-normalverteilung" class="level2" data-number="9.8">
+<h2 data-number="9.8" class="anchored" data-anchor-id="histogramm-mit-normalverteilung"><span class="header-section-number">9.8</span> Histogramm mit Normalverteilung</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>p</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: `stat(density)` was deprecated in ggplot2 3.4.0.
+ℹ Please use `after_stat(density)` instead.</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="dichtekurven_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="kontrolle-normal-quantil-plot" class="level2 smaller" data-number="9.9">
+<h2 class="smaller anchored" data-number="9.9" data-anchor-id="kontrolle-normal-quantil-plot"><span class="header-section-number">9.9</span> Kontrolle: Normal-Quantil-Plot</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_ns_m) <span class="sc">+</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_qq</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">sample =</span> Niederschlag)) <span class="sc">+</span> </span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_qq_line</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">sample =</span> Niederschlag))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="dichtekurven_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Normal-Quantil-Plot mit <code>geom_qq()</code> sowie <code>geom_qq_line()</code></li>
+<li>geom_qq_line ist die Linie, geom_qq sind die Punkte</li>
+<li>Ergebnis: Normalverteilung nicht gut geeignet, Verteilung der Daten ist rechtsschief</li>
+</ul>
+</section>
+<section id="kontrolle-normal-quantil-plot-1" class="level2 smaller" data-number="9.10">
+<h2 class="smaller anchored" data-number="9.10" data-anchor-id="kontrolle-normal-quantil-plot-1"><span class="header-section-number">9.10</span> Kontrolle: Normal-Quantil-Plot</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_ns_m, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">sample =</span> Niederschlag)) <span class="sc">+</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_qq</span>() <span class="sc">+</span> </span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_qq_line</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="dichtekurven_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Mapping für alle Geoms gleich?</li>
+<li>Dann als Argument in <code>ggplot()</code></li>
+</ul>
+</section>
+</section>
+<section id="approximierte-dichtefunktionen" class="level1" data-number="10">
+<h1 data-number="10"><span class="header-section-number">10</span> 2. Approximierte Dichtefunktionen</h1>
+<section id="dichtefunktion-niederschläge" class="level2 smaller" data-number="10.1">
+<h2 class="smaller anchored" data-number="10.1" data-anchor-id="dichtefunktion-niederschläge"><span class="header-section-number">10.1</span> Dichtefunktion Niederschläge</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_ns_m) <span class="sc">+</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> Niederschlag, <span class="at">y =</span> <span class="fu">stat</span>(density)), <span class="at">binwidth =</span> <span class="dv">10</span>, <span class="at">boundary =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> Niederschlag), <span class="at">color =</span> <span class="st">'red'</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lims</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">50</span>, <span class="dv">250</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="dichtekurven_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li><code>geom_density()</code> erzeugt approximierte Dichtefunktion</li>
+<li>Größerer Plotbereich mit <code>lims(x = c(xmin, xmax))</code> (Details später)</li>
+</ul>
+</section>
+<section id="dichtefunktion-niederschläge-1" class="level2 smaller" data-number="10.2">
+<h2 class="smaller anchored" data-number="10.2" data-anchor-id="dichtefunktion-niederschläge-1"><span class="header-section-number">10.2</span> Dichtefunktion Niederschläge</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_ns_m) <span class="sc">+</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> Niederschlag, <span class="at">y =</span> <span class="fu">stat</span>(density)), <span class="at">binwidth =</span> <span class="dv">10</span>, <span class="at">boundary =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> Niederschlag), <span class="at">color =</span> <span class="st">'red'</span>, <span class="at">linewidth =</span> <span class="dv">1</span>, <span class="at">fill =</span> <span class="st">'linen'</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lims</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">50</span>, <span class="dv">250</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="dichtekurven_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Fläche füllen mit <code>fill = &lt;Farbe&gt;</code></li>
+<li>Transparenz mit <code>alpha = &lt;Wert&gt;</code></li>
+</ul>
+</section>
+<section id="dichtefunktion-niederschläge-2" class="level2 smaller" data-number="10.3">
+<h2 class="smaller anchored" data-number="10.3" data-anchor-id="dichtefunktion-niederschläge-2"><span class="header-section-number">10.3</span> Dichtefunktion Niederschläge</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_ns_m) <span class="sc">+</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> Niederschlag, <span class="at">y =</span> <span class="fu">stat</span>(density)), <span class="at">binwidth =</span> <span class="dv">10</span>, <span class="at">boundary =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> Niederschlag), <span class="at">bw =</span> <span class="dv">2</span>, <span class="at">linewidth =</span> <span class="dv">1</span>, <span class="at">color =</span> <span class="st">'orange'</span>) <span class="sc">+</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> Niederschlag), <span class="at">bw =</span> <span class="dv">4</span>, <span class="at">linewidth =</span> <span class="dv">1</span>, <span class="at">color =</span> <span class="st">'blue'</span>) <span class="sc">+</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> Niederschlag), <span class="at">bw =</span> <span class="dv">8</span>, <span class="at">linewidth =</span> <span class="dv">1</span>, <span class="at">color =</span> <span class="st">'red'</span>) <span class="sc">+</span> </span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lims</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">50</span>,<span class="dv">250</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="dichtekurven_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Argument <code>bw = &lt;Wert&gt;</code> legt die Breite des Kerns fest (bw = <em>bandwidth</em>)</li>
+<li>Je größer <code>bw</code> umso glatter die Kurve</li>
+</ul>
+</section>
+<section id="dichtefunktion-in-monaten" class="level2 smaller" data-number="10.4">
+<h2 class="smaller anchored" data-number="10.4" data-anchor-id="dichtefunktion-in-monaten"><span class="header-section-number">10.4</span> Dichtefunktion in Monaten</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_ns_m) <span class="sc">+</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> Niederschlag, <span class="at">fill =</span> Monat), <span class="at">alpha =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">4</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="dichtekurven_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Füllfarbe nach Monat</li>
+<li>Transparenz mit <code>alpha = &lt;Wert&gt;</code></li>
+</ul>
+</section>
+<section id="dichtefunktionen-untereinander" class="level2 smaller" data-number="10.5">
+<h2 class="smaller anchored" data-number="10.5" data-anchor-id="dichtefunktionen-untereinander"><span class="header-section-number">10.5</span> Dichtefunktionen untereinander</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_ns_m) <span class="sc">+</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density_ridges</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> Niederschlag, <span class="at">y =</span> Monat), <span class="at">bandwidth =</span> <span class="dv">10</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="dichtekurven_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Geom <code>geom_density_ridges()</code> wie <code>geom_density()</code> aber untereinander</li>
+<li>Kernbreite mit <code>bandwidth = &lt;Wert&gt;</code> angeben</li>
+<li>Paket <code>ggridges</code> installieren</li>
+</ul>
+</section>
+<section id="violinenplot" class="level2" data-number="10.6">
+<h2 data-number="10.6" class="anchored" data-anchor-id="violinenplot"><span class="header-section-number">10.6</span> Violinenplot</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_ns_m) <span class="sc">+</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> <span class="dv">0</span>, <span class="at">y =</span> Niederschlag))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="dichtekurven_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Ähnlich Boxplot, aber mit Kurven</li>
+</ul>
+</section>
+<section id="violinenplot-1" class="level2" data-number="10.7">
+<h2 data-number="10.7" class="anchored" data-anchor-id="violinenplot-1"><span class="header-section-number">10.7</span> Violinenplot</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_ns_m) <span class="sc">+</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> Monat, <span class="at">y =</span> Niederschlag))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="dichtekurven_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Monate besitzen unterschiedliche Charakteristiken</li>
+</ul>
+</section>
+</section>
+<section id="zusammenfassung" class="level1" data-number="11">
+<h1 data-number="11"><span class="header-section-number">11</span> Zusammenfassung</h1>
+<section id="funktionen-definieren" class="level2" data-number="11.1">
+<h2 data-number="11.1" class="anchored" data-anchor-id="funktionen-definieren"><span class="header-section-number">11.1</span> Funktionen definieren</h2>
+<section id="normale-funktion" class="level3">
+<h3 class="anchored" data-anchor-id="normale-funktion">Normale Funktion</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">sin</span>(x<span class="sc">^</span><span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="normalverteilung-1" class="level3">
+<h3 class="anchored" data-anchor-id="normalverteilung-1">Normalverteilung</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="sc">&lt;</span>Vektor<span class="sc">&gt;</span>)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">&lt;-</span> <span class="fu">sd</span>(<span class="sc">&lt;</span>Vektor<span class="sc">&gt;</span>)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">dnorm</span>(x, mu, sigma)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+</section>
+<section id="funktionen-plotten" class="level2 smaller" data-number="11.2">
+<h2 class="smaller anchored" data-number="11.2" data-anchor-id="funktionen-plotten"><span class="header-section-number">11.2</span> Funktionen plotten</h2>
+<section id="mit-geom_function" class="level3">
+<h3 class="anchored" data-anchor-id="mit-geom_function">Mit <code>geom_function()</code></h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_function</span>(<span class="at">stat =</span> <span class="st">'function'</span>, <span class="at">fun =</span> <span class="sc">&lt;</span>Funktion<span class="sc">&gt;</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">&lt;</span>from<span class="sc">&gt;</span>, <span class="sc">&lt;</span>to<span class="sc">&gt;</span>), Argumente)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li>Funktion vorab definieren</li>
+<li>Plotbereich mit <code>xlim</code> festlegen</li>
+<li>Argumente für <code>geom_line</code>(Verweis zu Basics, “Was sind Argumente?”)</li>
+</ul>
+</section>
+<section id="mit-geom_ribbon" class="level3">
+<h3 class="anchored" data-anchor-id="mit-geom_ribbon">Mit <code>geom_ribbon()</code></h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">after_stat</span>(x), <span class="at">ymin =</span> <span class="dv">0</span>, <span class="at">ymax =</span> <span class="fu">after_stat</span>(y)),</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">stat =</span> <span class="st">'function'</span>, <span class="at">fun =</span> <span class="sc">&lt;</span>Funktion<span class="sc">&gt;</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">&lt;</span>from<span class="sc">&gt;</span>, <span class="sc">&lt;</span>to<span class="sc">&gt;</span>), Argumente</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li>Mapping mit Werten, die das Stat berechnet (hier: <code>x</code> und <code>y</code>)</li>
+<li>Sonst wie <code>geom_function()</code></li>
+</ul>
+</section>
+</section>
+<section id="dichtefunktion-mit-geom_density" class="level2" data-number="11.3">
+<h2 data-number="11.3" class="anchored" data-anchor-id="dichtefunktion-mit-geom_density"><span class="header-section-number">11.3</span> Dichtefunktion mit <code>geom_density()</code></h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> <span class="sc">&lt;</span>DATAFRAME<span class="sc">&gt;</span>) <span class="sc">+</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> <span class="sc">&lt;</span>M<span class="sc">&gt;</span>, ...), Argumente)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<table class="table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 60%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>AES</th>
+<th>Beschreibung</th>
+<th>Optional</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>x</td>
+<td>Merkmal für Dichte</td>
+<td>Nein</td>
+</tr>
+</tbody>
+</table>
+<p><span class="down20"></span></p>
+<table class="table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 60%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>AES/Argumente</th>
+<th>Beschreibung</th>
+<th>Optional</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>color</td>
+<td>Farbe der Linie</td>
+<td>Ja</td>
+</tr>
+<tr class="even">
+<td>fill</td>
+<td>Füllfarbe</td>
+<td>Ja</td>
+</tr>
+<tr class="odd">
+<td>alpha</td>
+<td>Transparenz der Füllfarbe</td>
+<td>Ja</td>
+</tr>
+</tbody>
+</table>
+<p>Aesthetics und Argumente synonym verwendet, sinnvoll?</p>
+<p><span class="down20"></span></p>
+<table class="table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 60%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Argumente</th>
+<th>Beschreibung</th>
+<th>Optional</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>kernel</td>
+<td>Art des Kerns (‘gaussian’, ‘epanechnikov’, ‘cosine’, …)</td>
+<td>Ja</td>
+</tr>
+<tr class="even">
+<td>bw</td>
+<td>Glättungsbreite h</td>
+<td>Ja</td>
+</tr>
+</tbody>
+</table>
+<p>→ Nicht genau dieselben Kerne, wie in der Vorlesung</p>
+</section>
+<section id="normal-quantil-plot" class="level2" data-number="11.4">
+<h2 data-number="11.4" class="anchored" data-anchor-id="normal-quantil-plot"><span class="header-section-number">11.4</span> Normal-Quantil-Plot</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> <span class="sc">&lt;</span>Dataframe<span class="sc">&gt;</span>) <span class="sc">+</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_qq</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">sample =</span> <span class="sc">&lt;</span>M<span class="sc">&gt;</span>), Argumente) <span class="sc">+</span> </span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_qq_line</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">sample =</span> <span class="sc">&lt;</span>M<span class="sc">&gt;</span>), Argumente)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><span class="down20"></span></p>
+<table class="table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 50%">
+<col style="width: 30%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>AES</th>
+<th>Beschreibung</th>
+<th>Optional</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>sample</td>
+<td>Merkmal mit Daten</td>
+<td>Nein</td>
+</tr>
+</tbody>
+</table>
+<p><span class="down20"></span></p>
+<table class="table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 50%">
+<col style="width: 30%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Argumente</th>
+<th>Beschreibung</th>
+<th>Optional</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>color</td>
+<td>Farbe</td>
+<td>Ja</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="dichtefunktionen-untereinander-1" class="level2" data-number="11.5">
+<h2 data-number="11.5" class="anchored" data-anchor-id="dichtefunktionen-untereinander-1"><span class="header-section-number">11.5</span> Dichtefunktionen untereinander</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> <span class="sc">&lt;</span>Dataframe<span class="sc">&gt;</span>) <span class="sc">+</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density_ridges</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> <span class="sc">&lt;</span>M<span class="sc">&gt;</span>, <span class="at">y =</span> <span class="sc">&lt;</span>M<span class="sc">&gt;</span>, ...), <span class="at">bandwidth =</span> bw)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<table class="table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 50%">
+<col style="width: 30%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>AES</th>
+<th>Beschreibung</th>
+<th>Optional</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>x</td>
+<td>Merkmal für Dichte</td>
+<td>Nein</td>
+</tr>
+<tr class="even">
+<td>y</td>
+<td>Merkmal einzelne Plots</td>
+<td>Nein</td>
+</tr>
+</tbody>
+</table>
+<p><span class="down20"></span></p>
+<table class="table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 50%">
+<col style="width: 30%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>AES/Argumente</th>
+<th>Beschreibung</th>
+<th>Optional</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>color</td>
+<td>Farbe der Linie</td>
+<td>Ja</td>
+</tr>
+<tr class="even">
+<td>fill</td>
+<td>Füllfarbe</td>
+<td>Ja</td>
+</tr>
+<tr class="odd">
+<td>alpha</td>
+<td>Transparenz der Füllfarbe</td>
+<td>Ja</td>
+</tr>
+</tbody>
+</table>
+<p><span class="down20"></span></p>
+<table class="table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 50%">
+<col style="width: 30%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Argumente</th>
+<th>Beschreibung</th>
+<th>Optional</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>bandwidth</td>
+<td>Glättungsbreite h</td>
+<td>Ja</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="violinenplot-2" class="level2" data-number="11.6">
+<h2 data-number="11.6" class="anchored" data-anchor-id="violinenplot-2"><span class="header-section-number">11.6</span> Violinenplot</h2>
+<p><span class="down120"></span></p>
+<p>→ Wie Boxplot</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../skript/kenngrößen-aufgabe.html" class="pagination-link" aria-label="Aufgaben zu Kenngrößen und Beschreibung von Verteilungen">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Aufgaben zu Kenngrößen und Beschreibung von Verteilungen</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../skript/dichtekurven-aufgabe.html" class="pagination-link" aria-label="Aufgaben zu Dichtekurven und Normalverteilung">
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Aufgaben zu Dichtekurven und Normalverteilung</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/bausteine-der-datenanalyse/Werkzeugbaustein-R-und-RStudio/blob/main/skript/dichtekurven.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></div></div></footer></body></html>

@@ -1,0 +1,21 @@
+{
+  "hash": "c1d5d49dd85394ec8e65008ed8c3cef1",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Aufgaben zu Kenngrößen und Beschreibung von Verteilungen\"\nauthor: \"TODO: Namen eintragen\"\n---\n\n\n::: {.cell}\n\n:::\n\n\n## Titel Folie 1\n\n\n::: {.cell}\n\n```{.r .cell-code}\nshow(d_bo_vm)\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n# A tibble: 566 x 5\n   Jahr  Fachbereich Geschlecht Verkehrsmittel  Zeit\n   <fct> <chr>       <chr>      <chr>          <dbl>\n 1 2017  B           m          ÖPNV              75\n 2 2017  B           m          PKW               45\n 3 2017  B           w          PKW               30\n 4 2017  E           w          ÖPNV              30\n 5 2017  M           m          PKW               30\n 6 2017  M           m          ÖPNV              45\n 7 2017  M           m          ÖPNV              15\n 8 2017  G           m          ÖPNV              15\n 9 2017  W           m          ÖPNV              40\n10 2017  W           w          ÖPNV              10\n# i 556 more rows\n```\n\n\n:::\n:::\n\n\n",
+    "supporting": [
+      "kenngrößen-aufgabe_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {
+      "knitr": [
+        "{\"type\":\"list\",\"attributes\":{},\"value\":[]}"
+      ]
+    },
+    "preserve": null,
+    "postProcess": false
+  }
+}

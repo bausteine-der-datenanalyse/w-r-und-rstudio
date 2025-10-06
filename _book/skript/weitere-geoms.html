@@ -1,0 +1,1932 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.24">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>12&nbsp; Weitere Geoms und Aufbereiten von Plots – Bausteine Computergestützter Datenanalyse</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../skript/weitere-geoms-aufgabe.html" rel="next">
+<link href="../skript/zwei-merkmale-aufgabe.html" rel="prev">
+<link href="../skript/00-bilder/favicon_bcd_new.svg" rel="icon" type="image/svg+xml">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-0b984170a42629a489084289cb1ad9fe.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<link rel="shortcut icon" href="skript/00-bilder/favicon_bcd_new.svg">
+<link rel="icon" type="image/x-icon" href="logo.ico">
+
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../skript/weitere-geoms.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Weitere Geoms und Aufbereiten von Plots</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="../skript/00-bilder/logo_bcd_new.svg" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="../skript/00-bilder/logo_bcd_new.svg" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Titel</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/bausteine-der-datenanalyse/Werkzeugbaustein-R-und-RStudio" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="../Bausteine-Computergestützter-Datenanalyse.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Werkzeugbaustein R und RStudio</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/erste-schritte.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Erste Schritte in RStudio</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/erste-schritte-aufgabe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">erste-schritte-aufgabe.html</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/ggplot2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Grundlagen von ggplot2</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/einzelne-merkmale.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Untersuchung einzelner Merkmale in R</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/einzelne-merkmale-aufgabe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Aufgaben zur Untersuchung einzelner Merkmale</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/kenngrößen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Kenngrößen und Beschreibung von Verteilungen in R</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/kenngrößen-aufgabe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Aufgaben zu Kenngrößen und Beschreibung von Verteilungen</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/dichtekurven.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Dichtekurven und Normalverteilung</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/dichtekurven-aufgabe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Aufgaben zu Dichtekurven und Normalverteilung</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/zwei-merkmale.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Untersuchung von zwei Merkmalen in R</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/zwei-merkmale-aufgabe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Aufgaben zur Untersuchung von zwei Merkmalen</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/weitere-geoms.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Weitere Geoms und Aufbereiten von Plots</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/weitere-geoms-aufgabe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Aufgaben zum Aufbereiten von Plots</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/grundlagen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Basics der Programmiersprache R</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/grundlagen-aufgabe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Übung zur Programmiersprache R</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/daten-einlesen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Daten einlesen</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/daten-aufbereiten.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Daten aufbereiten</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/daten-aufbereiten-aufgabe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Aufgaben zum Einlesen und Aufbereiten von Daten</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/räumliche-daten.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Räumliche Daten</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/räumliche-daten-aufgabe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Aufgaben zu räumlichen Daten</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/mehrere-datensätze.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Mehrere Datensätze</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/tipps-und-tricks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Tipps und Tricks</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/rdwd-anwenden.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Das Paket rdwd verwenden</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/lineare-trends.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Lineare Trends für viele Datensätze</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/zeitreihen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Arbeiten mit Zeitreihen</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/schreiben-mit-quarto.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Schreiben mit Quarto</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/praesentationen-mit-quarto.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Präsentationen erstellen mit Quarto</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#linienplots-mit-geom_line" id="toc-linienplots-mit-geom_line" class="nav-link active" data-scroll-target="#linienplots-mit-geom_line"><span class="header-section-number">13</span> Linienplots mit <code>geom_line()</code></a>
+  <ul class="collapse">
+  <li><a href="#minimalbeispiel-geom_line" id="toc-minimalbeispiel-geom_line" class="nav-link" data-scroll-target="#minimalbeispiel-geom_line"><span class="header-section-number">13.1</span> Minimalbeispiel <code>geom_line()</code></a></li>
+  <li><a href="#bip-länder-erster-versuch" id="toc-bip-länder-erster-versuch" class="nav-link" data-scroll-target="#bip-länder-erster-versuch"><span class="header-section-number">13.2</span> BIP Länder (erster Versuch)</a></li>
+  <li><a href="#bip-länder-zweiter-versuch" id="toc-bip-länder-zweiter-versuch" class="nav-link" data-scroll-target="#bip-länder-zweiter-versuch"><span class="header-section-number">13.3</span> BIP Länder (zweiter Versuch)</a></li>
+  <li><a href="#bip-länder-mit-farbe" id="toc-bip-länder-mit-farbe" class="nav-link" data-scroll-target="#bip-länder-mit-farbe"><span class="header-section-number">13.4</span> BIP Länder (mit Farbe)</a></li>
+  <li><a href="#bip-länder-farbe-und-population" id="toc-bip-länder-farbe-und-population" class="nav-link" data-scroll-target="#bip-länder-farbe-und-population"><span class="header-section-number">13.5</span> BIP Länder: Farbe und Population</a></li>
+  </ul></li>
+  <li><a href="#was-es-sonst-nocht-gibt" id="toc-was-es-sonst-nocht-gibt" class="nav-link" data-scroll-target="#was-es-sonst-nocht-gibt"><span class="header-section-number">14</span> Was es sonst nocht gibt…</a>
+  <ul class="collapse">
+  <li><a href="#liniensegmente-mit-geom_segment" id="toc-liniensegmente-mit-geom_segment" class="nav-link" data-scroll-target="#liniensegmente-mit-geom_segment"><span class="header-section-number">14.1</span> Liniensegmente mit <code>geom_segment()</code></a></li>
+  <li><a href="#rechtecke-mit-geom_tile" id="toc-rechtecke-mit-geom_tile" class="nav-link" data-scroll-target="#rechtecke-mit-geom_tile"><span class="header-section-number">14.2</span> Rechtecke mit <code>geom_tile()</code></a></li>
+  <li><a href="#rechtecke-mit-geom_rect" id="toc-rechtecke-mit-geom_rect" class="nav-link" data-scroll-target="#rechtecke-mit-geom_rect"><span class="header-section-number">14.3</span> Rechtecke mit <code>geom_rect()</code></a></li>
+  </ul></li>
+  <li><a href="#plots-aufbereiten" id="toc-plots-aufbereiten" class="nav-link" data-scroll-target="#plots-aufbereiten"><span class="header-section-number">15</span> Plots aufbereiten</a>
+  <ul class="collapse">
+  <li><a href="#facetten-mit-facet_wrap" id="toc-facetten-mit-facet_wrap" class="nav-link" data-scroll-target="#facetten-mit-facet_wrap"><span class="header-section-number">15.1</span> Facetten mit <code>facet_wrap</code></a></li>
+  <li><a href="#sortierung-nach-häufigkeit-13" id="toc-sortierung-nach-häufigkeit-13" class="nav-link" data-scroll-target="#sortierung-nach-häufigkeit-13"><span class="header-section-number">15.2</span> Sortierung nach Häufigkeit 1/3</a></li>
+  <li><a href="#sortierung-nach-häufigkeit-23" id="toc-sortierung-nach-häufigkeit-23" class="nav-link" data-scroll-target="#sortierung-nach-häufigkeit-23"><span class="header-section-number">15.3</span> Sortierung nach Häufigkeit 2/3</a></li>
+  <li><a href="#sortierung-nach-häufigkeit-33" id="toc-sortierung-nach-häufigkeit-33" class="nav-link" data-scroll-target="#sortierung-nach-häufigkeit-33"><span class="header-section-number">15.4</span> Sortierung nach Häufigkeit 3/3</a></li>
+  <li><a href="#sortierung-nach-merkmal-13" id="toc-sortierung-nach-merkmal-13" class="nav-link" data-scroll-target="#sortierung-nach-merkmal-13"><span class="header-section-number">15.5</span> Sortierung nach Merkmal 1/3</a></li>
+  <li><a href="#sortierung-nach-merkmal-23" id="toc-sortierung-nach-merkmal-23" class="nav-link" data-scroll-target="#sortierung-nach-merkmal-23"><span class="header-section-number">15.6</span> Sortierung nach Merkmal 2/3</a></li>
+  <li><a href="#sortierung-nach-merkmal-33" id="toc-sortierung-nach-merkmal-33" class="nav-link" data-scroll-target="#sortierung-nach-merkmal-33"><span class="header-section-number">15.7</span> Sortierung nach Merkmal 3/3</a></li>
+  <li><a href="#skalen" id="toc-skalen" class="nav-link" data-scroll-target="#skalen"><span class="header-section-number">15.8</span> Skalen</a></li>
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"><span class="header-section-number">15.9</span> </a></li>
+  <li><a href="#skalen-werden-automatisch-eingefügt" id="toc-skalen-werden-automatisch-eingefügt" class="nav-link" data-scroll-target="#skalen-werden-automatisch-eingefügt"><span class="header-section-number">15.10</span> Skalen werden automatisch eingefügt</a></li>
+  <li><a href="#kontinuierliche-achsen-achspunkte-ändern" id="toc-kontinuierliche-achsen-achspunkte-ändern" class="nav-link" data-scroll-target="#kontinuierliche-achsen-achspunkte-ändern"><span class="header-section-number">15.11</span> Kontinuierliche Achsen: Achspunkte ändern</a></li>
+  <li><a href="#kontinuierliche-achsen-möglichkeiten" id="toc-kontinuierliche-achsen-möglichkeiten" class="nav-link" data-scroll-target="#kontinuierliche-achsen-möglichkeiten"><span class="header-section-number">15.12</span> Kontinuierliche Achsen: Möglichkeiten</a></li>
+  <li><a href="#diskrete-achsen-beschriftung-ändern" id="toc-diskrete-achsen-beschriftung-ändern" class="nav-link" data-scroll-target="#diskrete-achsen-beschriftung-ändern"><span class="header-section-number">15.13</span> Diskrete Achsen: Beschriftung ändern</a></li>
+  <li><a href="#viele-werte-nah-am-ursprung" id="toc-viele-werte-nah-am-ursprung" class="nav-link" data-scroll-target="#viele-werte-nah-am-ursprung"><span class="header-section-number">15.14</span> Viele Werte nah am Ursprung</a></li>
+  <li><a href="#viele-werte-nah-am-ursprung-logarithmische-skala" id="toc-viele-werte-nah-am-ursprung-logarithmische-skala" class="nav-link" data-scroll-target="#viele-werte-nah-am-ursprung-logarithmische-skala"><span class="header-section-number">15.15</span> Viele Werte nah am Ursprung: Logarithmische Skala</a></li>
+  <li><a href="#weitere-skalen-für-achsen" id="toc-weitere-skalen-für-achsen" class="nav-link" data-scroll-target="#weitere-skalen-für-achsen"><span class="header-section-number">15.16</span> Weitere Skalen für Achsen</a></li>
+  <li><a href="#kontinuierliche-farbskala" id="toc-kontinuierliche-farbskala" class="nav-link" data-scroll-target="#kontinuierliche-farbskala"><span class="header-section-number">15.17</span> Kontinuierliche Farbskala</a></li>
+  <li><a href="#beispiel-nicht-empfohlen" id="toc-beispiel-nicht-empfohlen" class="nav-link" data-scroll-target="#beispiel-nicht-empfohlen"><span class="header-section-number">15.18</span> Beispiel (nicht empfohlen)</a></li>
+  <li><a href="#beispiel-auch-nicht-empfohlen" id="toc-beispiel-auch-nicht-empfohlen" class="nav-link" data-scroll-target="#beispiel-auch-nicht-empfohlen"><span class="header-section-number">15.19</span> Beispiel (auch nicht empfohlen)</a></li>
+  <li><a href="#brewer-farbpalette-empfohlen" id="toc-brewer-farbpalette-empfohlen" class="nav-link" data-scroll-target="#brewer-farbpalette-empfohlen"><span class="header-section-number">15.20</span> Brewer-Farbpalette (empfohlen)</a></li>
+  <li><a href="#farbskala-umgekehrt" id="toc-farbskala-umgekehrt" class="nav-link" data-scroll-target="#farbskala-umgekehrt"><span class="header-section-number">15.21</span> Farbskala umgekehrt</a></li>
+  <li><a href="#mit-diskreten-farbwerten" id="toc-mit-diskreten-farbwerten" class="nav-link" data-scroll-target="#mit-diskreten-farbwerten"><span class="header-section-number">15.22</span> Mit diskreten Farbwerten</a></li>
+  <li><a href="#mit-logarithmischer-skala" id="toc-mit-logarithmischer-skala" class="nav-link" data-scroll-target="#mit-logarithmischer-skala"><span class="header-section-number">15.23</span> Mit logarithmischer Skala</a></li>
+  <li><a href="#definierte-farbskalen-kontinuierlich" id="toc-definierte-farbskalen-kontinuierlich" class="nav-link" data-scroll-target="#definierte-farbskalen-kontinuierlich"><span class="header-section-number">15.24</span> Definierte Farbskalen (kontinuierlich)</a></li>
+  <li><a href="#optionen-für-alle-kontinuierlichen-farbskalen" id="toc-optionen-für-alle-kontinuierlichen-farbskalen" class="nav-link" data-scroll-target="#optionen-für-alle-kontinuierlichen-farbskalen"><span class="header-section-number">15.25</span> Optionen für alle kontinuierlichen Farbskalen</a></li>
+  <li><a href="#diskrete-farbskala-manuell-erster-versuch" id="toc-diskrete-farbskala-manuell-erster-versuch" class="nav-link" data-scroll-target="#diskrete-farbskala-manuell-erster-versuch"><span class="header-section-number">15.26</span> Diskrete Farbskala manuell (erster Versuch)</a></li>
+  <li><a href="#diskrete-farbskala-manuell-zweiter-versuch" id="toc-diskrete-farbskala-manuell-zweiter-versuch" class="nav-link" data-scroll-target="#diskrete-farbskala-manuell-zweiter-versuch"><span class="header-section-number">15.27</span> Diskrete Farbskala manuell (zweiter Versuch)</a></li>
+  <li><a href="#brewer-farbpalette" id="toc-brewer-farbpalette" class="nav-link" data-scroll-target="#brewer-farbpalette"><span class="header-section-number">15.28</span> Brewer-Farbpalette</a></li>
+  <li><a href="#brewer-farbpaletten" id="toc-brewer-farbpaletten" class="nav-link" data-scroll-target="#brewer-farbpaletten"><span class="header-section-number">15.29</span> Brewer-Farbpaletten</a></li>
+  <li><a href="#brewer-farbpaletten-1" id="toc-brewer-farbpaletten-1" class="nav-link" data-scroll-target="#brewer-farbpaletten-1"><span class="header-section-number">15.30</span> Brewer-Farbpaletten</a></li>
+  </ul></li>
+  <li><a href="#beschriftungen" id="toc-beschriftungen" class="nav-link" data-scroll-target="#beschriftungen"><span class="header-section-number">16</span> Beschriftungen</a>
+  <ul class="collapse">
+  <li><a href="#beschriftung-mit-labs" id="toc-beschriftung-mit-labs" class="nav-link" data-scroll-target="#beschriftung-mit-labs"><span class="header-section-number">16.1</span> Beschriftung mit labs()</a></li>
+  <li><a href="#beschriftung-der-farblegende" id="toc-beschriftung-der-farblegende" class="nav-link" data-scroll-target="#beschriftung-der-farblegende"><span class="header-section-number">16.2</span> Beschriftung der Farblegende</a></li>
+  <li><a href="#beschriftung-entfernen" id="toc-beschriftung-entfernen" class="nav-link" data-scroll-target="#beschriftung-entfernen"><span class="header-section-number">16.3</span> Beschriftung entfernen</a></li>
+  <li><a href="#beschriftung-drehen" id="toc-beschriftung-drehen" class="nav-link" data-scroll-target="#beschriftung-drehen"><span class="header-section-number">16.4</span> Beschriftung drehen</a></li>
+  <li><a href="#beschriftung-versetzen" id="toc-beschriftung-versetzen" class="nav-link" data-scroll-target="#beschriftung-versetzen"><span class="header-section-number">16.5</span> Beschriftung versetzen</a></li>
+  </ul></li>
+  <li><a href="#koordinatensysteme" id="toc-koordinatensysteme" class="nav-link" data-scroll-target="#koordinatensysteme"><span class="header-section-number">17</span> Koordinatensysteme</a>
+  <ul class="collapse">
+  <li><a href="#achsen-vertauschen-mit-coord_flip" id="toc-achsen-vertauschen-mit-coord_flip" class="nav-link" data-scroll-target="#achsen-vertauschen-mit-coord_flip"><span class="header-section-number">17.1</span> Achsen vertauschen mit <code>coord_flip()</code></a></li>
+  <li><a href="#plotbereich-mit-coord_cartesian" id="toc-plotbereich-mit-coord_cartesian" class="nav-link" data-scroll-target="#plotbereich-mit-coord_cartesian"><span class="header-section-number">17.2</span> Plotbereich mit <code>coord_cartesian()</code></a></li>
+  <li><a href="#polarkoordinaten-mit-coord_polar" id="toc-polarkoordinaten-mit-coord_polar" class="nav-link" data-scroll-target="#polarkoordinaten-mit-coord_polar"><span class="header-section-number">17.3</span> Polarkoordinaten mit <code>coord_polar()</code></a></li>
+  <li><a href="#tortendiagramm-wiederholung" id="toc-tortendiagramm-wiederholung" class="nav-link" data-scroll-target="#tortendiagramm-wiederholung"><span class="header-section-number">17.4</span> Tortendiagramm (Wiederholung)</a></li>
+  <li><a href="#ringdiagramm-wiederholung" id="toc-ringdiagramm-wiederholung" class="nav-link" data-scroll-target="#ringdiagramm-wiederholung"><span class="header-section-number">17.5</span> Ringdiagramm (Wiederholung)</a></li>
+  </ul></li>
+  <li><a href="#themes" id="toc-themes" class="nav-link" data-scroll-target="#themes"><span class="header-section-number">18</span> Themes</a>
+  <ul class="collapse">
+  <li><a href="#erscheinungsbild-anpassen-mit-theme" id="toc-erscheinungsbild-anpassen-mit-theme" class="nav-link" data-scroll-target="#erscheinungsbild-anpassen-mit-theme"><span class="header-section-number">18.1</span> Erscheinungsbild anpassen mit <code>theme()</code></a></li>
+  <li><a href="#voreingestellte-themes" id="toc-voreingestellte-themes" class="nav-link" data-scroll-target="#voreingestellte-themes"><span class="header-section-number">18.2</span> Voreingestellte Themes</a></li>
+  </ul></li>
+  <li><a href="#farben-ändern" id="toc-farben-ändern" class="nav-link" data-scroll-target="#farben-ändern"><span class="header-section-number">19</span> Farben ändern</a>
+  <ul class="collapse">
+  <li><a href="#farben-für-einzelnen-plot-setzen" id="toc-farben-für-einzelnen-plot-setzen" class="nav-link" data-scroll-target="#farben-für-einzelnen-plot-setzen"><span class="header-section-number">19.1</span> Farben für einzelnen Plot setzen</a></li>
+  <li><a href="#besser-voreinstellungen-global-ändern" id="toc-besser-voreinstellungen-global-ändern" class="nav-link" data-scroll-target="#besser-voreinstellungen-global-ändern"><span class="header-section-number">19.2</span> Besser: Voreinstellungen global ändern</a></li>
+  <li><a href="#farben-angeben" id="toc-farben-angeben" class="nav-link" data-scroll-target="#farben-angeben"><span class="header-section-number">19.3</span> Farben angeben</a></li>
+  </ul></li>
+  <li><a href="#legenden-entfernen" id="toc-legenden-entfernen" class="nav-link" data-scroll-target="#legenden-entfernen"><span class="header-section-number">20</span> Legenden entfernen</a>
+  <ul class="collapse">
+  <li><a href="#methode-1-legende-für-einzelne-skala" id="toc-methode-1-legende-für-einzelne-skala" class="nav-link" data-scroll-target="#methode-1-legende-für-einzelne-skala"><span class="header-section-number">20.1</span> Methode 1: Legende für einzelne Skala</a></li>
+  <li><a href="#methode-2-alle-legenden-für-ein-geom" id="toc-methode-2-alle-legenden-für-ein-geom" class="nav-link" data-scroll-target="#methode-2-alle-legenden-für-ein-geom"><span class="header-section-number">20.2</span> Methode 2: Alle Legenden für ein Geom</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/bausteine-der-datenanalyse/Werkzeugbaustein-R-und-RStudio/blob/main/skript/weitere-geoms.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Weitere Geoms und Aufbereiten von Plots</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="linienplots-mit-geom_line" class="level1" data-number="13">
+<h1 data-number="13"><span class="header-section-number">13</span> Linienplots mit <code>geom_line()</code></h1>
+<section id="minimalbeispiel-geom_line" class="level2" data-number="13.1">
+<h2 data-number="13.1" class="anchored" data-anchor-id="minimalbeispiel-geom_line"><span class="header-section-number">13.1</span> Minimalbeispiel <code>geom_line()</code></h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">A =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>), <span class="at">B =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">6</span>, <span class="dv">4</span>, <span class="fl">4.5</span>))</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d) <span class="sc">+</span> <span class="fu">geom_line</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> A, <span class="at">y =</span> B))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="weitere-geoms_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li><code>geom_line()</code> funktioniert im Prinzip genau wie <code>geom_point()</code></li>
+</ul>
+</section>
+<section id="bip-länder-erster-versuch" class="level2" data-number="13.2">
+<h2 data-number="13.2" class="anchored" data-anchor-id="bip-länder-erster-versuch"><span class="header-section-number">13.2</span> BIP Länder (erster Versuch)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_wb_countries) <span class="sc">+</span> </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> gdp))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="weitere-geoms_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Nicht klar, dass nur Punkte derselben Länder verbunden werden sollen!</li>
+</ul>
+</section>
+<section id="bip-länder-zweiter-versuch" class="level2" data-number="13.3">
+<h2 data-number="13.3" class="anchored" data-anchor-id="bip-länder-zweiter-versuch"><span class="header-section-number">13.3</span> BIP Länder (zweiter Versuch)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_wb_countries) <span class="sc">+</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> gdp, <span class="at">group =</span> country))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 64 rows containing missing values or values outside the scale range
+(`geom_line()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="weitere-geoms_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Mit <code>group = &lt;M&gt;</code> angegeben, welche Punkte zusammengehören</li>
+</ul>
+</section>
+<section id="bip-länder-mit-farbe" class="level2" data-number="13.4">
+<h2 data-number="13.4" class="anchored" data-anchor-id="bip-länder-mit-farbe"><span class="header-section-number">13.4</span> BIP Länder (mit Farbe)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_wb_countries) <span class="sc">+</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> gdp, <span class="at">color =</span> country, <span class="at">group =</span> country))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 64 rows containing missing values or values outside the scale range
+(`geom_line()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="weitere-geoms_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Einfärben mit <code>color = c</code></li>
+</ul>
+</section>
+<section id="bip-länder-farbe-und-population" class="level2" data-number="13.5">
+<h2 data-number="13.5" class="anchored" data-anchor-id="bip-länder-farbe-und-population"><span class="header-section-number">13.5</span> BIP Länder: Farbe und Population</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_wb_countries) <span class="sc">+</span> <span class="fu">geom_line</span>(</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> gdp, <span class="at">color =</span> country, <span class="at">linewidth =</span> pop), <span class="at">lineend =</span> <span class="st">"round"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 64 rows containing missing values or values outside the scale range
+(`geom_line()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="weitere-geoms_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li><code>size = s</code> legt Linienstärke fest</li>
+<li><code>lineend = "round"</code> bei sehr dicken Linien</li>
+</ul>
+</section>
+</section>
+<section id="was-es-sonst-nocht-gibt" class="level1" data-number="14">
+<h1 data-number="14"><span class="header-section-number">14</span> Was es sonst nocht gibt…</h1>
+<section id="liniensegmente-mit-geom_segment" class="level2" data-number="14.1">
+<h2 data-number="14.1" class="anchored" data-anchor-id="liniensegmente-mit-geom_segment"><span class="header-section-number">14.1</span> Liniensegmente mit <code>geom_segment()</code></h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_wb_countries_2012) <span class="sc">+</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> <span class="dv">0</span>, <span class="at">xend =</span> pop, <span class="at">y =</span> country, <span class="at">yend =</span> country)) <span class="sc">+</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> pop, <span class="at">y =</span> country), <span class="at">color =</span> <span class="st">"red"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="weitere-geoms_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Notwendige AES: <code>x</code>, <code>y</code>, <code>xend</code>, <code>yend</code>, auch mit festen Werten</li>
+</ul>
+</section>
+<section id="rechtecke-mit-geom_tile" class="level2" data-number="14.2">
+<h2 data-number="14.2" class="anchored" data-anchor-id="rechtecke-mit-geom_tile"><span class="header-section-number">14.2</span> Rechtecke mit <code>geom_tile()</code></h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">X =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">3</span>), <span class="at">Y =</span> <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">2</span>,<span class="dv">1</span>), <span class="at">W =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="fl">0.5</span>,<span class="dv">1</span>), <span class="at">H =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">1</span>))</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d) <span class="sc">+</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> X, <span class="at">y =</span> Y, <span class="at">width =</span> W, <span class="at">height =</span> H)) <span class="sc">+</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> X, <span class="at">y =</span> Y), <span class="at">color =</span> <span class="st">"red"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="weitere-geoms_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><span class="up20"></span></p>
+<ul>
+<li>Notwendige AES: Mittelpunkt und Breite/Höhe</li>
+<li>tile wie Fliese</li>
+</ul>
+</section>
+<section id="rechtecke-mit-geom_rect" class="level2" data-number="14.3">
+<h2 data-number="14.3" class="anchored" data-anchor-id="rechtecke-mit-geom_rect"><span class="header-section-number">14.3</span> Rechtecke mit <code>geom_rect()</code></h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">X1=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">1.5</span>,<span class="dv">3</span>), <span class="at">Y1=</span><span class="fu">c</span>(<span class="fl">2.5</span>,<span class="dv">2</span>,<span class="dv">1</span>), <span class="at">X2=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="fl">2.5</span>,<span class="fl">3.5</span>), <span class="at">Y2=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">2</span>))</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d) <span class="sc">+</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_rect</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">xmin =</span> X1, <span class="at">ymin =</span> Y1, <span class="at">xmax =</span> X2, <span class="at">ymax =</span> Y2)) <span class="sc">+</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> X1, <span class="at">y =</span> Y1), <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> X2, <span class="at">y =</span> Y2), <span class="at">color =</span> <span class="st">"blue"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="weitere-geoms_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><span class="up20"></span></p>
+<ul>
+<li>Notwendige AES: Koordinaten der Eckpunkte</li>
+<li>rect wie rectangle = Rechteck</li>
+</ul>
+</section>
+</section>
+<section id="plots-aufbereiten" class="level1" data-number="15">
+<h1 data-number="15"><span class="header-section-number">15</span> Plots aufbereiten</h1>
+<section id="facetten-mit-facet_wrap" class="level2" data-number="15.1">
+<h2 data-number="15.1" class="anchored" data-anchor-id="facetten-mit-facet_wrap"><span class="header-section-number">15.1</span> Facetten mit <code>facet_wrap</code></h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> <span class="fu">filter</span>(d_ns_bochum_tag, Jahr <span class="sc">%in%</span> <span class="dv">2014</span><span class="sc">:</span><span class="dv">2017</span>)) <span class="sc">+</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> Monat, <span class="at">y =</span> NS)) <span class="sc">+</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>Jahr, <span class="at">ncol =</span> <span class="dv">2</span>)                                  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="weitere-geoms_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li><code>facet_wrap(~Merkmal)</code>: Für jede Ausprägung des Merkmals ein Plot</li>
+<li>facet wie Facette, Seite und wrap wie umbrechen</li>
+<li>Anzahl der Zeilen (row) oder Spalten (col) mit <code>nrow = nr</code> oder <code>ncol =  nc</code></li>
+<li>Jahre 2014 - 2017 mit <code>filter()</code> (später, Verweis)</li>
+</ul>
+</section>
+<section id="sortierung-nach-häufigkeit-13" class="level2" data-number="15.2">
+<h2 data-number="15.2" class="anchored" data-anchor-id="sortierung-nach-häufigkeit-13"><span class="header-section-number">15.2</span> Sortierung nach Häufigkeit 1/3</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(d_wb_all) <span class="sc">+</span> <span class="fu">geom_bar</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> region))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="weitere-geoms_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Standardmäßig wird alphabetisch sortiert</li>
+</ul>
+</section>
+<section id="sortierung-nach-häufigkeit-23" class="level2" data-number="15.3">
+<h2 data-number="15.3" class="anchored" data-anchor-id="sortierung-nach-häufigkeit-23"><span class="header-section-number">15.3</span> Sortierung nach Häufigkeit 2/3</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(d_wb_all) <span class="sc">+</span> <span class="fu">geom_bar</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">fct_infreq</span>(region)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="weitere-geoms_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Nach Häufigkeit sortieren mit <code>fct_infreq()</code></li>
+<li>fct wie factor = Faktor und infreq wie in frequency order = der Häufigkeit nach sortiert</li>
+</ul>
+</section>
+<section id="sortierung-nach-häufigkeit-33" class="level2" data-number="15.4">
+<h2 data-number="15.4" class="anchored" data-anchor-id="sortierung-nach-häufigkeit-33"><span class="header-section-number">15.4</span> Sortierung nach Häufigkeit 3/3</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(d_wb_all) <span class="sc">+</span> <span class="fu">geom_bar</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">fct_rev</span>(<span class="fu">fct_infreq</span>(region))))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="weitere-geoms_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Ansteigend mit <code>fct_rev()</code></li>
+<li>rev wie reverse = umgekehrt</li>
+</ul>
+</section>
+<section id="sortierung-nach-merkmal-13" class="level2" data-number="15.5">
+<h2 data-number="15.5" class="anchored" data-anchor-id="sortierung-nach-merkmal-13"><span class="header-section-number">15.5</span> Sortierung nach Merkmal 1/3</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(d_wb_countries) <span class="sc">+</span> <span class="fu">geom_col</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> country, <span class="at">y =</span> pop))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="weitere-geoms_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Standardmäßig wird alphabetisch sortiert</li>
+</ul>
+</section>
+<section id="sortierung-nach-merkmal-23" class="level2" data-number="15.6">
+<h2 data-number="15.6" class="anchored" data-anchor-id="sortierung-nach-merkmal-23"><span class="header-section-number">15.6</span> Sortierung nach Merkmal 2/3</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(d_wb_countries) <span class="sc">+</span> <span class="fu">geom_col</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">fct_reorder</span>(country, pop), <span class="at">y =</span> pop))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="weitere-geoms_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Nach Merkmal sortieren mit <code>fct_reorder()</code></li>
+</ul>
+</section>
+<section id="sortierung-nach-merkmal-33" class="level2" data-number="15.7">
+<h2 data-number="15.7" class="anchored" data-anchor-id="sortierung-nach-merkmal-33"><span class="header-section-number">15.7</span> Sortierung nach Merkmal 3/3</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(d_wb_countries) <span class="sc">+</span> <span class="fu">geom_col</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">fct_rev</span>(<span class="fu">fct_reorder</span>(country, pop)), <span class="at">y =</span> pop))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="weitere-geoms_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Absteigend sortieren wieder mit <code>fct_rev()</code></li>
+</ul>
+</section>
+<section id="skalen" class="level2" data-number="15.8">
+<h2 data-number="15.8" class="anchored" data-anchor-id="skalen"><span class="header-section-number">15.8</span> Skalen</h2>
+<div class="columns">
+<div class="column" style="width:70%;">
+<p><img src="bilder/skalen.svg" class="img-fluid"></p>
+</div><div class="column" style="width:30%;">
+<p>Skalen regeln die Abbildung von Daten auf die Eigenschaften geometrischer Objekte (AES).</p>
+</div>
+</div>
+<p>Form der Angaben zu Skalen: <code>scale_AAA_BBB(&lt;Arguments&gt;)</code></p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>AAA</th>
+<th>BBB</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>x,y</td>
+<td>continuous, discrete</td>
+</tr>
+<tr class="even">
+<td>x,y</td>
+<td>reverse, sqrt, log10</td>
+</tr>
+<tr class="odd">
+<td>color, fill</td>
+<td>grey, hue, manual, brewer, …</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="section" class="level2" data-number="15.9">
+<h2 data-number="15.9" class="anchored" data-anchor-id="section"><span class="header-section-number">15.9</span> </h2>
+<p><span class="down120"></span></p>
+<p>Darüber hinaus gibt es Skalen für alle anderen visuellen Eigenschaften (Transparenz, Linientyp, Shape, …). In der Regel muss man diese aber nicht anpassen.</p>
+</section>
+<section id="skalen-werden-automatisch-eingefügt" class="level2" data-number="15.10">
+<h2 data-number="15.10" class="anchored" data-anchor-id="skalen-werden-automatisch-eingefügt"><span class="header-section-number">15.10</span> Skalen werden automatisch eingefügt</h2>
+<p>Werden keine Skalen angegeben (so wie bisher), dann fügt ggplot automatisch sinnvolle Skalen ein. Aus</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_wb_all) <span class="sc">+</span> </span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> gdp))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>wird daher</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_wb_all) <span class="sc">+</span> </span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> gdp)) <span class="sc">+</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>() <span class="sc">+</span> </span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Skalen anpassen: Selber dazuschreiben</p>
+</section>
+<section id="kontinuierliche-achsen-achspunkte-ändern" class="level2" data-number="15.11">
+<h2 data-number="15.11" class="anchored" data-anchor-id="kontinuierliche-achsen-achspunkte-ändern"><span class="header-section-number">15.11</span> Kontinuierliche Achsen: Achspunkte ändern</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_wb_all) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> gdp)) <span class="sc">+</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">1965</span>, <span class="dv">1990</span>, <span class="dv">2015</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 2915 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="weitere-geoms_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Änderung der Beschriftung mit <code>breaks = b</code></li>
+</ul>
+</section>
+<section id="kontinuierliche-achsen-möglichkeiten" class="level2" data-number="15.12">
+<h2 data-number="15.12" class="anchored" data-anchor-id="kontinuierliche-achsen-möglichkeiten"><span class="header-section-number">15.12</span> Kontinuierliche Achsen: Möglichkeiten</h2>
+<p><span class="down40"></span></p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Argument</th>
+<th>Beschreibung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>breaks</td>
+<td>Vektor mit Werten für Achspunkte</td>
+</tr>
+<tr class="even">
+<td>minor_breaks</td>
+<td>Vektor mit Werten für zwischen-Achspunkte</td>
+</tr>
+<tr class="odd">
+<td>limits</td>
+<td>Vektor mit zwei Elementen für Begrenzung</td>
+</tr>
+<tr class="even">
+<td>labels</td>
+<td>Vektor mit Beschriftung (selten)</td>
+</tr>
+</tbody>
+</table>
+<p><span class="down40"></span></p>
+<ul>
+<li>Keine Punkte mit <code>breaks = NULL</code> bzw. <code>minor_breaks = NULL</code></li>
+<li>Durch <code>limits</code> werden die entsprechenden Daten vor dem Plotten entfernt (manchmal nicht erwünscht). Alternativ die Plotgrenzen bei <code>coord_cartesian()</code> angeben (gleich)</li>
+</ul>
+</section>
+<section id="diskrete-achsen-beschriftung-ändern" class="level2" data-number="15.13">
+<h2 data-number="15.13" class="anchored" data-anchor-id="diskrete-achsen-beschriftung-ändern"><span class="header-section-number">15.13</span> Diskrete Achsen: Beschriftung ändern</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_wb_2012) <span class="sc">+</span> <span class="fu">geom_bar</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> region)) <span class="sc">+</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"D"</span>, <span class="st">"E"</span>, <span class="st">"F"</span>, <span class="st">"G"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="weitere-geoms_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Änderung der Beschriftung mit <code>labels = l</code></li>
+</ul>
+</section>
+<section id="viele-werte-nah-am-ursprung" class="level2" data-number="15.14">
+<h2 data-number="15.14" class="anchored" data-anchor-id="viele-werte-nah-am-ursprung"><span class="header-section-number">15.14</span> Viele Werte nah am Ursprung</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_wb_2012) <span class="sc">+</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> gdp, <span class="at">y =</span> gge, <span class="at">fill =</span> region, <span class="at">size =</span> pop), <span class="at">shape =</span> <span class="dv">21</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 42 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="weitere-geoms_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Problem: Fast alle Werte liegen sehr nahe bei Null</li>
+</ul>
+</section>
+<section id="viele-werte-nah-am-ursprung-logarithmische-skala" class="level2" data-number="15.15">
+<h2 data-number="15.15" class="anchored" data-anchor-id="viele-werte-nah-am-ursprung-logarithmische-skala"><span class="header-section-number">15.15</span> Viele Werte nah am Ursprung: Logarithmische Skala</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_wb_2012) <span class="sc">+</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> gdp, <span class="at">y =</span> gge, <span class="at">fill =</span> region, <span class="at">size =</span> pop), <span class="at">shape =</span> <span class="dv">21</span>) <span class="sc">+</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>() <span class="sc">+</span> <span class="fu">scale_y_log10</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 42 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="weitere-geoms_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Bereich wird für kleine Werte aufgezogen, für große Werte komprimiert</li>
+</ul>
+</section>
+<section id="weitere-skalen-für-achsen" class="level2" data-number="15.16">
+<h2 data-number="15.16" class="anchored" data-anchor-id="weitere-skalen-für-achsen"><span class="header-section-number">15.16</span> Weitere Skalen für Achsen</h2>
+<p><span class="down60"></span></p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Element</th>
+<th>Wirkung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>scale_x_sqrt(), scale_y_sqrt()</td>
+<td>Wurzelskala</td>
+</tr>
+<tr class="even">
+<td>scale_x_log10(), scale_y_log10()</td>
+<td>Logarithmische Skala</td>
+</tr>
+<tr class="odd">
+<td>scale_x_reverse(), scale_y_reverse()</td>
+<td>Umgedrehte Skala</td>
+</tr>
+</tbody>
+</table>
+<p><span class="down40"></span></p>
+<p>→ Definitionsbereich von Logarithmus und Wurzel beachten</p>
+</section>
+<section id="kontinuierliche-farbskala" class="level2" data-number="15.17">
+<h2 data-number="15.17" class="anchored" data-anchor-id="kontinuierliche-farbskala"><span class="header-section-number">15.17</span> Kontinuierliche Farbskala</h2>
+<p><span class="down40"></span></p>
+<p>Datensatz: Sinuskurve</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">X =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">2</span>, <span class="at">by=</span><span class="fl">0.05</span>), <span class="at">Y =</span> <span class="fu">sin</span>(pi<span class="sc">*</span><span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">2</span>, <span class="at">by=</span><span class="fl">0.05</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="beispiel-nicht-empfohlen" class="level2" data-number="15.18">
+<h2 data-number="15.18" class="anchored" data-anchor-id="beispiel-nicht-empfohlen"><span class="header-section-number">15.18</span> Beispiel (nicht empfohlen)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d) <span class="sc">+</span> <span class="fu">geom_col</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> X, <span class="at">y =</span> Y, <span class="at">fill =</span> Y)) <span class="sc">+</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient</span>(<span class="at">low =</span> <span class="st">"green"</span>, <span class="at">high =</span> <span class="st">"red"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="weitere-geoms_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li><code>scale_fill_gradient()</code> erzeugt Farbverlauf mit zwei Farben</li>
+</ul>
+</section>
+<section id="beispiel-auch-nicht-empfohlen" class="level2" data-number="15.19">
+<h2 data-number="15.19" class="anchored" data-anchor-id="beispiel-auch-nicht-empfohlen"><span class="header-section-number">15.19</span> Beispiel (auch nicht empfohlen)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d) <span class="sc">+</span> <span class="fu">geom_col</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> X, <span class="at">y =</span> Y, <span class="at">fill =</span> Y)) <span class="sc">+</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient2</span>(<span class="at">low =</span> <span class="st">"orange"</span>, <span class="at">mid =</span> <span class="st">"yellow"</span>, <span class="at">high =</span> <span class="st">"green"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="weitere-geoms_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li><code>scale_fill_gradient2()</code> erzeugt Farbverlauf mit drei Farben</li>
+</ul>
+</section>
+<section id="brewer-farbpalette-empfohlen" class="level2" data-number="15.20">
+<h2 data-number="15.20" class="anchored" data-anchor-id="brewer-farbpalette-empfohlen"><span class="header-section-number">15.20</span> Brewer-Farbpalette (empfohlen)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d) <span class="sc">+</span> <span class="fu">geom_col</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> X, <span class="at">y =</span> Y, <span class="at">fill =</span> Y)) <span class="sc">+</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_distiller</span>(<span class="at">palette =</span> <span class="st">"RdBu"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="weitere-geoms_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Farbpalette von Cynthia Brewer (gleich mehr dazu)</li>
+</ul>
+</section>
+<section id="farbskala-umgekehrt" class="level2" data-number="15.21">
+<h2 data-number="15.21" class="anchored" data-anchor-id="farbskala-umgekehrt"><span class="header-section-number">15.21</span> Farbskala umgekehrt</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d) <span class="sc">+</span> <span class="fu">geom_col</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> X, <span class="at">y =</span> Y, <span class="at">fill =</span> Y)) <span class="sc">+</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_distiller</span>(<span class="at">palette =</span> <span class="st">"RdBu"</span>, <span class="at">direction =</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="weitere-geoms_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li><code>direction = 1</code> zeigt die Skala so an, wie sie definiert ist, Voreinstellung ist umgedreht</li>
+</ul>
+</section>
+<section id="mit-diskreten-farbwerten" class="level2" data-number="15.22">
+<h2 data-number="15.22" class="anchored" data-anchor-id="mit-diskreten-farbwerten"><span class="header-section-number">15.22</span> Mit diskreten Farbwerten</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d) <span class="sc">+</span> <span class="fu">geom_col</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> X, <span class="at">y =</span> Y, <span class="at">fill =</span> Y)) <span class="sc">+</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_fermenter</span>(<span class="at">palette =</span> <span class="st">"RdBu"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="weitere-geoms_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="mit-logarithmischer-skala" class="level2" data-number="15.23">
+<h2 data-number="15.23" class="anchored" data-anchor-id="mit-logarithmischer-skala"><span class="header-section-number">15.23</span> Mit logarithmischer Skala</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span><span class="fu">mutate</span>(d,<span class="at">Y=</span>Y<span class="sc">^</span><span class="dv">16</span><span class="fl">+1e-9</span>))<span class="sc">+</span><span class="fu">geom_col</span>(<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>X, <span class="at">y=</span>Y, <span class="at">fill=</span>Y))<span class="sc">+</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_log10</span>() <span class="sc">+</span> <span class="fu">scale_fill_fermenter</span>(<span class="at">palette =</span> <span class="st">"RdBu"</span>, <span class="at">trans =</span> <span class="st">"log10"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="weitere-geoms_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Viele Werte sehr klein wegen Y^16. Daher: Logarithmische Skalen</li>
+<li>Farben mit <code>trans = "log10"</code> dem Logarithmus der Werte zuordnen</li>
+</ul>
+</section>
+<section id="definierte-farbskalen-kontinuierlich" class="level2" data-number="15.24">
+<h2 data-number="15.24" class="anchored" data-anchor-id="definierte-farbskalen-kontinuierlich"><span class="header-section-number">15.24</span> Definierte Farbskalen (kontinuierlich)</h2>
+<p><span class="down40"></span></p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Element</th>
+<th>Argumente</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>scale_AAA_gradient</td>
+<td>low, high</td>
+</tr>
+<tr class="even">
+<td>scale_AAA_gradient2</td>
+<td>low, mid, high</td>
+</tr>
+<tr class="odd">
+<td>scale_AAA_distiller</td>
+<td>palette</td>
+</tr>
+<tr class="even">
+<td>scale_AAA_fermenter</td>
+<td>palette</td>
+</tr>
+</tbody>
+</table>
+<p><span class="down40"></span></p>
+<p>→ Für AAA je nach Anwendung entweder ‘color’ oder ‘fill’ einsetzen</p>
+</section>
+<section id="optionen-für-alle-kontinuierlichen-farbskalen" class="level2" data-number="15.25">
+<h2 data-number="15.25" class="anchored" data-anchor-id="optionen-für-alle-kontinuierlichen-farbskalen"><span class="header-section-number">15.25</span> Optionen für alle kontinuierlichen Farbskalen</h2>
+<p><span class="down120"></span></p>
+<table class="table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Option</th>
+<th>Mögliche Werte</th>
+<th>Funktion</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>direction</td>
+<td>1, <strong>-1</strong></td>
+<td>Farbskala umkehren</td>
+</tr>
+<tr class="even">
+<td>guide</td>
+<td><strong>“colourbar”</strong>, “legend”</td>
+<td>Kontinuierliche Skala oder diskrete Farben</td>
+</tr>
+<tr class="odd">
+<td>trans</td>
+<td><strong>“idendity”</strong>, “log10”, …</td>
+<td>Transformation für Werte</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="diskrete-farbskala-manuell-erster-versuch" class="level2" data-number="15.26">
+<h2 data-number="15.26" class="anchored" data-anchor-id="diskrete-farbskala-manuell-erster-versuch"><span class="header-section-number">15.26</span> Diskrete Farbskala manuell (erster Versuch)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">farbe =</span> <span class="fu">c</span>(<span class="st">"rot"</span>, <span class="st">"gruen"</span>, <span class="st">"blau"</span>, <span class="st">"gruen"</span>, <span class="st">"rot"</span>, <span class="st">"gruen"</span>))</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d) <span class="sc">+</span> <span class="fu">geom_bar</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> farbe, <span class="at">fill =</span> farbe)) <span class="sc">+</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"blue"</span>, <span class="st">"green"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="weitere-geoms_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Zuordnung quasi zufällig</li>
+</ul>
+</section>
+<section id="diskrete-farbskala-manuell-zweiter-versuch" class="level2" data-number="15.27">
+<h2 data-number="15.27" class="anchored" data-anchor-id="diskrete-farbskala-manuell-zweiter-versuch"><span class="header-section-number">15.27</span> Diskrete Farbskala manuell (zweiter Versuch)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">farbe =</span> <span class="fu">c</span>(<span class="st">"rot"</span>, <span class="st">"gruen"</span>, <span class="st">"blau"</span>, <span class="st">"gruen"</span>, <span class="st">"rot"</span>, <span class="st">"gruen"</span>))</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d) <span class="sc">+</span> <span class="fu">geom_bar</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> farbe, <span class="at">fill =</span> farbe)) <span class="sc">+</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"rot"</span><span class="ot">=</span><span class="st">"red"</span>, <span class="st">"blau"</span><span class="ot">=</span><span class="st">"blue"</span>, <span class="st">"gruen"</span><span class="ot">=</span><span class="st">"green"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="weitere-geoms_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Zuordnung mit <code>Ausprägung = Farbe</code> angeben</li>
+</ul>
+</section>
+<section id="brewer-farbpalette" class="level2" data-number="15.28">
+<h2 data-number="15.28" class="anchored" data-anchor-id="brewer-farbpalette"><span class="header-section-number">15.28</span> Brewer-Farbpalette</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_wb_2012) <span class="sc">+</span> <span class="fu">geom_bar</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x=</span>region, <span class="at">fill=</span>region)) <span class="sc">+</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">"Set1"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="weitere-geoms_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="brewer-farbpaletten" class="level2" data-number="15.29">
+<h2 data-number="15.29" class="anchored" data-anchor-id="brewer-farbpaletten"><span class="header-section-number">15.29</span> Brewer-Farbpaletten</h2>
+<p><img src="bilder/brewer.svg" class="img-fluid"></p>
+<ul>
+<li>Kontinuierlich: <code>scale_color_distiller(palette = p)</code> oder <code>scale_fill_distiller(palette = p)</code></li>
+<li>Diskret: <code>scale_color_brewer(palette = p)</code> oder <code>scale_fill_brewer(palette = p)</code></li>
+</ul>
+</section>
+<section id="brewer-farbpaletten-1" class="level2" data-number="15.30">
+<h2 data-number="15.30" class="anchored" data-anchor-id="brewer-farbpaletten-1"><span class="header-section-number">15.30</span> Brewer-Farbpaletten</h2>
+<p><img src="bilder/brewer-info.svg" class="img-fluid"></p>
+<p><span class="down40"></span></p>
+<ul>
+<li>Entwickelt von Cynthia Brewer</li>
+<li>Kartographin an der Penn State Universität</li>
+<li>http://colorbrewer2.org</li>
+</ul>
+</section>
+</section>
+<section id="beschriftungen" class="level1" data-number="16">
+<h1 data-number="16"><span class="header-section-number">16</span> Beschriftungen</h1>
+<section id="beschriftung-mit-labs" class="level2" data-number="16.1">
+<h2 data-number="16.1" class="anchored" data-anchor-id="beschriftung-mit-labs"><span class="header-section-number">16.1</span> Beschriftung mit labs()</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_ns_bochum_monat) <span class="sc">+</span> </span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> NS), <span class="at">binwidth =</span> <span class="dv">15</span>, <span class="at">boundary =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(                                               </span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Histogramm Niederschlag in Bochum"</span>, <span class="at">subtitle =</span> <span class="st">"1951 - 2017"</span>, </span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Monatlicher Niederschlag (mm)"</span>, <span class="at">y =</span> <span class="st">"Anzahl der Monate"</span>,</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Quelle: Deutscher Wetterdienst"</span></span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="weitere-geoms_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="beschriftung-der-farblegende" class="level2" data-number="16.2">
+<h2 data-number="16.2" class="anchored" data-anchor-id="beschriftung-der-farblegende"><span class="header-section-number">16.2</span> Beschriftung der Farblegende</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_wb_2012) <span class="sc">+</span> <span class="fu">geom_bar</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x=</span>region, <span class="at">fill=</span>region)) <span class="sc">+</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">fill =</span> <span class="st">"Region der Welt"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="weitere-geoms_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Legende ebenfalls mit <code>labs</code> beschriften</li>
+<li>Zum Beispiel für die Füllfarbe: <code>fill = Titel</code></li>
+</ul>
+</section>
+<section id="beschriftung-entfernen" class="level2" data-number="16.3">
+<h2 data-number="16.3" class="anchored" data-anchor-id="beschriftung-entfernen"><span class="header-section-number">16.3</span> Beschriftung entfernen</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> <span class="fu">filter</span>(d_ns_bochum_monat, Jahr <span class="sc">&gt;=</span> <span class="dv">2000</span>)) <span class="sc">+</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(Jahr), <span class="at">y =</span> NS)) <span class="sc">+</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="cn">NULL</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="weitere-geoms_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Wert <code>NULL</code> entfernt die Beschriftung und den dafür reservierten Platz</li>
+</ul>
+</section>
+<section id="beschriftung-drehen" class="level2" data-number="16.4">
+<h2 data-number="16.4" class="anchored" data-anchor-id="beschriftung-drehen"><span class="header-section-number">16.4</span> Beschriftung drehen</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">data =</span> d_wb_2012) <span class="sc">+</span> <span class="fu">geom_bar</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x=</span>region, <span class="at">fill=</span>region)) <span class="sc">+</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">guides</span>(<span class="at">x =</span> <span class="fu">guide_axis</span>(<span class="at">angle =</span> <span class="dv">45</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="weitere-geoms_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><span class="down20"></span></p>
+<ul>
+<li>Erste Möglichkeit, wenn Beschriftungen auf x-Achse zu lang</li>
+<li>Geschmackssache</li>
+</ul>
+</section>
+<section id="beschriftung-versetzen" class="level2" data-number="16.5">
+<h2 data-number="16.5" class="anchored" data-anchor-id="beschriftung-versetzen"><span class="header-section-number">16.5</span> Beschriftung versetzen</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">data =</span> d_wb_2012) <span class="sc">+</span> <span class="fu">geom_bar</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x=</span>region, <span class="at">fill=</span>region)) <span class="sc">+</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">guides</span>(<span class="at">x =</span> <span class="fu">guide_axis</span>(<span class="at">n.dodge =</span> <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="weitere-geoms_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><span class="down20"></span></p>
+<ul>
+<li>Zweite Möglichkeit, wenn Beschriftungen auf x-Achse zu lang</li>
+<li>Auch Geschmackssache</li>
+</ul>
+</section>
+</section>
+<section id="koordinatensysteme" class="level1" data-number="17">
+<h1 data-number="17"><span class="header-section-number">17</span> Koordinatensysteme</h1>
+<section id="achsen-vertauschen-mit-coord_flip" class="level2" data-number="17.1">
+<h2 data-number="17.1" class="anchored" data-anchor-id="achsen-vertauschen-mit-coord_flip"><span class="header-section-number">17.1</span> Achsen vertauschen mit <code>coord_flip()</code></h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_wb_2012) <span class="sc">+</span> <span class="fu">geom_bar</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x=</span>region, <span class="at">fill=</span>region)) <span class="sc">+</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="weitere-geoms_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid figure-img" style="width:90.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Vertauscht die x-Achse mit der y-Achse</li>
+</ul>
+</section>
+<section id="plotbereich-mit-coord_cartesian" class="level2" data-number="17.2">
+<h2 data-number="17.2" class="anchored" data-anchor-id="plotbereich-mit-coord_cartesian"><span class="header-section-number">17.2</span> Plotbereich mit <code>coord_cartesian()</code></h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_wb_countries) <span class="sc">+</span> </span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x=</span>year, <span class="at">ymin=</span><span class="dv">0</span>, <span class="at">ymax=</span>gdp, <span class="at">color=</span>country, <span class="at">fill=</span>country), <span class="at">alpha =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">1980</span>, <span class="dv">2010</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">4e12</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 74 rows containing missing values or values outside the scale range
+(`geom_ribbon()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="weitere-geoms_files/figure-html/unnamed-chunk-39-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Bereich festlegen: <code>xlim = c(xmin, xmax)</code> und <code>ylim = c(ymin, ymax)</code></li>
+</ul>
+</section>
+<section id="polarkoordinaten-mit-coord_polar" class="level2" data-number="17.3">
+<h2 data-number="17.3" class="anchored" data-anchor-id="polarkoordinaten-mit-coord_polar"><span class="header-section-number">17.3</span> Polarkoordinaten mit <code>coord_polar()</code></h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_wb_countries) <span class="sc">+</span> </span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x=</span>year, <span class="at">ymin=</span><span class="dv">0</span>, <span class="at">ymax=</span>gdp, <span class="at">color=</span>country, <span class="at">fill=</span>country), <span class="at">alpha =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_polar</span>(<span class="at">theta =</span> <span class="st">"y"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 74 rows containing missing values or values outside the scale range
+(`geom_ribbon()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="weitere-geoms_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Ein Wert wird zum Radius, der andere zum Winkel</li>
+<li>Variable (<code>"x"</code> oder <code>"y"</code>) für Winkel mit <code>theta</code></li>
+</ul>
+</section>
+<section id="tortendiagramm-wiederholung" class="level2" data-number="17.4">
+<h2 data-number="17.4" class="anchored" data-anchor-id="tortendiagramm-wiederholung"><span class="header-section-number">17.4</span> Tortendiagramm (Wiederholung)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_wb_countries_2012) <span class="sc">+</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> <span class="dv">0</span>, <span class="at">y =</span> gge, <span class="at">fill =</span> country), <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">width =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_polar</span>(<span class="at">theta =</span> <span class="st">"y"</span>) <span class="sc">+</span> <span class="fu">theme_void</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="weitere-geoms_files/figure-html/unnamed-chunk-41-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Gestapeltes Balkendiagramm wird zum Tortendiagramm</li>
+<li><code>theme_void()</code> entfernt Dekoration (gleich)</li>
+</ul>
+</section>
+<section id="ringdiagramm-wiederholung" class="level2" data-number="17.5">
+<h2 data-number="17.5" class="anchored" data-anchor-id="ringdiagramm-wiederholung"><span class="header-section-number">17.5</span> Ringdiagramm (Wiederholung)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_wb_countries_2012) <span class="sc">+</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x =</span> <span class="fl">0.5</span>, <span class="at">y =</span> gge, <span class="at">fill =</span> country), <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">width =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>)) <span class="sc">+</span> <span class="fu">coord_polar</span>(<span class="at">theta =</span> <span class="st">"y"</span>) <span class="sc">+</span> <span class="fu">theme_void</span>() </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="weitere-geoms_files/figure-html/unnamed-chunk-42-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Bereich der x-Achse anpassen</li>
+<li><code>theme_void()</code> entfernt Dekoration (gleich)</li>
+</ul>
+</section>
+</section>
+<section id="themes" class="level1" data-number="18">
+<h1 data-number="18"><span class="header-section-number">18</span> Themes</h1>
+<p>Voreinstellungen für Graphiken anpassen</p>
+<section id="erscheinungsbild-anpassen-mit-theme" class="level2" data-number="18.1">
+<h2 data-number="18.1" class="anchored" data-anchor-id="erscheinungsbild-anpassen-mit-theme"><span class="header-section-number">18.1</span> Erscheinungsbild anpassen mit <code>theme()</code></h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">data =</span> d_wb_2012) <span class="sc">+</span> <span class="fu">geom_bar</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x=</span>region, <span class="at">fill=</span>region)) <span class="sc">+</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"pink"</span>), </span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">panel.grid.major =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"hot pink"</span>)</span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="weitere-geoms_files/figure-html/unnamed-chunk-43-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Alle Plot-Elemente lassen sich mithilfe von <code>theme()</code> anpassen</li>
+<li>Insgesamt ca. 80 Einstellungsmöglichkeiten</li>
+<li>Tipp: Nicht zuviel Zeit damit verbringen</li>
+</ul>
+</section>
+<section id="voreingestellte-themes" class="level2" data-number="18.2">
+<h2 data-number="18.2" class="anchored" data-anchor-id="voreingestellte-themes"><span class="header-section-number">18.2</span> Voreingestellte Themes</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<p><span class="up20"></span> <img src="bilder/visualization-themes.svg" class="img-fluid"></p>
+</div><div class="column" style="width:60%;">
+<ul>
+<li>Vernünftige Voreinstellungen</li>
+<li><code>theme_void()</code> entfernt alles</li>
+<li>Weitere Themes im Paket <code>ggthemes</code></li>
+</ul>
+</div>
+</div>
+<p><span class="up40"></span></p>
+<p>Globale Einstellungen zu Beginn des Dokuments. Beispiel:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_bw</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+</section>
+<section id="farben-ändern" class="level1" data-number="19">
+<h1 data-number="19"><span class="header-section-number">19</span> Farben ändern</h1>
+<p>Nicht allen gefallen die grauen Balken…</p>
+<section id="farben-für-einzelnen-plot-setzen" class="level2" data-number="19.1">
+<h2 data-number="19.1" class="anchored" data-anchor-id="farben-für-einzelnen-plot-setzen"><span class="header-section-number">19.1</span> Farben für einzelnen Plot setzen</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_ns_bochum_monat) <span class="sc">+</span> </span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> NS), <span class="at">fill =</span> <span class="st">"orange"</span>, <span class="at">color =</span> <span class="st">"black"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="weitere-geoms_files/figure-html/unnamed-chunk-44-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Problem: Viel Arbeit, wenn die Plots einheitlich aussehen sollen</p>
+</section>
+<section id="besser-voreinstellungen-global-ändern" class="level2" data-number="19.2">
+<h2 data-number="19.2" class="anchored" data-anchor-id="besser-voreinstellungen-global-ändern"><span class="header-section-number">19.2</span> Besser: Voreinstellungen global ändern</h2>
+<p><span class="down40"></span></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>line_color <span class="ot">&lt;-</span> <span class="st">"black"</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>fill_color <span class="ot">&lt;-</span> <span class="st">"light blue"</span></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a><span class="fu">update_geom_defaults</span>(<span class="st">"bar"</span>,   <span class="fu">list</span>(<span class="at">fill =</span> fill_color, <span class="at">color =</span> line_color))</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a><span class="fu">update_geom_defaults</span>(<span class="st">"point"</span>, <span class="fu">list</span>(<span class="at">fill =</span> fill_color, <span class="at">color =</span> line_color))</span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a><span class="fu">update_geom_defaults</span>(<span class="st">"boxplot"</span>, <span class="fu">list</span>(<span class="at">fill =</span> fill_color))</span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a><span class="co"># und so weiter</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><span class="down40"></span></p>
+<ul>
+<li>Einstellungen für alle Plots zu Beginn des Dokuments</li>
+<li>Lässt sich später einfach ändern</li>
+</ul>
+</section>
+<section id="farben-angeben" class="level2" data-number="19.3">
+<h2 data-number="19.3" class="anchored" data-anchor-id="farben-angeben"><span class="header-section-number">19.3</span> Farben angeben</h2>
+<p>Mit dem Namen einer Farbe</p>
+<ul>
+<li>Zum Beispiel <code>"red"</code> (mehr als 600 vordefinierte Farben)</li>
+<li><code>colors()</code> gibt Namen der vordefinierten Farben</li>
+<li>http://sape.inf.usi.ch/quick-reference/ggplot2/colour</li>
+</ul>
+<p>Mit RGB-Wert</p>
+<ul>
+<li>Zum Beispiel <code>rgb(0, 0.7, 1)</code></li>
+</ul>
+<p>Mit Hex-Wert</p>
+<ul>
+<li>Zum Beispiel <code>"#45e32f"</code></li>
+<li>Farben in R standardmäßig als Hexadezimalzahl</li>
+</ul>
+</section>
+</section>
+<section id="legenden-entfernen" class="level1" data-number="20">
+<h1 data-number="20"><span class="header-section-number">20</span> Legenden entfernen</h1>
+<section id="methode-1-legende-für-einzelne-skala" class="level2" data-number="20.1">
+<h2 data-number="20.1" class="anchored" data-anchor-id="methode-1-legende-für-einzelne-skala"><span class="header-section-number">20.1</span> Methode 1: Legende für einzelne Skala</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_wb_2012) <span class="sc">+</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x=</span>gdp, <span class="at">y=</span>gge, <span class="at">color=</span>region, <span class="at">size=</span>pop)) <span class="sc">+</span></span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>() <span class="sc">+</span> <span class="fu">scale_y_log10</span>() <span class="sc">+</span></span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size</span>(<span class="at">guide =</span> <span class="st">"none"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 42 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="weitere-geoms_files/figure-html/unnamed-chunk-45-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Argument <code>guide = "none"</code> für die Skala</li>
+<li>Farbskala entfernen mit <code>scale_color_discrete(guide = "none" (PRÜFEN!!))</code></li>
+</ul>
+</section>
+<section id="methode-2-alle-legenden-für-ein-geom" class="level2" data-number="20.2">
+<h2 data-number="20.2" class="anchored" data-anchor-id="methode-2-alle-legenden-für-ein-geom"><span class="header-section-number">20.2</span> Methode 2: Alle Legenden für ein Geom</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_wb_2012) <span class="sc">+</span></span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>gdp, <span class="at">y=</span>gge, <span class="at">color=</span>region, <span class="at">size=</span>pop), </span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>() <span class="sc">+</span> <span class="fu">scale_y_log10</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 42 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="weitere-geoms_files/figure-html/unnamed-chunk-46-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Argument <code>show.legend = FALSE</code> entfernt alle Legenden für ein Geom</li>
+</ul>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../skript/zwei-merkmale-aufgabe.html" class="pagination-link" aria-label="Aufgaben zur Untersuchung von zwei Merkmalen">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Aufgaben zur Untersuchung von zwei Merkmalen</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../skript/weitere-geoms-aufgabe.html" class="pagination-link" aria-label="Aufgaben zum Aufbereiten von Plots">
+        <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Aufgaben zum Aufbereiten von Plots</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/bausteine-der-datenanalyse/Werkzeugbaustein-R-und-RStudio/blob/main/skript/weitere-geoms.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></div></div></footer></body></html>

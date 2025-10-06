@@ -1,0 +1,15 @@
+{
+  "hash": "50f51ca50b469ca4e7c901bab20ec413",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Aufgaben zu räumlichen Daten\"\nauthor: \"TODO: Namen eintragen\"\n---\n\n\n::: {.cell}\n\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "hash": "93df81c73b9c5137af97d1b647425355",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Präsentationen erstellen mit Quarto\"\nauthor: \"Matthias Baitsch und Florian Bagemihl\"\n\ndate: today\ndate-format: long\n\nlang: de\n\nexecute: \n  echo: false\n\nformat:\n  revealjs: \n    overview: true\n    slide-number: \"c/t\"\n    code-line-numbers: false\n    theme: \n    - style.scss\n---\n\n\n\n# Ein Abschnitt\n\n## Folie mit Plot\n\n\n::: {.cell}\n::: {.cell-output-display}\n![](praesentationen-mit-quarto_files/figure-html/unnamed-chunk-2-1.png){width=672}\n:::\n:::\n\n\n# Der nächste Abschnitt\n\n## Folie mit Tabelle\n\n\n::: {.cell}\n::: {.cell-output .cell-output-stderr}\n\n```\nℹ Using \"','\" as decimal and \"'.'\" as grouping mark. Use `read_delim()` for more control.\n```\n\n\n:::\n\n::: {.cell-output .cell-output-stderr}\n\n```\nRows: 4 Columns: 4\n── Column specification ────────────────────────────────────────────────────────\nDelimiter: \";\"\nchr (2): C, D\ndbl (1): B\nnum (1): A\n\nℹ Use `spec()` to retrieve the full column specification for this data.\nℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.\n```\n\n\n:::\n\n::: {.cell-output-display}\n\n\n|        A|  B|C         |D          |\n|--------:|--:|:---------|:----------|\n|      1.2|  3|Franziska |01-10-2022 |\n|      2.6|  1|Philipp   |03-12-2002 |\n|      1.7|  6|Angela    |29-01-1977 |\n| 500000.2|  3|Sabine    |07-01-1898 |\n\n\n:::\n:::\n\n\n## Folie mit Graphik\n\n![](bilder/sydney-harbour-ridge.jpg)\n\n",
+    "supporting": [
+      "praesentationen-mit-quarto_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

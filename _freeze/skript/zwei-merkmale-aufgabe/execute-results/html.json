@@ -1,0 +1,15 @@
+{
+  "hash": "0cc4befc026e3a7ad70392d1217a1c22",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Aufgaben zur Untersuchung von zwei Merkmalen\"\nauthor: \"TODO: Namen eintragen\"\n---\n\n\n::: {.cell}\n\n:::\n\n\n## Dataframe Geschwindigkeitsmessung\n\n\n::: {.cell}\n\n```{.r .cell-code}\nshow(d_unistrasse)\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n# A tibble: 20,710 × 6\n   Datum               Tag   Uhrzeit VZ    Fahrzeug    Geschwindigkeit\n   <dttm>              <ord>   <dbl> <chr> <chr>                 <dbl>\n 1 2017-12-13 00:03:31 Mi     0.0586 SVZ   PKW                      70\n 2 2017-12-13 00:03:37 Mi     0.0603 SVZ   PKW                      59\n 3 2017-12-13 00:03:53 Mi     0.0647 SVZ   PKW                      79\n 4 2017-12-13 00:05:42 Mi     0.095  SVZ   PKW                      58\n 5 2017-12-13 00:06:51 Mi     0.114  SVZ   PKW                      60\n 6 2017-12-13 00:07:08 Mi     0.119  SVZ   Transporter              57\n 7 2017-12-13 00:08:11 Mi     0.136  SVZ   PKW                      58\n 8 2017-12-13 00:09:41 Mi     0.161  SVZ   PKW                      54\n 9 2017-12-13 00:11:42 Mi     0.195  SVZ   Transporter              56\n10 2017-12-13 00:17:31 Mi     0.292  SVZ   PKW                      61\n# ℹ 20,700 more rows\n```\n\n\n:::\n:::\n\n\nAnmerkungen:\n\n-   Uhrzeit = Stunde + Minute / 60 + Sekunde / 3600\n-   Quelle: Prof. Iris Mühlenbruch\n\n## Dataframe Windenergieanlage\n\n\n::: {.cell}\n\n```{.r .cell-code}\nshow(d_wea_min)\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n# A tibble: 1,440 × 7\n   datum                      zeit v_wind drehzahl leistung   B6_y      w5\n   <dttm>                    <dbl>  <dbl>    <dbl>    <dbl>  <dbl>   <dbl>\n 1 2010-06-07 00:00:59 1275868860.   5.97     20.6     50.6 -0.246 -0.0499\n 2 2010-06-07 00:01:59 1275868920.   4.66     19.5     30.8 -0.314 -0.0432\n 3 2010-06-07 00:02:59 1275868980.   4.76     20.1     45.7 -0.314 -0.0469\n 4 2010-06-07 00:03:59 1275869040.   5.44     20.3     45.5 -0.365 -0.0483\n 5 2010-06-07 00:04:59 1275869100.   6.17     21.5     54.8 -0.455 -0.0534\n 6 2010-06-07 00:05:59 1275869160.   5.47     21.5     54.8 -0.189 -0.0529\n 7 2010-06-07 00:06:59 1275869220.   6.01     23.2     73.7 -0.325 -0.0561\n 8 2010-06-07 00:07:59 1275869280.   4.65     19.5     30.5 -0.308 -0.0451\n 9 2010-06-07 00:08:59 1275869340.   5.94     20.2     44.2 -0.280 -0.0511\n10 2010-06-07 00:09:59 1275869400.   5.35     20.6     49.4 -0.252 -0.0518\n# ℹ 1,430 more rows\n```\n\n\n:::\n:::\n\n\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

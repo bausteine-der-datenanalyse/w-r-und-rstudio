@@ -1,2 +1,0 @@
-"0","ggplot(data=d_ns_bochum_tag) + "
-"0","  geom_histogram(mapping=aes(x=Niederschlag), binwidth=0.5, boundary=0)"
