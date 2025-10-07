@@ -1,0 +1,10 @@
+execute: 
+  echo: true
+
+format: 
+  revealjs:
+    overview: true
+    slide-number: "c/t"
+    code-line-numbers: false
+    theme: 
+    - style.scss
