@@ -13,10 +13,10 @@ load("daten/data-lecture.Rdata")
 ```
 
 
-# Ein Beispiel
+## Ein Beispiel
 
 
-## Zusammenhang zwischen Wirtschaftskraft und Treibhausgasemissionen im Jahr 2012
+### Zusammenhang zwischen Wirtschaftskraft und Treibhausgasemissionen im Jahr 2012
 
 ```{r}
 ggplot(data = d_wb_2012) +
@@ -26,7 +26,7 @@ ggplot(data = d_wb_2012) +
 ```
 
 
-## Aufbau der Anweisung
+### Aufbau der Anweisung
 
 ![](bilder/plot-beispiel.svg)
 
@@ -38,10 +38,10 @@ ggplot(data = d_wb_2012) +
 6.  Beschriftung (später)
 
 
-# Was ist ggplot2?
+## Was ist ggplot2?
 
 
-## Ursprung
+### Ursprung
 
 ![](bilder/ggplot.svg)
 
@@ -53,7 +53,7 @@ ggplot(data = d_wb_2012) +
 - Eine schöne Sammlung von Beispielen gibt es [hier](https://www.r-graph-gallery.com)
 
 
-## Genereller Aufbau einer ggplot2 Anweisung
+### Genereller Aufbau einer ggplot2 Anweisung
 
 <br/><br/>
 
@@ -72,12 +72,12 @@ ggplot(data = <DATA>) +
 
 → Am Ende des Semesters werden Sie das verstehen!
 
-# Datensatz für diese Folien
+## Datensatz für diese Folien
 
 
-## Daten laden und anzeigen
+### Daten laden und anzeigen
 
-### Daten aus Datei laden
+#### Daten aus Datei laden
 
 ```{r}
 #| eval: false
@@ -86,14 +86,14 @@ load("daten/data-lecture.Rdata")
 
 <br/>
 
-### Dataframe anzeigen
+#### Dataframe anzeigen
 
 ```{r}
 show(d_wb_2012)
 ```
 
 
-## Inhalt von Dataframe `d_wb_2012`
+### Inhalt von Dataframe `d_wb_2012`
 
 | Spalte | Deutsch | Englisch (Originaltitel) |
 |------------------------|------------------------|------------------------|
@@ -108,10 +108,10 @@ show(d_wb_2012)
 : {tbl-colwidths="[20,40,40]"}
 
 
-# Funktionsweise von ggplot
+## Funktionsweise von ggplot
 
 
-## Wie funktioniert ggplot?
+### Wie funktioniert ggplot?
 
 ```{r}
 #| eval: false
@@ -130,7 +130,7 @@ ggplot(data = d_wb_2012) +
 - Es folgen Einstellungen für Achsen, Beschriftungen, etc.
 
 
-## Daten und visuelle Eigenschaften
+### Daten und visuelle Eigenschaften
 
 ![](bilder/mapping.svg)
 
@@ -145,7 +145,7 @@ goem_point(mapping = aes(x = A, y = B, color = C, size = D))
 → Visuelle Eigenschaften heißen in ggplot Aesthetics (AES)
 
 
-## Datensatz für Beispiel erstellen und anzeigen
+### Datensatz für Beispiel erstellen und anzeigen
 
 ```{r}
 d_bsp <- tibble(
@@ -159,7 +159,7 @@ kable(d_bsp)
 ```
 
 
-## Datensatz für Beispiel Plotten
+### Datensatz für Beispiel Plotten
 
 ```{r}
 ggplot(data = d_bsp) +
@@ -167,14 +167,14 @@ ggplot(data = d_bsp) +
 ```
 
 
-## _Geoms_ und _Aesthetics_
+### _Geoms_ und _Aesthetics_
 
 <br/><br/>
 
 ![](bilder/aesthetics.svg)
 
 
-## Beispiel mit Weltbankdaten
+### Beispiel mit Weltbankdaten
 
 ```{r}
 ggplot(data = d_wb_2012) +
@@ -182,7 +182,7 @@ ggplot(data = d_wb_2012) +
 ```
 
 
-## Beispiel mit Weltbankdaten
+### Beispiel mit Weltbankdaten
 
 ```{r}
 #| eval: false
@@ -198,7 +198,7 @@ ggplot(data = d_wb_2012) +
   - Größe entsprechend Bevölkerung (`pop`)
 
 
-## Beispiel mit Weltbankdaten (logarithmische Skala)
+### Beispiel mit Weltbankdaten (logarithmische Skala)
 
 ```{r}
 ggplot(data = d_wb_2012) +

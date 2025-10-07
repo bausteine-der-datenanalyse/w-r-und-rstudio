@@ -44,14 +44,16 @@ book:
     - skript/schreiben-mit-quarto.qmd
     - skript/praesentationen-mit-quarto.qmd
 
+  
+
   language: de-DE
   downloads: [pdf]
-  repo-url: "https://github.com/bausteine-der-datenanalyse/Werkzeugbaustein-R-und-RStudio"
+  repo-url: "https://github.com/bausteine-der-datenanalyse/w-r-und-rstudio"
   repo-actions: [source]
-  favicon: "skript/00-bilder/favicon_bcd_new.svg"
+  favicon: "skript/bilder/favicon_bcd_new.svg"
   sidebar:
     title: "Titel"
-    logo: "skript/00-bilder/logo_bcd_new.svg"
+    logo: "skript/bilder/logo_bcd_new.svg"
 
 bibliography: skript/references.bib
 
@@ -60,12 +62,12 @@ format:
   html:
     ## Logo
     ### Logo in Quarto Books
-    favicon: "skript/00-bilder/favicon_bcd_new.svg"
+    favicon: "skript/bilder/favicon_bcd_new.svg"
     
     ### Logo in HTML
     include-in-header:
       text: |
-        <link rel="shortcut icon" href="skript/00-bilder/favicon_bcd_new.svg" />
+        <link rel="shortcut icon" href="skript/bilder/favicon_bcd_new.svg" />
         <link rel="icon" type="image/x-icon" href="logo.ico">
     
     default-image-extension: svg
@@ -74,7 +76,8 @@ format:
 ## Inhaltsverzeichnis / table of contents
 toc: true
 number-sections: true
-number-depth: 2
+number-offset: 0
+number-depth: 3
 
 ## Objekteinstellungen / object options
 cap-location: bottom

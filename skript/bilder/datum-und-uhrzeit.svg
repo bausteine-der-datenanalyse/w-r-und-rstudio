@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 24.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 601 123.7" style="enable-background:new 0 0 601 123.7;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:none;stroke:#000000;stroke-miterlimit:10;}
+	.st1{font-family:'MyriadPro-Regular';}
+	.st2{font-size:12px;}
+	.st3{stroke:#D31E47;stroke-miterlimit:10;}
+	.st4{fill:none;stroke:#D31E47;stroke-miterlimit:10;}
+	.st5{fill:none;stroke:#02B3E9;stroke-miterlimit:10;}
+	.st6{fill:none;stroke:#BA1C8D;stroke-miterlimit:10;}
+	.st7{fill:none;stroke:#069547;stroke-miterlimit:10;}
+</style>
+<g>
+	<g>
+		<line class="st0" x1="103.3" y1="41.5" x2="427.7" y2="41.5"/>
+		<g>
+			<polygon points="421.8,44.6 421.4,43.7 427.6,41.5 421.4,39.2 421.8,38.3 430.5,41.5 			"/>
+		</g>
+	</g>
+</g>
+<line class="st0" x1="142.1" y1="36.6" x2="142.1" y2="46.3"/>
+<line class="st0" x1="225.5" y1="36.6" x2="225.5" y2="46.3"/>
+<line class="st0" x1="308.9" y1="36.6" x2="308.9" y2="46.3"/>
+<line class="st0" x1="392.2" y1="36.6" x2="392.2" y2="46.3"/>
+<text transform="matrix(1 0 0 1 130.7243 33.3043)" class="st1 st2">2016</text>
+<text transform="matrix(1 0 0 1 213.8875 33.3043)" class="st1 st2">2017</text>
+<text transform="matrix(1 0 0 1 297.0508 33.3043)" class="st1 st2">2018</text>
+<text transform="matrix(1 0 0 1 380.2136 33.3043)" class="st1 st2">2019</text>
+<line class="st3" x1="199.5" y1="17.1" x2="199.5" y2="55.7"/>
+<text transform="matrix(1 0 0 1 434.8716 44.2886)" class="st1 st2">Zeitstrahl</text>
+<text transform="matrix(1 0 0 1 174.031 12.2335)" class="st1 st2">Zeitpunkt</text>
+<line class="st4" x1="199.5" y1="55.7" x2="119.3" y2="70.9"/>
+<line class="st4" x1="199.5" y1="55.7" x2="279.8" y2="70.9"/>
+<text transform="matrix(1 0 0 1 129.394 86.3572)" class="st1 st2">2. August 2016 um 16:30:24</text>
+<rect x="126.3" y="72.1" class="st5" width="145.2" height="33.1"/>
+<rect x="128.3" y="74.7" class="st6" width="77.2" height="16.4"/>
+<rect x="225.5" y="74.7" class="st7" width="42.9" height="16.4"/>
+<text transform="matrix(1 0 0 1 183.3928 118.0064)" class="st1 st2">date-time</text>
+<text transform="matrix(1 0 0 1 309.8549 77.4889)"><tspan x="0" y="0" class="st1 st2">date: Datum des Zeitpunktes</tspan><tspan x="0" y="14.4" class="st1 st2">time: Zeit, die am Tag vergangen ist</tspan><tspan x="0" y="28.8" class="st1 st2">date-time: Beides zusammen</tspan></text>
+<text transform="matrix(1 0 0 1 155.9412 101.8667)" class="st1 st2">date</text>
+<text transform="matrix(1 0 0 1 237.2158 101.8667)" class="st1 st2">time</text>
+</svg>

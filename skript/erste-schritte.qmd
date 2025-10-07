@@ -16,10 +16,10 @@ source("skripte/read-data-erste-schritte.R")
 ```
 
 
-# Beispiele zum Einstieg: Niederschläge in ausgewählten deutschen Städten {#sec-VL1-beispiele}
+## Beispiele zum Einstieg: Niederschläge in ausgewählten deutschen Städten {#sec-VL1-beispiele}
 
 
-## Beispiel 1: Mittlerer jährlicher Niederschlag an verschiedenen Stationen in Deutschland
+### Beispiel 1: Mittlerer jährlicher Niederschlag an verschiedenen Stationen in Deutschland
 
 ```{r}
 #| echo: false
@@ -63,7 +63,7 @@ p1 + p2
 ```
 
 
-## Beispiel 2: Monatlicher Niederschlag im Jahresverlauf (alle Stationen)
+### Beispiel 2: Monatlicher Niederschlag im Jahresverlauf (alle Stationen)
 
 ```{r}
 #| echo: false
@@ -79,7 +79,7 @@ ggplot(data = d_ns_monat) +
 ```
 
 
-## Beispiel 3: Monatlicher Niederschlag im Jahresverlauf je Station
+### Beispiel 3: Monatlicher Niederschlag im Jahresverlauf je Station
 
 ```{r}
 #| echo: false
@@ -90,26 +90,26 @@ ggplot(data = d_ns_monat) +
 ```
 
 
-## Von den Daten zu den Folien {#sec-VL1-von-daten-zu-folien}
+### Von den Daten zu den Folien {#sec-VL1-von-daten-zu-folien}
 
 Tageswerte der Niederschläge an den verschiedenen Stationen vom Deutschen Wetterdienst
 
 []{.down20}
 
-### Wie entstehen daraus die Folien? 
+#### Wie entstehen daraus die Folien? 
 
 1. Daten aus CVS-Datei einlesen
 1. Jahres- und Monatswerte ermitteln
 1. Grafiken erstellen
 1. Daraus zusammen mit Text das HTML-Dokument erzeugen
 
-### Und wie funktioniert das?
+#### Und wie funktioniert das?
 
 1. Wir schreiben Text und R-Anweisungen in Quarto-Markdown-Datei
 1. [Quarto](https://quarto.org) erstellt daraus das HTML-Dokument
 
 
-## Was wir uns hierzu anschauen werden
+### Was wir uns hierzu anschauen werden
 
 []{.down100}
 
@@ -120,26 +120,26 @@ Tageswerte der Niederschläge an den verschiedenen Stationen vom Deutschen Wette
 1. Arbeiten mit der Programmierumgebung RStudio
 
 
-# Was ist R und was ist RStudio? {#sec-VL1-R-und-RStudio}
+## Was ist R und was ist RStudio? {#sec-VL1-R-und-RStudio}
 
 
-## R und RStudio
+### R und RStudio
 
 ![](bilder/logos.svg)
 
-### Programmiersprache R
+#### Programmiersprache R
 
 - Programmiersprache für Statistik und Datenvisualisierung
 - Frei verfügbar, erste Version 1993 veröffentlicht
 - Keine Angst: Das wird keine Informatikvorlesung
 
-### Arbeitsumgebung RStudio
+#### Arbeitsumgebung RStudio
 
 - Grafische Oberfläche zur Datenanalyse mit R
 - Wir verwenden Quarto-Markdown für die Erstellung von Dokumenten
 
 
-## Die Oberfläche von RStudio
+### Die Oberfläche von RStudio
 
 ![](bilder/rstudio.svg)
 
@@ -149,21 +149,21 @@ Tageswerte der Niederschläge an den verschiedenen Stationen vom Deutschen Wette
 4. Hilfe (u.A.): Hilfe zu Funktionen (nicht immer einfach zu verstehen)
 
 
-# Quarto-Markdown in RStudio {#sec-VL1-Quarto}
+## Quarto-Markdown in RStudio {#sec-VL1-Quarto}
 
 
-## Reproduzierbare Statistik
+### Reproduzierbare Statistik
 
 []{.down20}
 
-### Traditionelle Arbeitsweise (zum Beispiel mit Word)
+#### Traditionelle Arbeitsweise (zum Beispiel mit Word)
 
 - Statistische Untersuchungen mit speziellem Programm
 - Ergebnisse und Grafiken von Hand in Dokument übernehmen
 - Vorteile: Einfach, gewohnte Arbeitsweise
 - Nachteile: Fehler in Berechnung - Zurück auf Start! Weg von den Daten zum Dokument nicht reproduzierbar
 
-### Arbeiten mit Quarto
+#### Arbeiten mit Quarto
 
 - Quarto-Markdown-Dokument fasst Text und Berechnungen zusammen
 - Daraus wird PDF/HTML/Word/PPT erzeugt (ähnlich wie mit LaTeX)
@@ -171,7 +171,7 @@ Tageswerte der Niederschläge an den verschiedenen Stationen vom Deutschen Wette
 - Nachteile: Ungewohnte Arbeitsweise, Lernkurve
 
 
-## Möglichkeiten mit Quarto
+### Möglichkeiten mit Quarto
 
 []{.down100}
 
@@ -183,7 +183,7 @@ Tageswerte der Niederschläge an den verschiedenen Stationen vom Deutschen Wette
 - [Video zur Einführung (englisch)](https://youtu.be/_f3latmOhew?si=bGnCJk9dwSYG6cLK)
 
 
-## Ein einfaches Beispiel
+### Ein einfaches Beispiel
 
 ![](bilder/quarto-hello-world.png)
 
@@ -194,18 +194,18 @@ Tageswerte der Niederschläge an den verschiedenen Stationen vom Deutschen Wette
 
 
 
-## Quarto konvertiert Quarto-Markdown
+### Quarto konvertiert Quarto-Markdown
 
 []{.down140}
 
 ![](bilder/qmd-how-it-works.png)
 
 
-## Quarto-Markdown-Dokumente
+### Quarto-Markdown-Dokumente
 
 ![](bilder/quarto-markdown.svg)
 
-### Ein Quarto-Markdown-Dokument
+#### Ein Quarto-Markdown-Dokument
 
 - ist eine reine Textdatei mit der Erweiterung .qmd
 - beginnt mit ein paar Grundeinstellungen (oben nicht dargestellt)
@@ -214,7 +214,7 @@ Tageswerte der Niederschläge an den verschiedenen Stationen vom Deutschen Wette
   - Text in spezieller Markdown-Schreibweise
 
 
-## Quarto-Markdown in RStudio
+### Quarto-Markdown in RStudio
 
 ![](bilder/quarto-markdown-rstudio.svg)
 

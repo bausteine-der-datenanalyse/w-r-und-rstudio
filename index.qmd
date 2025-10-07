@@ -3,24 +3,24 @@
 ::: {.border #Lizenz}
 
 :::: {layout="[20, 80]"}
-![](skript/00-bilder/CC-BY.svg){fig-alt="Symbol des Lizenzhinweises Creative Commons BY"}
+![](skript/bilder/CC-BY.svg){fig-alt="Symbol des Lizenzhinweises Creative Commons BY"}
 
-Bausteine Computergestützter Datenanalyse von Lukas Arnold, Simone Arnold, Florian Bagemihl, Matthias Baitsch, Marc Fehr, Franca Hollmann, Maik Poetzsch und Sebastian Seipel. Werkzeugbaustein Python von Marc Fehr und Maik Poetzsch ist lizensiert unter [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.de). Das Werk ist abrufbar auf [GitHub](https://github.com/bausteine-der-datenanalyse/w-python). Ausgenommen von der Lizenz sind alle Logos Dritter und anders gekennzeichneten Inhalte. 2025
+Bausteine Computergestützter Datenanalyse von Lukas Arnold, Simone Arnold, Florian Bagemihl, Matthias Baitsch, Marc Fehr, Franca Hollmann, Maik Poetzsch und Sebastian Seipel. Werkzeugbaustein R und RStudio von Matthias Baitsch und Franca Hollmann ist lizensiert unter [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.de). Das Werk ist abrufbar auf [GitHub](https://github.com/bausteine-der-datenanalyse/w-r-und-rstudio). Ausgenommen von der Lizenz sind alle Logos Dritter und anders gekennzeichneten Inhalte. 2025
 
 ::::
 
 Zitiervorschlag
 
-Arnold, Lukas, Simone Arnold, Matthias Baitsch, Marc Fehr, Franca Hollmann, Maik Poetzsch, und Sebastian Seipel. 2025. „Bausteine Computergestützter Datenanalyse. Werkzeugbaustein Python“. <https://github.com/bausteine-der-datenanalyse/w-python>.
+Arnold, Lukas, Simone Arnold, Matthias Baitsch, Marc Fehr, Franca Hollmann, Maik Poetzsch, und Sebastian Seipel. 2025. „Bausteine Computergestützter Datenanalyse. Werkzeugbaustein R und RStudio“. <https://github.com/bausteine-der-datenanalyse/w-r-und-rstudio>.
 
 BibTeX-Vorlage
 
 ```
 @misc{BCD-w-python-2025,
- title={Bausteine Computergestützter Datenanalyse. Werkzeugbaustein Python},
+ title={Bausteine Computergestützter Datenanalyse. Werkzeugbaustein R und RStudio},
  author={Arnold, Lukas and Arnold, Simone and Baitsch, Matthias and Fehr, Marc and Hollmann, Franca and Poetzsch, Maik and Seipel, Sebastian},
  year={2025},
- url={https://github.com/bausteine-der-datenanalyse/w-python}} 
+ url={https://github.com/bausteine-der-datenanalyse/w-r-und-rstudio}} 
 ```
 
 :::
