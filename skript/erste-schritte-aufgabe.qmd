@@ -11,3 +11,5 @@ title: "Kleine Übung zu den ersten Schritten in RStudio"
 1. Rendern Sie das Dokument (oben links) und schauen Sie sich das html-Dokument an
 
 Was können Sie jetzt schon verstehen?
+
+[Download Übungsdatei (ZIP)](https://github.com/bausteine-der-datenanalyse/w-r-und-rstudio/tree/main/aufgaben/erste-schritte/archive/refs/heads/main.zip)

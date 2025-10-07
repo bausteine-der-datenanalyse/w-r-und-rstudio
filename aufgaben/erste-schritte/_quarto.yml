@@ -8,3 +8,9 @@ format:
     code-line-numbers: false
     theme: 
     - style.scss
+
+# --- Hook, der nach dem Rendern ausgeführt wird ---
+hooks:
+  post-render: |
+    import shutil
+    shutil.make_archive("output", "zip", "_site")

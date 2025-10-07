@@ -1,5 +1,6 @@
 project:
   type: book
+  post-render: skript/make_zips.R
 
 book:
   title: "Bausteine Computergestützter Datenanalyse"
